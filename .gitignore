@@ -1,0 +1,25 @@
+# Node
+node_modules
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+dist
+*.tsbuildinfo
+
+# Playground build
+playground/dist
+playground/node_modules
+
+# IDE / OS
+.DS_Store
+.idea
+.vscode
+*.swp
+
+# Tests / coverage
+coverage
+.vitest

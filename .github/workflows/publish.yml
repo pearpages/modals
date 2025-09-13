@@ -1,0 +1,51 @@
+name: Publish to npm
+on:
+  push:
+    tags:
+      - "v*"              # e.g. v0.1.0
+
+permissions:
+  contents: read
+  id-token: write        # for npm provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history to check branch info
+      
+      - name: Check if tag is from main branch
+        id: check_branch
+        run: |
+          # Check if the commit that the tag points to is on main branch
+          if git merge-base --is-ancestor ${{ github.sha }} origin/main; then
+            echo "is_main_branch=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_main_branch=false" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.check_branch.outputs.is_main_branch == 'true'
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+          cache: "npm"
+
+      - run: npm ci
+        if: steps.check_branch.outputs.is_main_branch == 'true'
+      - run: npm run build
+        if: steps.check_branch.outputs.is_main_branch == 'true'
+
+      # optional sanity check
+      - run: npx npm@^10 whoami
+        if: steps.check_branch.outputs.is_main_branch == 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish
+        if: steps.check_branch.outputs.is_main_branch == 'true'
+        run: npx npm@^10 publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

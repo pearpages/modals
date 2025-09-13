@@ -1,0 +1,45 @@
+{
+  "name": "@pearpages/modals",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pearpages/modals"
+  },
+  "bugs": {
+    "url": "https://github.com/pearpages/modals/issues"
+  },
+  "homepage": "https://github.com/pearpages/modals#readme",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles.css": "./dist/index.css"
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "style": "./dist/index.css",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest"
+  },
+  "peerDependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "esbuild-sass-plugin": "^3.3.1",
+    "sass": "^1.92.1",
+    "tsup": "^8",
+    "typescript": "^5",
+    "vitest": "^2"
+  }
+}
