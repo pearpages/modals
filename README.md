@@ -5,16 +5,40 @@
 
 # Modals
 
-
-
 [Demo](modals.pearpages.com)
 
-## Getting started
+# Modal Component
 
-When using the library, make sure to import the CSS file:
+A comprehensive, accessible, and flexible modal system for React applications built according to the specifications in `specs.md`.
+
+## Goals
+
+- ✅ **Accessible**: Full WAI-ARIA compliance with proper focus management
+- ✅ **Flexible**: Support for programmatic usage, stacked modals, and custom content
+- ✅ **Keyboard-first**: ESC to close, tab trapping, focus return
+- ✅ **Animation-ready**: Built-in animation states and CSS hooks
+- ✅ **TypeScript**: Full type safety with comprehensive interfaces
+- ✅ **Headless**: Minimal default styles, easy to customize
+- ✅ **Promise-based confirm**: Utility for confirmation dialogs
+- ✅ **Portal-based**: Renders outside component tree to avoid z-index issues
+
+## Quick Start
+
+### 1. Setup the Provider
+
+Wrap your app with `ModalProvider` and include `ModalRoot`:
 
 ```tsx
-import '@pearpages/modals/styles.css';
-```
+import { ModalProvider, ModalRoot } from './components/Modal';
 
-This ensures that all necessary styles are applied to the components.
+function App() {
+  return (
+    <ModalProvider>
+      <div id="app">
+        {/* Your app content */}
+        <ModalRoot />
+      </div>
+    </ModalProvider>
+  );
+}
+```
