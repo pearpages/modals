@@ -4,7 +4,7 @@ import json from "../../package.json";
 function App() {
   return (
     <>
-      <h1>Contribution Modals v{json.version}</h1>
+      <h1>@pearpages/modals v{json.version}</h1>
       <ModalExample />
     </>
   );
