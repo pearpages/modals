@@ -34,9 +34,11 @@
   },
   "devDependencies": {
     "@testing-library/react": "^16",
+    "@types/node": "^24.4.0",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
     "esbuild-sass-plugin": "^3.3.1",
+    "jsdom": "^27.0.0",
     "sass": "^1.92.1",
     "tsup": "^8",
     "typescript": "^5",
