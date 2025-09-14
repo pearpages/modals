@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { ModalProvider } from '../ModalProvider';
-import { ModalRoot } from '../ModalRoot';
-import { useModal } from '../useModal';
+import { ModalProvider } from '@/Modal/ModalProvider';
+import { ModalRoot } from '@/Modal/ModalRoot';
+import { useModal } from '@/Modal/useModal';
 
 // Sample form component for modal content
 const ProfileForm: React.FC<{ onSuccess: () => void }> = ({ onSuccess }) => {
