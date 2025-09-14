@@ -1,8 +1,7 @@
 import React from 'react';
-import { createPortal } from 'react-dom';
 import { ModalSystem } from '../ModalSystem';
-import { useModalContext, useModalDismissConfig } from '@/ModalProvider';
 import { ModalExamples } from './ModalExamples';
+import './index.scss';
 
 /**
  * Example component showcasing the Modal Library in action
