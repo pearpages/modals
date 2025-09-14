@@ -9,7 +9,7 @@
 ### Core Features
 - `<Modal />` component with open/close state
 - `<Modal.Trigger />` and `<Modal.Content />` composition
-- Escape key and backdrop click to close
+- Escape key and backdrop click to close (configurable)
 - Focus trap and return to trigger
 - Portal rendering
 
@@ -52,7 +52,7 @@
   <App />
 
   <Modal id="confirmModal">
-    <Modal.Content>
+    <Modal.Content closeOnBackdrop={true} closeOnEscape={true}>
       <Modal.Header>
         <Modal.Title>Confirm</Modal.Title>
         <Modal.Close />
@@ -74,6 +74,10 @@
 - Modals **unmount from the DOM when closed** by default.
 - This ensures clean memory usage, prevents layout interference, and simplifies transitions.
 - Future optional support for `keepMounted?: boolean` may be added.
+- **Dismiss behavior (configurable):**
+  - `closeOnBackdrop?: boolean` — default `true`; clicking backdrop closes topmost modal
+  - `closeOnEscape?: boolean` — default `true`; pressing `Esc` closes topmost modal
+  - `onInteractOutside?: (e) => void` — call `e.preventDefault()` to block dismissal
 
 #### Modal
 - `id: string` (required, must be unique per ModalSystem instance)
@@ -91,6 +95,9 @@
   `auto`: fit content, `md`: standard (e.g. 480px), `full`: 100vw/h
 - `animated?: boolean` — default: `true`, enables fade transitions
 - `className?: string`
+- `closeOnBackdrop?: boolean`
+- `closeOnEscape?: boolean`
+- `onInteractOutside?: (e: { target: EventTarget; preventDefault(): void }) => void`
 
 ### Accessibility
 - `role="dialog"` on `Modal.Content`

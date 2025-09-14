@@ -1,1 +1,0 @@
-export const Example: React.FC = () => <div>Hello World</div>;
