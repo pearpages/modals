@@ -1,0 +1,445 @@
+/*
+ * Modal Component Styles
+ * 
+ * Responsive Behavior:
+ * - Mobile (≤768px): Full-screen modals with slide-up animation
+ * - Desktop (>768px): Centered modals with different size variants
+ * 
+ * Features:
+ * - Safe area handling for devices with notches
+ * - Smooth animations and transitions
+ * - Accessibility-focused design
+ * - Proper z-index stacking for multiple modals
+ */
+
+// Modal theme variables
+:root {
+  --modal-bg: #ffffff;
+  --modal-text: #333333;
+  --modal-border: #e5e7eb;
+  --modal-button-bg: #ffffff;
+  --modal-button-hover: #f3f4f6;
+  --modal-button-text: #374151;
+  --modal-button-border: #d1d5db;
+  --modal-actions-bg: #f9fafb;
+  --modal-close-text: #6b7280;
+  --modal-close-hover: #374151;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --modal-bg: #1e1e1e;
+    --modal-text: #e0e0e0;
+    --modal-border: #333333;
+    --modal-button-bg: #2d2d2d;
+    --modal-button-hover: #3d3d3d;
+    --modal-button-text: #e0e0e0;
+    --modal-button-border: #404040;
+    --modal-actions-bg: #252525;
+    --modal-close-text: #9ca3af;
+    --modal-close-hover: #d1d5db;
+  }
+}
+
+// Modal backdrop - uses high specificity instead of !important
+[data-modal-root].modal-backdrop {
+  // Positioning
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  // Note: Using top/left/right/bottom is more reliable than width/height on mobile Safari
+  // width: 100vw and height: 100vh can cause issues with Safari's dynamic viewport
+  
+  // Background and layout
+  background-color: rgba(0, 0, 0, 0.5);
+  
+  // Flexbox layout
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  
+  // Ensure it's above everything
+  z-index: 999999;
+  
+  // Animation states - backdrop fade only
+  opacity: 0;
+  transition: opacity 250ms ease-out;
+  
+  &[data-state="open"] {
+    opacity: 1;
+  }
+  
+  &[data-state="closing"] {
+    opacity: 0;
+  }
+  
+  // Stacked modals should not have dark backdrop
+  &.modal-backdrop--stacked {
+    background-color: transparent;
+  }
+}
+
+// Modal dialog container - uses high specificity instead of !important
+[data-modal-root] .modal-dialog {
+  // Reset all possible conflicting styles
+  position: relative;
+  margin: 0;
+  padding: 0;
+  
+  // Layout
+  background: var(--modal-bg, #ffffff);
+  border-radius: 8px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  // Size constraints for desktop
+  width: auto;
+  min-width: 320px;
+  max-width: 600px;
+  max-height: 90vh;
+  
+  // Flexbox layout
+  display: flex;
+  flex-direction: column;
+  
+  // Animation states - transform only, no opacity conflicts
+  transform: scale(0.95) translateY(-10px);
+  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  
+  &[data-state="open"] {
+    transform: scale(1) translateY(0);
+  }
+  
+  &[data-state="closing"] {
+    transform: scale(0.95) translateY(-10px);
+  }
+}
+
+// Modal header
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--modal-border, #e5e7eb);
+  flex-shrink: 0; // Prevent header from shrinking
+  
+  .modal-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--modal-text, #111827);
+  }
+  
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    color: var(--modal-close-text, #6b7280);
+    line-height: 1;
+    min-width: 2rem;
+    min-height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+      background-color: var(--modal-button-hover, #f3f4f6);
+      color: var(--modal-close-hover, #374151);
+    }
+    
+    &:focus {
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+    }
+  }
+}
+
+// Modal content
+.modal-content {
+  padding: 1.5rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+// Modal without header
+.modal-dialog:not(:has(.modal-header)) .modal-content {
+  padding-top: 1.5rem;
+}
+
+// Confirm modal actions
+.modal-confirm-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  
+  button {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--modal-button-border, #d1d5db);
+    background: var(--modal-button-bg, white);
+    color: var(--modal-button-text, #374151);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 150ms ease;
+    
+    &:hover {
+      background-color: var(--modal-button-hover, #f9fafb);
+    }
+    
+    &:focus {
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+    }
+    
+    &[data-variant="danger"] {
+      background-color: #dc2626;
+      border-color: #dc2626;
+      color: white;
+      
+      &:hover {
+        background-color: #b91c1c;
+      }
+    }
+    
+    &:last-child {
+      background-color: #3b82f6;
+      border-color: #3b82f6;
+      color: white;
+      
+      &:hover {
+        background-color: #2563eb;
+      }
+    }
+  }
+}
+
+// Focus trap container
+[data-modal-root] div[style*="outline: none"] {
+  outline: none;
+}
+
+// Modal focus trap container - ensures full area is clickable
+.modal-focus-trap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  // Note: Using 100% instead of viewport units since parent (backdrop) handles viewport sizing
+  outline: none;
+  
+  // Safari-specific fixes for margin issues
+  @supports (-webkit-touch-callout: none) {
+    // iOS Safari specific
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+// Mobile responsive design - full screen
+@media (max-width: 768px) {
+  [data-modal-root].modal-backdrop {
+    padding: 0;
+    align-items: stretch;
+    justify-content: stretch;
+  }
+  
+  [data-modal-root] .modal-dialog {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh; // Use dynamic viewport height if supported
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+    
+    // Safe area handling for devices with notches
+    padding-top: env(safe-area-inset-top, 0);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    
+    // Full screen slide-up animation for mobile - transform only
+    transform: translateY(100%);
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    
+    &[data-state="open"] {
+      transform: translateY(0);
+    }
+    
+    &[data-state="closing"] {
+      transform: translateY(100%);
+    }
+    
+    // Override all size variants on mobile
+    &[data-size="sm"],
+    &[data-size="md"], 
+    &[data-size="lg"],
+    &[data-size="xl"],
+    &.modal-sm,
+    &.modal-md,
+    &.modal-lg,
+    &.modal-xl {
+      width: 100vw;
+      max-width: none;
+    }
+  }
+  
+  [data-modal-root] .modal-header {
+    padding: 1rem;
+    padding-top: calc(1rem + env(safe-area-inset-top, 0));
+    border-bottom: 1px solid var(--modal-border, #e5e7eb);
+    flex-shrink: 0;
+  }
+  
+  [data-modal-root] .modal-content {
+    padding: 1rem;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0));
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
+  }
+}
+
+// Desktop styles - ensure proper centering
+@media (min-width: 769px) {
+  [data-modal-root].modal-backdrop {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  
+  [data-modal-root] .modal-dialog {
+    margin: 0;
+    width: auto;
+    height: auto;
+    max-height: 90vh;
+    border-radius: 8px;
+    
+    // Size variants with proper max-widths for desktop
+    &[data-size="sm"], &.modal-sm {
+      width: 100%;
+      max-width: 400px;
+    }
+    
+    &[data-size="md"], &.modal-md {
+      width: 100%;
+      max-width: 600px;
+    }
+    
+    &[data-size="lg"], &.modal-lg {
+      width: 100%;
+      max-width: 800px;
+    }
+    
+    &[data-size="xl"], &.modal-xl {
+      width: 100%;
+      max-width: 1200px;
+    }
+  }
+}
+
+// Modal action utilities for common button layouts
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border-top: 1px solid var(--modal-border, #e5e7eb);
+  background-color: var(--modal-actions-bg, #f9fafb);
+  flex-shrink: 0;
+  
+  // Right-aligned actions (common pattern)
+  &.modal-actions-right {
+    justify-content: flex-end;
+  }
+  
+  // Center-aligned actions
+  &.modal-actions-center {
+    justify-content: center;
+  }
+  
+  // Space between actions (first left, rest right)
+  &.modal-actions-between {
+    justify-content: space-between;
+  }
+  
+  // Full-width single action
+  &.modal-actions-full {
+    button {
+      flex: 1;
+    }
+  }
+}
+
+// Button styles for modal actions
+.modal-actions {
+  button {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--modal-button-border, #d1d5db);
+    background-color: var(--modal-button-bg, white);
+    color: var(--modal-button-text, #374151);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 150ms ease-in-out;
+    
+    &:hover {
+      background-color: var(--modal-button-hover, #f3f4f6);
+      border-color: var(--modal-button-border, #9ca3af);
+    }
+    
+    &:focus {
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+    }
+    
+    // Primary button variant
+    &.btn-primary {
+      background-color: #3b82f6;
+      border-color: #3b82f6;
+      color: white;
+      
+      &:hover {
+        background-color: #2563eb;
+        border-color: #2563eb;
+      }
+    }
+    
+    // Danger button variant
+    &.btn-danger {
+      background-color: #ef4444;
+      border-color: #ef4444;
+      color: white;
+      
+      &:hover {
+        background-color: #dc2626;
+        border-color: #dc2626;
+      }
+    }
+  }
+}
+
+// Responsive modal actions
+@media (max-width: 768px) {
+  .modal-actions {
+    padding: 1rem;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0));
+    
+    // Stack buttons on mobile for better touch targets
+    &.modal-actions-mobile-stack {
+      flex-direction: column;
+      
+      button {
+        width: 100%;
+        min-height: 44px; // Minimum touch target size
+      }
+    }
+  }
+}

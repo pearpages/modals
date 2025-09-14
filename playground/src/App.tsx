@@ -1,8 +1,8 @@
-import { Button } from '@/index';
+import { ModalExample } from '@/index';
 
 function App() {
   return (
-   <Button />
+   <ModalExample />
   )
 }
 
