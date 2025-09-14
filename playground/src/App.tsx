@@ -1,8 +1,8 @@
-import { ModalExample } from '@/index';
+import { Example } from '@/index';
 
 function App() {
   return (
-   <ModalExample />
+   <Example />
   )
 }
 
