@@ -43,8 +43,22 @@ export const ModalClose: React.FC<ModalCloseProps> = ({
   if (asChild) {
     // If asChild is true, clone the first child and add our props
     const child = React.Children.only(children) as React.ReactElement<any>;
+    const originalOnClick = child.props.onClick;
+    
+    const composedOnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      // Call the original onClick first if it exists
+      if (originalOnClick) {
+        originalOnClick(e);
+      }
+      
+      // If not prevented, call our handler
+      if (!e.defaultPrevented) {
+        handleClick(e);
+      }
+    };
+    
     return React.cloneElement(child, {
-      onClick: handleClick,
+      onClick: composedOnClick,
       className: [child.props.className, closeClasses].filter(Boolean).join(' '),
       ...rest
     });

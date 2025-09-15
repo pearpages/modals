@@ -5,6 +5,7 @@ import { InfoModal } from './InfoModal';
 import { NestedModals } from './NestedModals';
 import { ActionDemo } from './ActionDemo';
 import { InteractiveActions } from './InteractiveActions';
+import { Task8Example } from '@/Task8Example';
 
 const ModalExamples: React.FC = () => {
   const { registry, stack } = useModalContext();

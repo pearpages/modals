@@ -2,6 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { ModalProps } from './types';
 import { useModalContext } from './ModalProvider';
 import { ModalIdProvider } from './ModalIdContext';
+import { ModalAriaProvider } from './ModalAriaContext';
 import { ModalTrigger } from './ModalTrigger';
 import { ModalContent } from './ModalContent';
 import { ModalHeader } from './ModalHeader';
@@ -109,9 +110,11 @@ const Modal: ModalComponent = ({
 
   return (
     <ModalIdProvider modalId={id}>
-      <div className={className} data-modal-id={id}>
-        {children}
-      </div>
+      <ModalAriaProvider>
+        <div className={className} data-modal-id={id}>
+          {children}
+        </div>
+      </ModalAriaProvider>
     </ModalIdProvider>
   );
 };

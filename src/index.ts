@@ -12,3 +12,4 @@ export { ModalDescription } from './ModalDescription';
 export { ModalClose } from './ModalClose';
 export { ModalFooter } from './ModalFooter';
 export { useModalId } from './ModalIdContext';
+export { ModalAriaProvider, useModalAria } from './ModalAriaContext';

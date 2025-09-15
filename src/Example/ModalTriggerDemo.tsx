@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal } from '../Modal';
 import { ModalSystem } from '../ModalSystem';
+import { Task8Example } from '@/Task8Example';
 
 /**
  * Simple demonstration of Modal.Trigger functionality
@@ -10,6 +11,7 @@ export function ModalTriggerDemo() {
   return (
     <ModalSystem>
       <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+        <Task8Example />
         <h2>✨ Modal.Trigger Demo</h2>
         <p>Task 6 implementation: <code>&lt;Modal.Trigger /&gt;</code> sugar component</p>
         

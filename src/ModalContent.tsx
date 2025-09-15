@@ -4,6 +4,7 @@ import { ModalContentProps } from './types';
 import { useModalContext, useModalDismissConfig } from './ModalProvider';
 import { useModalPortal } from './ModalRoot';
 import { useModalId } from './ModalIdContext';
+import { useModalAria } from './ModalAriaContext';
 // import styles from './Modal.module.scss';
 
 /**
@@ -34,6 +35,9 @@ export const ModalContent: React.FC<ModalContentProps> = ({
   
   // Get the modal ID from context
   const modalId = useModalId();
+
+  // Get aria IDs from aria context
+  const { titleId, descriptionId } = useModalAria();
 
   const { getModalEntry, closeModal, baseZIndex } = modalContext;
   const modalEntry = getModalEntry(modalId);
@@ -114,6 +118,8 @@ export const ModalContent: React.FC<ModalContentProps> = ({
       className={contentClasses}
       role="dialog"
       aria-modal="true"
+      aria-labelledby={titleId}
+      aria-describedby={descriptionId}
       data-state={dataState}
       {...rest}
     >
