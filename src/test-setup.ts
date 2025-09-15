@@ -1,5 +1,6 @@
 // Test setup for vitest
 import { beforeEach } from 'vitest'
+import '@testing-library/jest-dom'
 
 // Setup DOM environment
 beforeEach(() => {

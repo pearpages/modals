@@ -78,6 +78,11 @@ export const ModalRoot: React.FC<ModalRootProps> = ({
 
   // Handler for backdrop clicks - only topmost modal should close
   const handleBackdropClick = (event: React.MouseEvent) => {
+    // Only handle clicks on the backdrop itself, not its children
+    if (event.target !== event.currentTarget) {
+      return;
+    }
+
     if (stack.length > 0) {
       const topmostModalId = stack[stack.length - 1];
       const topmostModal = registry[topmostModalId];
@@ -97,10 +102,20 @@ export const ModalRoot: React.FC<ModalRootProps> = ({
           
           // Only close if preventDefault wasn't called
           if (!preventClose.prevented) {
-            closeModal(topmostModalId);
+            // Use onOpenChange if available (controlled mode), otherwise closeModal
+            if (topmostModal.onOpenChange) {
+              topmostModal.onOpenChange(false);
+            } else {
+              closeModal(topmostModalId);
+            }
           }
         } else {
-          closeModal(topmostModalId);
+          // Use onOpenChange if available (controlled mode), otherwise closeModal
+          if (topmostModal.onOpenChange) {
+            topmostModal.onOpenChange(false);
+          } else {
+            closeModal(topmostModalId);
+          }
         }
       }
     }

@@ -18,7 +18,8 @@ type ModalAction =
   | { type: 'UNREGISTER'; id: string }
   | { type: 'OPEN'; id: string }
   | { type: 'CLOSE'; id: string }
-  | { type: 'UPDATE_DISMISS_CONFIG'; id: string; config: ModalDismissConfig };
+  | { type: 'UPDATE_DISMISS_CONFIG'; id: string; config: ModalDismissConfig }
+  | { type: 'UPDATE_ON_OPEN_CHANGE'; id: string; onOpenChange?: (open: boolean) => void };
 
 const modalReducer = (state: ModalProviderState, action: ModalAction): ModalProviderState => {
   switch (action.type) {
@@ -149,6 +150,25 @@ const modalReducer = (state: ModalProviderState, action: ModalAction): ModalProv
       };
     }
 
+    case 'UPDATE_ON_OPEN_CHANGE': {
+      const { id, onOpenChange } = action;
+      if (!state.registry[id]) {
+        console.warn(`Cannot update onOpenChange for modal "${id}" - not registered`);
+        return state;
+      }
+
+      return {
+        ...state,
+        registry: {
+          ...state.registry,
+          [id]: {
+            ...state.registry[id],
+            onOpenChange
+          }
+        }
+      };
+    }
+
     default:
       return state;
   }
@@ -186,6 +206,10 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({
     dispatch({ type: 'UPDATE_DISMISS_CONFIG', id, config });
   }, []);
 
+  const updateOnOpenChange = useCallback((id: string, onOpenChange?: (open: boolean) => void) => {
+    dispatch({ type: 'UPDATE_ON_OPEN_CHANGE', id, onOpenChange });
+  }, []);
+
   const isRegistered = useCallback((id: string) => {
     return id in state.registry;
   }, [state.registry]);
@@ -201,6 +225,7 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({
     openModal,
     closeModal,
     updateDismissConfig,
+    updateOnOpenChange,
     isRegistered,
     getModalEntry
   };

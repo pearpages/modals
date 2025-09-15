@@ -5,3 +5,10 @@ export { ModalProvider, useModalContext, useModalDismissConfig } from './ModalPr
 export { ModalRoot, useModalPortal } from './ModalRoot';
 export { Modal } from './Modal';
 export { ModalTrigger } from './ModalTrigger';
+export { ModalContent } from './ModalContent';
+export { ModalHeader } from './ModalHeader';
+export { ModalTitle } from './ModalTitle';
+export { ModalDescription } from './ModalDescription';
+export { ModalClose } from './ModalClose';
+export { ModalFooter } from './ModalFooter';
+export { useModalId } from './ModalIdContext';

@@ -1,11 +1,24 @@
 import React, { useEffect, useCallback } from 'react';
 import { ModalProps } from './types';
 import { useModalContext } from './ModalProvider';
+import { ModalIdProvider } from './ModalIdContext';
 import { ModalTrigger } from './ModalTrigger';
+import { ModalContent } from './ModalContent';
+import { ModalHeader } from './ModalHeader';
+import { ModalTitle } from './ModalTitle';
+import { ModalDescription } from './ModalDescription';
+import { ModalClose } from './ModalClose';
+import { ModalFooter } from './ModalFooter';
 
 // Type for compound component
 interface ModalComponent extends React.FC<ModalProps> {
   Trigger: typeof ModalTrigger;
+  Content: typeof ModalContent;
+  Header: typeof ModalHeader;
+  Title: typeof ModalTitle;
+  Description: typeof ModalDescription;
+  Close: typeof ModalClose;
+  Footer: typeof ModalFooter;
 }
 
 /**
@@ -31,6 +44,7 @@ const Modal: ModalComponent = ({
     unregister, 
     openModal, 
     closeModal, 
+    updateOnOpenChange,
     getModalEntry 
   } = modalContext;
 
@@ -41,6 +55,11 @@ const Modal: ModalComponent = ({
       unregister(id);
     };
   }, [id, register, unregister]);
+
+  // Update onOpenChange callback in registry
+  useEffect(() => {
+    updateOnOpenChange(id, onOpenChange);
+  }, [id, onOpenChange, updateOnOpenChange]);
 
   // Get current modal state from provider
   const modalEntry = getModalEntry(id);
@@ -63,9 +82,14 @@ const Modal: ModalComponent = ({
     const prevProviderOpen = prevProviderOpenRef.current;
     prevProviderOpenRef.current = isProviderOpen;
     
-    // Only notify if provider state changed and it's not just syncing our controlled prop
-    if (onOpenChange && isProviderOpen !== prevProviderOpen && open === undefined) {
-      onOpenChange(isProviderOpen);
+    // Notify if provider state changed
+    if (onOpenChange && isProviderOpen !== prevProviderOpen) {
+      // In uncontrolled mode (open === undefined), always notify
+      // In controlled mode, notify if the provider state differs from the controlled prop
+      // This handles external changes like backdrop clicks or escape key
+      if (open === undefined || isProviderOpen !== open) {
+        onOpenChange(isProviderOpen);
+      }
     }
   }, [isProviderOpen, onOpenChange, open]);
 
@@ -84,9 +108,11 @@ const Modal: ModalComponent = ({
   }
 
   return (
-    <div className={className} data-modal-id={id}>
-      {children}
-    </div>
+    <ModalIdProvider modalId={id}>
+      <div className={className} data-modal-id={id}>
+        {children}
+      </div>
+    </ModalIdProvider>
   );
 };
 
@@ -94,5 +120,11 @@ Modal.displayName = 'Modal';
 
 // Compound component pattern
 Modal.Trigger = ModalTrigger;
+Modal.Content = ModalContent;
+Modal.Header = ModalHeader;
+Modal.Title = ModalTitle;
+Modal.Description = ModalDescription;
+Modal.Close = ModalClose;
+Modal.Footer = ModalFooter;
 
 export { Modal };

@@ -121,6 +121,8 @@ export interface ModalStackEntry {
   stackIndex: number;
   /** Dismiss behavior configuration */
   dismissConfig?: ModalDismissConfig;
+  /** Callback for controlled mode - if present, use this instead of direct closeModal */
+  onOpenChange?: (open: boolean) => void;
 }
 
 // Modal Dismiss Configuration
@@ -172,6 +174,8 @@ export interface ModalProviderActions {
   closeModal: (id: string) => void;
   /** Update dismiss configuration for a modal */
   updateDismissConfig: (id: string, config: ModalDismissConfig) => void;
+  /** Update onOpenChange callback for controlled mode */
+  updateOnOpenChange: (id: string, onOpenChange?: (open: boolean) => void) => void;
   /** Check if a modal is registered */
   isRegistered: (id: string) => boolean;
   /** Get modal stack entry */

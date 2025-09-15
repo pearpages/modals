@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Modal.Content - Multiple Sizes Snapshot > should match snapshot for auto size 1`] = `
+<div>
+  <div
+    data-modal-id="test-modal"
+  />
+</div>
+`;
+
+exports[`Modal.Content - Multiple Sizes Snapshot > should match snapshot for full size 1`] = `
+<div>
+  <div
+    data-modal-id="test-modal"
+  />
+</div>
+`;
+
+exports[`Modal.Content - Multiple Sizes Snapshot > should match snapshot for md size 1`] = `
+<div>
+  <div
+    data-modal-id="test-modal"
+  />
+</div>
+`;
