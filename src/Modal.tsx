@@ -1,6 +1,12 @@
 import React, { useEffect, useCallback } from 'react';
 import { ModalProps } from './types';
 import { useModalContext } from './ModalProvider';
+import { ModalTrigger } from './ModalTrigger';
+
+// Type for compound component
+interface ModalComponent extends React.FC<ModalProps> {
+  Trigger: typeof ModalTrigger;
+}
 
 /**
  * Modal component that supports controlled state management.
@@ -11,7 +17,7 @@ import { useModalContext } from './ModalProvider';
  * - Unmounts children when closed (modal content is not rendered when closed)
  * - Integrates with modal stack for proper z-index and focus management
  */
-export const Modal: React.FC<ModalProps> = ({ 
+const Modal: ModalComponent = ({ 
   id, 
   open, 
   onOpenChange, 
@@ -85,3 +91,8 @@ export const Modal: React.FC<ModalProps> = ({
 };
 
 Modal.displayName = 'Modal';
+
+// Compound component pattern
+Modal.Trigger = ModalTrigger;
+
+export { Modal };

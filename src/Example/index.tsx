@@ -1,6 +1,7 @@
 import React from 'react';
 import { ModalSystem } from '../ModalSystem';
 import { ModalExamples } from './ModalExamples';
+import { ModalTriggerDemo } from './ModalTriggerDemo';
 import './index.scss';
 
 /**
@@ -29,8 +30,13 @@ export const Example: React.FC = () => {
           borderRadius: '6px',
           border: '1px solid #c3e6cb'
         }}>
-          <strong>✅ Tasks 1 & 2 Complete:</strong> API contracts defined, ModalSystem wrapper functional
+          <strong>✅ Tasks 1-6 Complete:</strong> API contracts, ModalSystem, ModalProvider, ModalRoot, Modal, and Modal.Trigger implemented
         </div>
+      </div>
+
+      {/* Separate ModalTrigger demo */}
+      <div style={{ marginBottom: '2rem' }}>
+        <ModalTriggerDemo />
       </div>
 
       <ModalSystem>
@@ -39,3 +45,6 @@ export const Example: React.FC = () => {
     </div>
   );
 };
+
+// Export individual demos for direct usage
+export { ModalTriggerDemo };
