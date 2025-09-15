@@ -20,10 +20,10 @@ Context with registry `{[id]: {open,isTop}}`, push/pop on open/close.
 Render active modals into portal, compute `z = base + index`. Support custom container.
 *Deliverable:* portal util + tests.
 
-### 5. `<Modal />` controlled/uncontrolled
+### 5. `<Modal />` controlled
 
-Support `open`, `defaultOpen`, `onOpenChange`, unmount when closed.
-*Deliverable:* component + controlled/uncontrolled tests.
+Support `open`, `onOpenChange`, unmount when closed.
+*Deliverable:* component + controlled tests.
 
 ### 6. `<Modal.Trigger />` sugar
 

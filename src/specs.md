@@ -82,7 +82,6 @@
 #### Modal
 - `id: string` (required, must be unique per ModalSystem instance)
 - `className?: string` — optional styling class
-- `defaultOpen?: boolean`
 - `open?: boolean` (controlled)
 - `onOpenChange?: (open: boolean) => void`
 

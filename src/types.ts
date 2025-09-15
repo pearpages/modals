@@ -23,8 +23,6 @@ export interface ModalProps {
   id: string;
   /** Optional CSS class name */
   className?: string;
-  /** Default open state for uncontrolled mode */
-  defaultOpen?: boolean;
   /** Controlled open state */
   open?: boolean;
   /** Callback fired when open state changes */
