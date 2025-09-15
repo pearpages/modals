@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useCallback, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer, useCallback, useEffect, useRef, ReactNode } from 'react';
 import { 
   ModalContextValue, 
   ModalProviderProps, 
@@ -233,14 +233,22 @@ export const useModalDismissConfig = (
   }
 ) => {
   const { updateDismissConfig } = useModalContext();
+  const onInteractOutsideRef = useRef(config.onInteractOutside);
+  
+  // Update the ref whenever the function changes
+  useEffect(() => {
+    onInteractOutsideRef.current = config.onInteractOutside;
+  });
   
   useEffect(() => {
     const dismissConfig = {
       closeOnBackdrop: config.closeOnBackdrop ?? true, // Default to true
       closeOnEscape: config.closeOnEscape ?? true,     // Default to true
-      onInteractOutside: config.onInteractOutside
+      onInteractOutside: onInteractOutsideRef.current ? (e: { target: EventTarget; preventDefault(): void }) => {
+        onInteractOutsideRef.current?.(e);
+      } : undefined
     };
     
     updateDismissConfig(modalId, dismissConfig);
-  }, [modalId, config.closeOnBackdrop, config.closeOnEscape, config.onInteractOutside, updateDismissConfig]);
+  }, [modalId, config.closeOnBackdrop, config.closeOnEscape, updateDismissConfig]);
 };
