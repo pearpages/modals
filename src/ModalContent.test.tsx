@@ -4,7 +4,6 @@ import React from 'react';
 import { Modal } from './Modal';
 import { ModalProvider } from './ModalProvider';
 import { ModalRoot } from './ModalRoot';
-import styles from './Modal.module.scss';
 
 // Test wrapper that provides full modal system context
 const TestModalSystem: React.FC<{
@@ -145,7 +144,7 @@ describe('Modal.Content - Layout and Sizes', () => {
 
     const content = screen.getByTestId('content');
     const modalElement = content.closest('[role="dialog"]');
-    expect(modalElement).toHaveClass(styles['modal--full']);
+    expect(modalElement).toHaveClass('modal--full');
   });
 
   it('should apply custom className', async () => {
@@ -455,7 +454,7 @@ describe('Modal Subcomponents', () => {
     );
 
     const header = screen.getByTestId('header');
-    expect(header).toHaveClass(styles.modalHeader);
+    expect(header).toHaveClass('modalHeader');
   });
 
   it('should render Modal.Title with auto-generated ID', async () => {
@@ -515,6 +514,6 @@ describe('Modal Subcomponents', () => {
     );
 
     const footer = screen.getByTestId('footer');
-    expect(footer).toHaveClass(styles.modalFooter);
+    expect(footer).toHaveClass('modalFooter');
   });
 });

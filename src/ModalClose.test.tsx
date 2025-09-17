@@ -4,7 +4,6 @@ import React from 'react';
 import { ModalClose } from './ModalClose';
 import { ModalProvider } from './ModalProvider';
 import { ModalIdProvider } from './ModalIdContext';
-import styles from './Modal.module.scss';
 
 // Test wrapper that provides modal context
 const TestWrapper: React.FC<{ 
@@ -31,7 +30,7 @@ describe('ModalClose', () => {
 
     const button = screen.getByRole('button');
     expect(button).toBeInTheDocument();
-    expect(button).toHaveClass(styles.modalClose);
+    expect(button).toHaveClass('modalClose');
     expect(button).toHaveAttribute('type', 'button');
     expect(button).toHaveAttribute('aria-label', 'Close modal');
     expect(button).toHaveTextContent('Close');
@@ -56,7 +55,7 @@ describe('ModalClose', () => {
     );
 
     const button = screen.getByRole('button');
-    expect(button).toHaveClass(styles.modalClose, 'custom-close');
+    expect(button).toHaveClass('modalClose', 'custom-close');
   });
 
   it('should forward additional props', () => {
@@ -114,7 +113,7 @@ describe('ModalClose', () => {
 
     const closeElement = screen.getByTestId('custom-close');
     expect(closeElement.tagName).toBe('A');
-    expect(closeElement).toHaveClass(styles.modalClose);
+    expect(closeElement).toHaveClass('modalClose');
   });
 
   it('should merge className when using asChild', () => {
@@ -129,7 +128,7 @@ describe('ModalClose', () => {
     );
 
     const button = screen.getByTestId('close');
-    expect(button).toHaveClass('original-class', styles.modalClose, 'extra-class');
+    expect(button).toHaveClass('original-class', 'modalClose', 'extra-class');
   });
 
   it('should attach click handler when using asChild', () => {

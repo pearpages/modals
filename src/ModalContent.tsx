@@ -6,7 +6,6 @@ import { useModalPortal } from './ModalRoot';
 import { useModalId } from './ModalIdContext';
 import { useModalAria } from './ModalAriaContext';
 import { useFocusTrap } from './useFocusTrap';
-import styles from './Modal.module.scss';
 
 /**
  * Modal.Content component that handles the modal dialog container.
@@ -98,9 +97,9 @@ export const ModalContent: React.FC<ModalContentProps> = ({
 
   // Generate CSS classes
   const contentClasses = [
-    styles.modal,
-    size && styles[`modal--${size}`],
-    animated && styles['modal--animated'],
+    'modal',
+    size && `modal--${size}`,
+    animated && 'modal--animated',
     className
   ].filter(Boolean).join(' ');
 
@@ -114,6 +113,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
       aria-modal="true"
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
+      data-state="open"
       style={{
         zIndex: zIndex,
         pointerEvents: 'auto'

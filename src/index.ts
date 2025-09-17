@@ -1,5 +1,5 @@
 // Import styles to ensure they're bundled
-import './Modal.module.scss';
+import './modal.scss';
 
 export * from './types';
 export { ModalSystem } from './ModalSystem';

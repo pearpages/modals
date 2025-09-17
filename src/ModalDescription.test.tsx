@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { ModalDescription } from './ModalDescription';
-import styles from './Modal.module.scss';import { ModalAriaProvider } from './ModalAriaContext';
+import { ModalAriaProvider } from './ModalAriaContext';
 
 // Test wrapper that provides aria context
 const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -24,7 +24,7 @@ describe('ModalDescription', () => {
     const description = screen.getByText('Modal description text');
     expect(description).toBeInTheDocument();
     expect(description.tagName).toBe('P');
-    expect(description).toHaveClass(styles.modalDescription);
+    expect(description).toHaveClass('modalDescription');
   });
 
   it('should generate unique ID when none provided', () => {
@@ -58,7 +58,7 @@ describe('ModalDescription', () => {
     );
 
     const description = screen.getByText('Description');
-    expect(description).toHaveClass(styles.modalDescription, 'custom-desc');
+    expect(description).toHaveClass('modalDescription', 'custom-desc');
   });
 
   it('should forward additional props', () => {
@@ -85,7 +85,7 @@ describe('ModalDescription', () => {
 
     const description = screen.getByTestId('custom-desc');
     expect(description.tagName).toBe('DIV');
-    expect(description).toHaveClass(styles.modalDescription);
+    expect(description).toHaveClass('modalDescription');
     expect(description).toHaveAttribute('id');
     expect(description.id).toMatch(/^modalDescription-/);
   });
@@ -102,7 +102,7 @@ describe('ModalDescription', () => {
     );
 
     const description = screen.getByTestId('description');
-    expect(description).toHaveClass('original-class', styles.modalDescription, 'extra-class');
+    expect(description).toHaveClass('original-class', 'modalDescription', 'extra-class');
   });
 
   it('should preserve custom ID when using asChild', () => {

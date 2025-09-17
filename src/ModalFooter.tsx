@@ -1,6 +1,5 @@
 import React from 'react';
 import { ModalFooterProps } from './types';
-import styles from './Modal.module.scss';
 
 /**
  * Modal.Footer component - provides layout for action buttons
@@ -11,7 +10,7 @@ export const ModalFooter: React.FC<ModalFooterProps> = ({
   children,
   ...rest
 }) => {
-  const footerClasses = [styles.modalFooter, className].filter(Boolean).join(' ');
+  const footerClasses = ['modalFooter', className].filter(Boolean).join(' ');
 
   if (asChild) {
     // If asChild is true, clone the first child and add our props

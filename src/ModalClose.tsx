@@ -2,7 +2,6 @@ import React from 'react';
 import { ModalCloseProps } from './types';
 import { useModalContext } from './ModalProvider';
 import { useModalId } from './ModalIdContext';
-import styles from './Modal.module.scss';
 
 /**
  * Modal.Close component - triggers modal close
@@ -39,7 +38,7 @@ export const ModalClose: React.FC<ModalCloseProps> = ({
     }
   };
   
-  const closeClasses = [styles.modalClose, className].filter(Boolean).join(' ');
+  const closeClasses = ['modalClose', className].filter(Boolean).join(' ');
 
   if (asChild) {
     // If asChild is true, clone the first child and add our props

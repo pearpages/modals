@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ModalRootProps } from './types';
 import { useModalContext } from './ModalProvider';
-import styles from './Modal.module.scss';
 
 // SSR-safe check for client environment
 const useIsClient = (): boolean => {
@@ -144,9 +143,9 @@ export const ModalRoot: React.FC<ModalRootProps> = ({
 
         const isTopmost = entry.isTop;
 
-        // Apply the enhanced backdrop styling from CSS modules
+        // Apply the enhanced backdrop styling
         const backdropClasses = [
-          styles.modalBackdrop,
+          'modalBackdrop',
           // Add animation class if the modal supports animations
           // Animation state will be handled by data-state attribute
         ].filter(Boolean).join(' ');

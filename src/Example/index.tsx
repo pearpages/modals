@@ -4,7 +4,6 @@ import { ModalExamples } from './ModalExamples';
 import { ModalTriggerDemo } from './ModalTriggerDemo';
 import { Modal } from '../Modal';
 import './index.scss';
-import { Task8Example } from '@/Task8Example';
 
 /**
  * Example component showcasing the Modal Library in action

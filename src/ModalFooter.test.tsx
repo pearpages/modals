@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { ModalFooter } from './ModalFooter';
-import styles from './Modal.module.scss';
 describe('ModalFooter', () => {
   it('should render with default div element', () => {
     render(
@@ -14,7 +13,7 @@ describe('ModalFooter', () => {
 
     const footer = screen.getByText('Cancel').parentElement;
     expect(footer).toBeInTheDocument();
-    expect(footer).toHaveClass(styles.modalFooter);
+    expect(footer).toHaveClass('modalFooter');
     expect(screen.getByText('Cancel')).toBeInTheDocument();
     expect(screen.getByText('Confirm')).toBeInTheDocument();
   });
@@ -27,7 +26,7 @@ describe('ModalFooter', () => {
     );
 
     const footer = screen.getByText('Content').parentElement;
-    expect(footer).toHaveClass(styles.modalFooter, 'custom-footer');
+    expect(footer).toHaveClass('modalFooter', 'custom-footer');
   });
 
   it('should forward additional props', () => {
@@ -52,7 +51,7 @@ describe('ModalFooter', () => {
 
     const footer = screen.getByTestId('custom-footer');
     expect(footer.tagName).toBe('SECTION');
-    expect(footer).toHaveClass(styles.modalFooter);
+    expect(footer).toHaveClass('modalFooter');
     expect(screen.getByText('Action')).toBeInTheDocument();
   });
 
@@ -66,7 +65,7 @@ describe('ModalFooter', () => {
     );
 
     const footer = screen.getByTestId('footer');
-    expect(footer).toHaveClass('original-class', styles.modalFooter, 'extra-class');
+    expect(footer).toHaveClass('original-class', 'modalFooter', 'extra-class');
   });
 
   it('should handle multiple action buttons', () => {

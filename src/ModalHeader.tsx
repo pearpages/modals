@@ -1,6 +1,5 @@
 import React from 'react';
 import { ModalHeaderProps } from './types';
-import styles from './Modal.module.scss';
 
 /**
  * Modal.Header component - provides layout for title and close button
@@ -11,7 +10,7 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({
   children,
   ...rest
 }) => {
-  const headerClasses = [styles.modalHeader, className].filter(Boolean).join(' ');
+  const headerClasses = ['modalHeader', className].filter(Boolean).join(' ');
 
   if (asChild) {
     // If asChild is true, clone the first child and add our props
