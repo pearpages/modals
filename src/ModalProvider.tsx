@@ -77,6 +77,9 @@ const modalReducer = (state: ModalProviderState, action: ModalAction): ModalProv
       const newStack = [...state.stack, id];
       const newRegistry = { ...state.registry };
 
+      // Store the currently focused element for the modal being opened
+      const previouslyFocusedElement = document.activeElement as HTMLElement || null;
+
       // Update all modals in stack
       newStack.forEach((stackId, index) => {
         if (newRegistry[stackId]) {
@@ -84,7 +87,9 @@ const modalReducer = (state: ModalProviderState, action: ModalAction): ModalProv
             ...newRegistry[stackId],
             open: true,
             stackIndex: index,
-            isTop: index === newStack.length - 1
+            isTop: index === newStack.length - 1,
+            // Only set previouslyFocusedElement for the modal being opened
+            ...(stackId === id && { previouslyFocusedElement })
           };
         }
       });
@@ -102,15 +107,24 @@ const modalReducer = (state: ModalProviderState, action: ModalAction): ModalProv
         return state; // Not open
       }
 
+      const modalToClose = state.registry[id];
       const newStack = state.stack.filter(stackId => stackId !== id);
       const newRegistry = { ...state.registry };
+
+      // Restore focus to the previously focused element (with a delay to ensure DOM is updated)
+      if (modalToClose.previouslyFocusedElement && typeof modalToClose.previouslyFocusedElement.focus === 'function') {
+        setTimeout(() => {
+          modalToClose.previouslyFocusedElement?.focus();
+        }, 0);
+      }
 
       // Close the specific modal
       newRegistry[id] = {
         ...newRegistry[id],
         open: false,
         isTop: false,
-        stackIndex: -1
+        stackIndex: -1,
+        previouslyFocusedElement: null // Clear the reference
       };
 
       // Update remaining stack

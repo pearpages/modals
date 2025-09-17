@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ModalRootProps } from './types';
 import { useModalContext } from './ModalProvider';
+import styles from './Modal.module.scss';
 
 // SSR-safe check for client environment
 const useIsClient = (): boolean => {
@@ -20,6 +21,7 @@ export const ModalRoot: React.FC<ModalRootProps> = ({
 }) => {
   const isClient = useIsClient();
   const { stack, registry, baseZIndex: contextBaseZIndex, closeModal } = useModalContext();
+  
   
   // Use the effective base z-index (prop takes precedence over context)
   const effectiveBaseZIndex = baseZIndex || contextBaseZIndex;
@@ -67,6 +69,7 @@ export const ModalRoot: React.FC<ModalRootProps> = ({
   if (!isClient) {
     return null;
   }
+
 
   // Use provided container or default to document.body
   const portalContainer = container || document.body;
@@ -141,24 +144,36 @@ export const ModalRoot: React.FC<ModalRootProps> = ({
 
         const isTopmost = entry.isTop;
 
+        // Apply the enhanced backdrop styling from CSS modules
+        const backdropClasses = [
+          styles.modalBackdrop,
+          // Add animation class if the modal supports animations
+          // Animation state will be handled by data-state attribute
+        ].filter(Boolean).join(' ');
+
         return (
           <div
             key={modalId}
-            data-modal-portal={modalId}
-            data-is-top={entry.isTop}
+            className={backdropClasses}
             style={{
-              position: 'fixed',
-              inset: 0,
               zIndex: effectiveBaseZIndex + entry.stackIndex, // Specs: z-index = baseZIndex + stackIndex
-              pointerEvents: 'auto',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: isTopmost ? 'var(--modal-backdrop-bg, rgba(0, 0, 0, 0.5))' : 'transparent'
+              // CSS module will handle positioning, backdrop blur, etc.
+              pointerEvents: isTopmost ? 'auto' : 'none'
             }}
             onClick={isTopmost ? handleBackdropClick : undefined}
             data-modal-backdrop={isTopmost ? "true" : "false"}
-          />
+            data-state="open" // For CSS animations
+          >
+            {/* Content portal container - where ModalContent will render */}
+            <div
+              data-modal-portal={modalId}
+              data-is-top={entry.isTop}
+              style={{
+                // Allow flexbox centering from backdrop
+                display: 'contents' // This allows the modal to participate in backdrop's flex layout
+              }}
+            />
+          </div>
         );
       })}
     </div>, 

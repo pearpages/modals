@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { ModalTitle } from './ModalTitle';
-import { ModalAriaProvider } from './ModalAriaContext';
+import styles from './Modal.module.scss';import { ModalAriaProvider } from './ModalAriaContext';
 
 // Test wrapper that provides aria context
 const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -23,7 +23,7 @@ describe('ModalTitle', () => {
 
     const title = screen.getByRole('heading', { level: 2 });
     expect(title).toBeInTheDocument();
-    expect(title).toHaveClass('modal-title');
+    expect(title).toHaveClass(styles.modalTitle);
     expect(title).toHaveTextContent('Modal Title');
   });
 
@@ -36,7 +36,7 @@ describe('ModalTitle', () => {
 
     const title = screen.getByRole('heading');
     expect(title).toHaveAttribute('id');
-    expect(title.id).toMatch(/^modal-title-/);
+    expect(title.id).toMatch(/^modalTitle-/);
   });
 
   it('should use provided ID', () => {
@@ -58,7 +58,7 @@ describe('ModalTitle', () => {
     );
 
     const title = screen.getByRole('heading');
-    expect(title).toHaveClass('modal-title', 'custom-title');
+    expect(title).toHaveClass(styles.modalTitle, 'custom-title');
   });
 
   it('should forward additional props', () => {
@@ -85,9 +85,9 @@ describe('ModalTitle', () => {
 
     const title = screen.getByTestId('custom-title');
     expect(title.tagName).toBe('H1');
-    expect(title).toHaveClass('modal-title');
+    expect(title).toHaveClass(styles.modalTitle);
     expect(title).toHaveAttribute('id');
-    expect(title.id).toMatch(/^modal-title-/);
+    expect(title.id).toMatch(/^modalTitle-/);
   });
 
   it('should merge className when using asChild', () => {
@@ -102,7 +102,7 @@ describe('ModalTitle', () => {
     );
 
     const title = screen.getByTestId('title');
-    expect(title).toHaveClass('original-class', 'modal-title', 'extra-class');
+    expect(title).toHaveClass('original-class', styles.modalTitle, 'extra-class');
   });
 
   it('should preserve custom ID when using asChild', () => {

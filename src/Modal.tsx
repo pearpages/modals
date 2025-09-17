@@ -66,7 +66,15 @@ const Modal: ModalComponent = ({
   const modalEntry = getModalEntry(id);
   const isProviderOpen = modalEntry?.open ?? false;
 
-  // Sync controlled prop with provider state
+  // Use refs to avoid dependency loops
+  const openRef = React.useRef(open);
+  const onOpenChangeRef = React.useRef(onOpenChange);
+
+  // Update refs on each render
+  openRef.current = open;
+  onOpenChangeRef.current = onOpenChange;
+
+  // Sync controlled prop with provider state (only when controlled prop changes)
   useEffect(() => {
     if (open !== undefined && open !== isProviderOpen) {
       if (open) {
@@ -75,24 +83,23 @@ const Modal: ModalComponent = ({
         closeModal(id);
       }
     }
-  }, [open, isProviderOpen, id, openModal, closeModal]);
+  }, [open, id]); // Removed isProviderOpen, openModal, closeModal to break loops
 
-  // Notify parent of provider state changes (for uncontrolled usage or external changes)
+  // Notify parent of provider state changes
   const prevProviderOpenRef = React.useRef(isProviderOpen);
   useEffect(() => {
     const prevProviderOpen = prevProviderOpenRef.current;
     prevProviderOpenRef.current = isProviderOpen;
-    
-    // Notify if provider state changed
-    if (onOpenChange && isProviderOpen !== prevProviderOpen) {
+
+    // Only notify if provider state actually changed
+    if (isProviderOpen !== prevProviderOpen && onOpenChangeRef.current) {
       // In uncontrolled mode (open === undefined), always notify
-      // In controlled mode, notify if the provider state differs from the controlled prop
-      // This handles external changes like backdrop clicks or escape key
-      if (open === undefined || isProviderOpen !== open) {
-        onOpenChange(isProviderOpen);
+      // In controlled mode, only notify if provider differs from controlled prop (external changes)
+      if (openRef.current === undefined || isProviderOpen !== openRef.current) {
+        onOpenChangeRef.current(isProviderOpen);
       }
     }
-  }, [isProviderOpen, onOpenChange, open]);
+  }, [isProviderOpen]); // Only depend on isProviderOpen
 
   // Handle controlled close via onOpenChange
   const handleClose = useCallback(() => {
@@ -107,7 +114,6 @@ const Modal: ModalComponent = ({
   if (!isProviderOpen) {
     return null;
   }
-
   return (
     <ModalIdProvider modalId={id}>
       <ModalAriaProvider>

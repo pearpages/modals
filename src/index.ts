@@ -1,4 +1,6 @@
-export * from './Example';
+// Import styles to ensure they're bundled
+import './Modal.module.scss';
+
 export * from './types';
 export { ModalSystem } from './ModalSystem';
 export { ModalProvider, useModalContext, useModalDismissConfig } from './ModalProvider';
@@ -13,3 +15,4 @@ export { ModalClose } from './ModalClose';
 export { ModalFooter } from './ModalFooter';
 export { useModalId } from './ModalIdContext';
 export { ModalAriaProvider, useModalAria } from './ModalAriaContext';
+export { useFocusTrap, useFocusRestore } from './useFocusTrap';

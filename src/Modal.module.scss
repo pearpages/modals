@@ -1,71 +1,121 @@
 /* Modal SCSS Module with BEM classes and CSS variables */
 
-/* CSS Custom Properties (Tokens) */
+/* CSS Custom Properties (Tokens) - Enhanced for beautiful design */
 :root {
-  --modal-bg: #fff;
-  --modal-color: #111;
-  --modal-radius: 12px;
-  --modal-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  --modal-width-md: 480px;
+  --modal-bg: #ffffff;
+  --modal-color: #1a1a1a;
+  --modal-radius: 16px;
+  --modal-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --modal-width-md: 520px;
   --modal-width-full: 100vw;
-  --modal-backdrop-bg: rgba(0, 0, 0, 0.5);
+  --modal-backdrop-bg: rgba(0, 0, 0, 0.60);
   --modal-z-index-base: 1000;
-  --modal-padding: 1rem;
-  --modal-transition-duration: 0.2s;
-  --modal-transition-easing: ease;
+  --modal-padding: 1.5rem;
+  --modal-transition-duration: 0.25s;
+  --modal-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Typography scale */
+  --modal-font-size-title: 1.5rem;
+  --modal-font-weight-title: 600;
+  --modal-font-size-description: 0.875rem;
+  --modal-line-height-title: 1.3;
+  --modal-line-height-description: 1.5;
+  
+  /* Spacing scale */
+  --modal-spacing-xs: 0.5rem;
+  --modal-spacing-sm: 0.75rem;
+  --modal-spacing-md: 1rem;
+  --modal-spacing-lg: 1.5rem;
+  --modal-spacing-xl: 2rem;
+  
+  /* Border and effects */
+  --modal-border: 1px solid rgba(0, 0, 0, 0.08);
+  --modal-border-hover: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-/* Backdrop */
+/* Backdrop - Enhanced with better blur effect */
 .modalBackdrop {
   position: fixed;
   inset: 0;
   background: var(--modal-backdrop-bg);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px); /* Safari support */
   display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--modal-padding);
 
+  /* Remove padding when backdrop contains full screen modal */
+  &:has(.modal--full) {
+    padding: 0;
+    align-items: stretch;
+    justify-content: stretch;
+  }
+
+
+  /* Ensure mobile modals are not affected by centering */
+  @media (max-width: 768px) {
+    padding: 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
   /* Animation states */
   &[data-state="opening"] {
     opacity: 0;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
   }
 
   &[data-state="open"] {
     opacity: 1;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
   }
 
   &--animated {
-    transition: opacity var(--modal-transition-duration) var(--modal-transition-easing);
+    transition: 
+      opacity var(--modal-transition-duration) var(--modal-transition-easing),
+      backdrop-filter var(--modal-transition-duration) var(--modal-transition-easing),
+      -webkit-backdrop-filter var(--modal-transition-duration) var(--modal-transition-easing);
   }
 }
 
-/* Modal Content Container */
+/* Modal Content Container - Enhanced with beautiful styling */
 .modal {
   background: var(--modal-bg);
   color: var(--modal-color);
   border-radius: var(--modal-radius);
   box-shadow: var(--modal-shadow);
   max-width: 100%;
-  max-height: 100%;
-  overflow: auto;
-  position: relative;
+  max-height: 90vh;
+  overflow: hidden;
+  position: relative; /* Changed from fixed to relative to work with backdrop flexbox */
   outline: none;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 
-  /* Animation states */
-  &[data-state="opening"] {
-    opacity: 0;
-    transform: scale(0.95);
+
+  /* No need for manual positioning - backdrop centers us */
+  
+  /* Subtle gradient overlay for depth */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    pointer-events: none;
   }
 
-  &[data-state="open"] {
-    opacity: 1;
-    transform: scale(1);
-  }
-
+  /* CSS-only animation using animation property */
   &--animated {
-    transition: 
-      opacity var(--modal-transition-duration) var(--modal-transition-easing),
-      transform var(--modal-transition-duration) var(--modal-transition-easing);
+    animation: modal-enter var(--modal-transition-duration) var(--modal-transition-easing) forwards;
   }
 
   /* Size variants */
@@ -84,86 +134,185 @@
     border-radius: 0;
     max-width: none;
     max-height: none;
+
+    &[data-state="opening"] {
+      opacity: 0;
+      transform: none;
+    }
+
+    &[data-state="open"] {
+      opacity: 1;
+      transform: none;
+    }
   }
 
-  /* Responsive behavior */
+  /* Responsive behavior - Mobile fullscreen as per specs */
   @media (max-width: 768px) {
     &--auto,
     &--md {
-      width: 100%;
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: 100vw;
+      max-height: 100vh;
       margin: 0;
       border-radius: 0;
-      max-height: 100vh;
+      display: flex;
+      flex-direction: column;
+
+      &[data-state="opening"] {
+        opacity: 0;
+        transform: none !important;
+      }
+
+      &[data-state="open"] {
+        opacity: 1;
+        transform: none !important;
+      }
     }
   }
 }
 
-/* Modal Subcomponents */
+/* Modal Subcomponents - Enhanced with beautiful design */
 .modalHeader {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  padding: var(--modal-padding);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: var(--modal-spacing-xl) var(--modal-spacing-xl) var(--modal-spacing-lg);
+  border-bottom: var(--modal-border);
+  background: linear-gradient(180deg, var(--modal-bg) 0%, rgba(248, 250, 252, 0.5) 100%);
+  
+  /* Add subtle spacing for better layout */
+  gap: var(--modal-spacing-lg);
+  min-height: 60px;
 }
 
 .modalTitle {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  line-height: 1.2;
+  font-size: var(--modal-font-size-title);
+  font-weight: var(--modal-font-weight-title);
+  line-height: var(--modal-line-height-title);
+  color: var(--modal-color);
+  letter-spacing: -0.025em;
+  flex: 1;
 }
 
 .modalDescription {
-  margin: 0;
-  color: rgba(0, 0, 0, 0.7);
-  font-size: 0.875rem;
-  line-height: 1.4;
+  margin: var(--modal-spacing-xs) 0 0 0;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: var(--modal-font-size-description);
+  line-height: var(--modal-line-height-description);
+  font-weight: 400;
+  flex: 1;
 }
 
 .modalBody {
-  padding: var(--modal-padding);
+  padding: var(--modal-spacing-xl);
+  overflow-y: auto;
+  max-height: 60vh;
+  flex: 1; /* Allow body to expand on mobile fullscreen */
+  
+  /* Mobile fullscreen adjustments */
+  @media (max-width: 768px) {
+    .modal--auto &,
+    .modal--md & {
+      max-height: none;
+      flex: 1;
+      padding: var(--modal-spacing-lg);
+    }
+  }
+  
+  /* Custom scrollbar for better aesthetics */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    
+    &:hover {
+      background: rgba(0, 0, 0, 0.3);
+    }
+  }
 }
 
 .modalFooter {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 0.75rem;
-  padding: var(--modal-padding);
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  gap: var(--modal-spacing-md);
+  padding: var(--modal-spacing-lg) var(--modal-spacing-xl) var(--modal-spacing-xl);
+  border-top: var(--modal-border);
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.5) 0%, var(--modal-bg) 100%);
+  min-height: 64px;
 }
 
 .modalClose {
-  background: none;
+  background: rgba(0, 0, 0, 0.04);
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 4px;
-  color: rgba(0, 0, 0, 0.5);
-  transition: color 0.2s ease, background-color 0.2s ease;
+  padding: var(--modal-spacing-sm);
+  border-radius: 8px;
+  color: rgba(0, 0, 0, 0.6);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
 
   &:hover {
-    color: rgba(0, 0, 0, 0.7);
-    background-color: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.08);
+    color: rgba(0, 0, 0, 0.8);
+    transform: scale(1.05);
   }
 
   &:focus {
-    outline: 2px solid var(--modal-color);
+    outline: 2px solid rgba(59, 130, 246, 0.5);
     outline-offset: 2px;
+    background: rgba(59, 130, 246, 0.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+    transition-duration: 0.1s;
   }
 }
 
-/* Dark mode support */
+/* Enhanced Dark mode support */
 @media (prefers-color-scheme: dark) {
   :root {
-    --modal-bg: #1e1e1e;
-    --modal-color: #f1f1f1;
-    --modal-backdrop-bg: rgba(0, 0, 0, 0.7);
+    --modal-bg: #1f1f23;
+    --modal-color: #f8fafc;
+    --modal-backdrop-bg: rgba(0, 0, 0, 0.8);
+    --modal-border: 1px solid rgba(255, 255, 255, 0.08);
+    --modal-border-hover: 1px solid rgba(255, 255, 255, 0.12);
+    --modal-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.3),
+      0 2px 4px -1px rgba(0, 0, 0, 0.2),
+      0 20px 25px -5px rgba(0, 0, 0, 0.4),
+      0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    
+    &::before {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
   }
 
   .modalHeader {
-    border-bottom-color: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(180deg, var(--modal-bg) 0%, rgba(15, 15, 20, 0.5) 100%);
+    border-bottom-color: rgba(255, 255, 255, 0.08);
   }
 
   .modalDescription {
@@ -171,19 +320,48 @@
   }
 
   .modalFooter {
-    border-top-color: rgba(255, 255, 255, 0.1);
+    border-top-color: rgba(255, 255, 255, 0.08);
+    background: linear-gradient(180deg, rgba(15, 15, 20, 0.5) 0%, var(--modal-bg) 100%);
   }
 
   .modalClose {
-    color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.7);
 
     &:hover {
-      color: rgba(255, 255, 255, 0.7);
-      background-color: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.9);
     }
 
     &:focus {
-      outline-color: var(--modal-color);
+      outline-color: rgba(96, 165, 250, 0.6);
+      background: rgba(96, 165, 250, 0.15);
     }
+  }
+  
+  .modalBody {
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+    }
+  }
+}
+
+/* Keyframe animation for modal entrance */
+@keyframes modal-enter {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
 }

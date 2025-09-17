@@ -1,6 +1,7 @@
 import React, { useId, useEffect } from 'react';
 import { ModalTitleProps } from './types';
 import { useModalAria } from './ModalAriaContext';
+import styles from './Modal.module.scss';
 
 /**
  * Modal.Title component - provides accessibility labeling for modal
@@ -12,10 +13,10 @@ export const ModalTitle: React.FC<ModalTitleProps> = ({
   ...rest
 }) => {
   const autoId = useId();
-  const titleId = rest.id || `modal-title-${autoId}`;
+  const titleId = rest.id || `modalTitle-${autoId}`;
   const { registerTitleId, unregisterTitleId } = useModalAria();
   
-  const titleClasses = ['modal-title', className].filter(Boolean).join(' ');
+  const titleClasses = [styles.modalTitle, className].filter(Boolean).join(' ');
 
   // Register/unregister title ID with aria context
   useEffect(() => {

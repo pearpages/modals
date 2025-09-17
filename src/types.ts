@@ -123,6 +123,8 @@ export interface ModalStackEntry {
   dismissConfig?: ModalDismissConfig;
   /** Callback for controlled mode - if present, use this instead of direct closeModal */
   onOpenChange?: (open: boolean) => void;
+  /** Previously focused element before modal opened (for focus restoration) */
+  previouslyFocusedElement?: HTMLElement | null;
 }
 
 // Modal Dismiss Configuration

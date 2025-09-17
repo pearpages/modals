@@ -1,6 +1,7 @@
 import React, { useId, useEffect } from 'react';
 import { ModalDescriptionProps } from './types';
 import { useModalAria } from './ModalAriaContext';
+import styles from './Modal.module.scss';
 
 /**
  * Modal.Description component - provides accessibility description for modal
@@ -13,10 +14,10 @@ export const ModalDescription: React.FC<ModalDescriptionProps> = ({
   ...rest
 }) => {
   const autoId = useId();
-  const descriptionId = id || `modal-description-${autoId}`;
+  const descriptionId = id || `modalDescription-${autoId}`;
   const { registerDescriptionId, unregisterDescriptionId } = useModalAria();
   
-  const descriptionClasses = ['modal-description', className].filter(Boolean).join(' ');
+  const descriptionClasses = [styles.modalDescription, className].filter(Boolean).join(' ');
 
   // Register/unregister description ID with aria context
   useEffect(() => {

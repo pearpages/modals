@@ -4,6 +4,7 @@ import React from 'react';
 import { Modal } from './Modal';
 import { ModalProvider } from './ModalProvider';
 import { ModalRoot } from './ModalRoot';
+import styles from './Modal.module.scss';
 
 // Test wrapper that provides full modal system context
 const TestModalSystem: React.FC<{
@@ -144,7 +145,7 @@ describe('Modal.Content - Layout and Sizes', () => {
 
     const content = screen.getByTestId('content');
     const modalElement = content.closest('[role="dialog"]');
-    expect(modalElement).toHaveClass('modal--full');
+    expect(modalElement).toHaveClass(styles['modal--full']);
   });
 
   it('should apply custom className', async () => {
@@ -454,7 +455,7 @@ describe('Modal Subcomponents', () => {
     );
 
     const header = screen.getByTestId('header');
-    expect(header).toHaveClass('modal-header');
+    expect(header).toHaveClass(styles.modalHeader);
   });
 
   it('should render Modal.Title with auto-generated ID', async () => {
@@ -468,7 +469,7 @@ describe('Modal Subcomponents', () => {
 
     const title = screen.getByTestId('title');
     expect(title).toHaveAttribute('id');
-    expect(title.id).toMatch(/modal-title-/);
+    expect(title.id).toMatch(/modalTitle-/);
   });
 
   it('should render Modal.Description with auto-generated ID', async () => {
@@ -484,7 +485,7 @@ describe('Modal Subcomponents', () => {
 
     const description = screen.getByTestId('description');
     expect(description).toHaveAttribute('id');
-    expect(description.id).toMatch(/modal-description-/);
+    expect(description.id).toMatch(/modalDescription-/);
   });
 
   it('should render Modal.Close with default close icon', async () => {
@@ -514,6 +515,6 @@ describe('Modal Subcomponents', () => {
     );
 
     const footer = screen.getByTestId('footer');
-    expect(footer).toHaveClass('modal-footer');
+    expect(footer).toHaveClass(styles.modalFooter);
   });
 });

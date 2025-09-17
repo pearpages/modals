@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { ModalHeader } from './ModalHeader';
-
+import styles from './Modal.module.scss';
 describe('ModalHeader', () => {
   it('should render with default div element', () => {
     render(
@@ -14,7 +14,7 @@ describe('ModalHeader', () => {
 
     const header = screen.getByText('Modal Title').parentElement;
     expect(header).toBeInTheDocument();
-    expect(header).toHaveClass('modal-header');
+    expect(header).toHaveClass(styles.modalHeader);
     expect(screen.getByText('Modal Title')).toBeInTheDocument();
     expect(screen.getByText('Close')).toBeInTheDocument();
   });
@@ -27,7 +27,7 @@ describe('ModalHeader', () => {
     );
 
     const header = screen.getByText('Content').parentElement;
-    expect(header).toHaveClass('modal-header', 'custom-header');
+    expect(header).toHaveClass(styles.modalHeader, 'custom-header');
   });
 
   it('should forward additional props', () => {
@@ -52,7 +52,7 @@ describe('ModalHeader', () => {
 
     const header = screen.getByTestId('custom-header');
     expect(header.tagName).toBe('ARTICLE');
-    expect(header).toHaveClass('modal-header');
+    expect(header).toHaveClass(styles.modalHeader);
     expect(screen.getByText('Title')).toBeInTheDocument();
   });
 
@@ -66,7 +66,7 @@ describe('ModalHeader', () => {
     );
 
     const header = screen.getByTestId('header');
-    expect(header).toHaveClass('original-class', 'modal-header', 'extra-class');
+    expect(header).toHaveClass('original-class', styles.modalHeader, 'extra-class');
   });
 
   it('should have correct displayName', () => {

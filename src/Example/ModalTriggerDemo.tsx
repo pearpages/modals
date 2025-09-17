@@ -69,7 +69,7 @@ export function ModalTriggerDemo() {
               <li>✅ Keyboard accessibility (Enter/Space)</li>
               <li>✅ Target modal resolution</li>
             </ul>
-            <button onClick={() => console.log('Close clicked')} style={{
+            <button onClick={() => {}} style={{
               background: '#6c757d',
               color: 'white',
               border: 'none',

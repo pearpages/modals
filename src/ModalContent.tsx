@@ -5,7 +5,8 @@ import { useModalContext, useModalDismissConfig } from './ModalProvider';
 import { useModalPortal } from './ModalRoot';
 import { useModalId } from './ModalIdContext';
 import { useModalAria } from './ModalAriaContext';
-// import styles from './Modal.module.scss';
+import { useFocusTrap } from './useFocusTrap';
+import styles from './Modal.module.scss';
 
 /**
  * Modal.Content component that handles the modal dialog container.
@@ -47,6 +48,9 @@ export const ModalContent: React.FC<ModalContentProps> = ({
   // Calculate z-index based on base + stack index
   const zIndex = modalEntry ? baseZIndex + modalEntry.stackIndex : baseZIndex;
 
+  // Focus trap - only active when modal is open and topmost
+  useFocusTrap(contentRef, isModalOpen && isTopmost);
+
   // Get portal container for this modal
   const portalContainer = useModalPortal(modalId);
 
@@ -57,29 +61,20 @@ export const ModalContent: React.FC<ModalContentProps> = ({
     onInteractOutside
   });
 
-  // Handle mount/unmount animations
+  // Simple mount/unmount logic - CSS handles animation
   useEffect(() => {
-    if (isModalOpen && !isOpen) {
+    if (isModalOpen) {
       setIsOpen(true);
+    } else {
       if (animated) {
-        setIsAnimating(true);
-        // Small delay to ensure DOM is ready for animation
-        const timer = setTimeout(() => setIsAnimating(false), 10);
-        return () => clearTimeout(timer);
-      }
-    } else if (!isModalOpen && isOpen) {
-      if (animated) {
-        setIsAnimating(true);
-        const timer = setTimeout(() => {
-          setIsOpen(false);
-          setIsAnimating(false);
-        }, 200); // Match CSS transition duration
+        // Delay unmount to allow exit animation
+        const timer = setTimeout(() => setIsOpen(false), 250);
         return () => clearTimeout(timer);
       } else {
         setIsOpen(false);
       }
     }
-  }, [isModalOpen, isOpen, animated]);
+  }, [isModalOpen, animated]);
 
   // Handle backdrop clicks
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -96,21 +91,20 @@ export const ModalContent: React.FC<ModalContentProps> = ({
     }
   };
 
-  // Don't render if not open
+  // Don't render if not open or no portal container
   if (!isOpen || !portalContainer) {
     return null;
   }
 
-  // Generate CSS classes - no backdrop classes needed since ModalRoot handles backdrop
+  // Generate CSS classes
   const contentClasses = [
-    'modal',
-    `modal--${size}`,
-    animated && 'modal--animated',
+    styles.modal,
+    size && styles[`modal--${size}`],
+    animated && styles['modal--animated'],
     className
   ].filter(Boolean).join(' ');
 
-  // Data state for CSS animations
-  const dataState = isAnimating ? 'opening' : 'open';
+  // No data state needed - CSS animation handles everything
 
   const content = (
     <div
@@ -120,14 +114,17 @@ export const ModalContent: React.FC<ModalContentProps> = ({
       aria-modal="true"
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
-      data-state={dataState}
+      style={{
+        zIndex: zIndex,
+        pointerEvents: 'auto'
+      }}
       {...rest}
     >
       {children}
     </div>
   );
 
-  // Render into portal
+  // Render into the proper portal container for backdrop centering
   return ReactDOM.createPortal(content, portalContainer);
 };
 
