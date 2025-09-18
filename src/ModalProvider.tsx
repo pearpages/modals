@@ -260,6 +260,36 @@ export const useModalContext = (): ModalContextValue => {
 };
 
 /**
+ * Public hook for programmatic modal control
+ * Provides the API defined in specs for opening/closing modals and checking state
+ */
+export const useModalStack = () => {
+  const { registry, openModal, closeModal } = useModalContext();
+
+  return {
+    /**
+     * Open a modal by ID
+     */
+    open: openModal,
+
+    /**
+     * Close a modal by ID
+     */
+    close: closeModal,
+
+    /**
+     * Check if a modal is currently open
+     */
+    isOpen: (modalId: string) => registry[modalId]?.open ?? false,
+
+    /**
+     * Get complete modal state for a given ID
+     */
+    getModal: (modalId: string) => registry[modalId]
+  };
+};
+
+/**
  * Hook to register dismiss configuration for a modal content component
  * This should be called by Modal.Content components to configure their dismiss behavior
  */
