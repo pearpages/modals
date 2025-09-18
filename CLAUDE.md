@@ -29,3 +29,19 @@ React modal library with compound component pattern, accessibility features, and
 ## Recent Fixes
 - Removed CSS namespace wrapper that prevented portal-rendered modal styles from applying
 - See `logs/` directory for detailed session notes
+
+## Todo
+
+### High Priority UX Issues
+- [ ] Fix mobile modal layout - footer buttons should stay at bottom regardless of content
+- [ ] Prevent body scroll when modal is open (scroll lock)
+- [ ] Ensure modal body supports any content type
+- [ ] Make modal body scrollable when content exceeds viewport height
+- [ ] Reduce header padding/spacing - currently takes too much space
+
+### Technical/Build
+- [ ] Run build and fix any production build issues
+- [ ] Verify library distribution works correctly
+- [ ] Test modal library when imported as external package
+- [ ] Consider adding CSS namespace solution that works with portals (CSS-in-JS, CSS Modules, etc.)
+- [ ] Review animation performance and accessibility
