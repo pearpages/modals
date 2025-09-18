@@ -1,4 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 import { ModalProvider, useModalStack } from './ModalProvider';
 import { ReactNode } from 'react';
 
