@@ -3,6 +3,8 @@
 ## Project Overview
 React modal library with compound component pattern, accessibility features, and portal-based rendering.
 
+@specs.md
+
 ## Development Commands
 - `npm test` - Run tests
 - `npm run build` - Build library for distribution
@@ -18,6 +20,7 @@ React modal library with compound component pattern, accessibility features, and
 ## Key Files
 - `src/modal.scss` - Main styles (imported once in index.ts)
 - `src/Modal*.tsx` - Component implementations
+- `src/types.ts` - Complete TypeScript type definitions and component props
 - `src/index.ts` - Library exports
 - `playground/` - Development environment
 
@@ -32,16 +35,31 @@ React modal library with compound component pattern, accessibility features, and
 
 ## Todo
 
-### High Priority UX Issues
-- [ ] Fix mobile modal layout - footer buttons should stay at bottom regardless of content
-- [ ] Prevent body scroll when modal is open (scroll lock)
-- [ ] Ensure modal body supports any content type
-- [ ] Make modal body scrollable when content exceeds viewport height
-- [ ] Reduce header padding/spacing - currently takes too much space
+### Priority 1: Core Implementation Gaps
+- [ ] useModalStack hook - Hook not implemented yet
+- [ ] onInteractOutside callback - In specs, needs implementation
+- [ ] Complete accessibility (aria-labelledby, aria-describedby linking)
+- [ ] Mobile fullscreen responsive behavior
+- [ ] Body scroll lock (specs specify this should exist)
+- [ ] Modal.Body component implementation
+- [ ] Animation data-state attributes
 
-### Technical/Build
+### Priority 2: UX Issues
+- [ ] Modal content overflow/scrolling behavior
+- [ ] Header spacing optimization
+- [ ] Footer positioning on mobile
+- [ ] Ensure modal body supports any content type
+
+### Priority 3: Build & Distribution
 - [ ] Run build and fix any production build issues
 - [ ] Verify library distribution works correctly
 - [ ] Test modal library when imported as external package
-- [ ] Consider adding CSS namespace solution that works with portals (CSS-in-JS, CSS Modules, etc.)
-- [ ] Review animation performance and accessibility
+
+### Documentation & Enhancement Tasks
+- [ ] Add asChild props to all subcomponents
+- [ ] Add error handling/edge cases coverage section to specs
+- [ ] Add testing strategy section to specs
+- [ ] Add async operation handling examples (loading states, confirmations)
+- [ ] Add form integration examples to specs
+- [ ] Storybook setup
+- [ ] Performance considerations documentation

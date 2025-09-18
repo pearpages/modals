@@ -58,7 +58,7 @@
         <Modal.Close />
       </Modal.Header>
       <Modal.Description>Are you sure you want to proceed?</Modal.Description>
-      <div className="modal-body">...</div>
+      <Modal.Body>...</Modal.Body>
       <Modal.Footer>
         <button>Cancel</button>
         <button className="primary">Confirm</button>
@@ -73,7 +73,7 @@
 ### Modal Behavior
 - Modals **unmount from the DOM when closed** by default.
 - This ensures clean memory usage, prevents layout interference, and simplifies transitions.
-- Future optional support for `keepMounted?: boolean` may be added.
+- **Future enhancement**: Optional `keepMounted?: boolean` prop may be added for performance optimization in specific use cases.
 - **Dismiss behavior (configurable):**
   - `closeOnBackdrop?: boolean` — default `true`; clicking backdrop closes topmost modal
   - `closeOnEscape?: boolean` — default `true`; pressing `Esc` closes topmost modal
@@ -112,15 +112,16 @@
 
 ### Styling
 
-#### CSS Architecture (SCSS Modules + Tokens)
+#### CSS Architecture (Direct Classes + CSS Variables)
 
-- **SCSS modules** are used internally to scope modal styles cleanly.
-- Styles use semantic classnames (e.g. `modal`, `modal__header`, `modal--md`).
+- **Direct CSS classes** are used without modules (e.g. `.modalBackdrop`, `.modal`, `.modalHeader`) due to portal rendering requirements.
+- Portal-rendered elements cannot inherit scoped CSS modules from their React component tree.
+- Styles use semantic classnames for clarity and easy targeting.
 - Key layout styles and theming values are exposed as **CSS variables**.
 - Consumers can override via global CSS, utility classes, or theming systems like Tailwind.
 
 ```scss
-// Modal.module.scss
+// modal.scss
 .modal {
   background: var(--modal-bg);
   color: var(--modal-color);
@@ -170,7 +171,7 @@
 - Default size tokens: `--modal-width-md: 480px`, `--modal-width-full: 100vw`, etc.
 - Body scroll is locked when any modal is open
 - Backdrop uses same fade transition as modal content
-- SCSS modules or class-based styling
+- Direct class-based styling with CSS variables
 - Easy override via `className` or CSS vars
 - Minimalist default theme with elegant typography and subtle shadows
 - Theme-agnostic: inherits project styles or allows integration with design tokens (e.g. Tailwind)
@@ -224,6 +225,12 @@ modals['anyModal'].isOpen // => boolean
 - `asChild?: boolean`
 - `className?: string`
 
+#### Modal.Body
+- Main content area of the modal
+- Handles overflow scrolling when content exceeds viewport height
+- `asChild?: boolean`
+- `className?: string`
+
 #### Modal.Footer
 - Layout slot for action buttons (e.g. Cancel / Confirm)
 - `asChild?: boolean`
@@ -268,7 +275,9 @@ return (
           <Modal.Title>Information</Modal.Title>
           <Modal.Close />
         </Modal.Header>
-        <p>This modal was triggered via code.</p>
+        <Modal.Body>
+          <p>This modal was triggered via code.</p>
+        </Modal.Body>
       </Modal.Content>
     </Modal>
   </>
@@ -283,13 +292,15 @@ return (
       <Modal.Title>Menu</Modal.Title>
       <Modal.Close />
     </Modal.Header>
-    <nav>
-      <ul>
-        <li><a href="/home">Home</a></li>
-        <li><a href="/profile">Profile</a></li>
-        <li><a href="/logout">Logout</a></li>
-      </ul>
-    </nav>
+    <Modal.Body>
+      <nav>
+        <ul>
+          <li><a href="/home">Home</a></li>
+          <li><a href="/profile">Profile</a></li>
+          <li><a href="/logout">Logout</a></li>
+        </ul>
+      </nav>
+    </Modal.Body>
   </Modal.Content>
 </Modal>
 ```
@@ -302,9 +313,11 @@ return (
       <Modal.Title>Parent Modal</Modal.Title>
       <Modal.Close />
     </Modal.Header>
-    <ModalTrigger target="child">
-      <button>Open Nested Modal</button>
-    </ModalTrigger>
+    <Modal.Body>
+      <ModalTrigger target="child">
+        <button>Open Nested Modal</button>
+      </ModalTrigger>
+    </Modal.Body>
   </Modal.Content>
 </Modal>
 
@@ -314,7 +327,9 @@ return (
       <Modal.Title>Child Modal</Modal.Title>
       <Modal.Close />
     </Modal.Header>
-    <p>This modal is stacked on top of the parent.</p>
+    <Modal.Body>
+      <p>This modal is stacked on top of the parent.</p>
+    </Modal.Body>
   </Modal.Content>
 </Modal>
 ```
@@ -333,7 +348,9 @@ return (
           <Modal.Title>Controlled</Modal.Title>
           <Modal.Close />
         </Modal.Header>
-        <p>This modal uses controlled state.</p>
+        <Modal.Body>
+          <p>This modal uses controlled state.</p>
+        </Modal.Body>
       </Modal.Content>
     </Modal>
   </>
