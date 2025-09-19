@@ -33,6 +33,38 @@ React modal library with compound component pattern, accessibility features, and
 - Removed CSS namespace wrapper that prevented portal-rendered modal styles from applying
 - See `logs/` directory for detailed session notes
 
+## Latest Session Progress (January 2025)
+
+### ✅ Completed: Todo List Cleanup & Spec Alignment
+- Reviewed and consolidated CLAUDE.md todo list for duplicates and contradictions
+- Fixed Modal.Body confusion - updated specs to consistently use `<Modal.Body>` component
+- Removed SCSS modules references (specs use direct classes)
+- Clarified keepMounted as future feature, not current requirement
+- Removed outdated tasks.md references and non-compliance sections
+
+### ✅ Completed: useModalStack Hook Implementation
+- **Files**: `/src/ModalProvider.tsx`, `/src/index.ts`, `/src/useModalStack.test.tsx`
+- **Purpose**: Programmatic modal control API matching specs requirements
+- **API**: `{ open, close, isOpen, getModal }` functions
+- **Tests**: 5 test cases covering all functionality
+- **Integration**: Exported from main library index
+
+### ✅ Completed: Body Scroll Lock Implementation
+- **Files**: `/src/useBodyScrollLock.ts`, `/src/ModalRoot.tsx`, `/src/useBodyScrollLock.test.tsx`
+- **Features**:
+  - Cross-browser scrollbar width compensation
+  - iOS-specific handling with position: fixed
+  - Layout shift prevention via `--scrollbar-compensation` CSS variable
+  - Automatic activation when any modal opens
+- **Tests**: 8 comprehensive test cases covering all scenarios
+- **Demo**: Interactive example in `/src/Example/ScrollLockDemo.tsx`
+
+### 🎯 Key Insights & Decisions
+- onInteractOutside was already fully implemented (found in 7 files)
+- Modal.Body component approach chosen over div className for API consistency
+- Body scroll lock was critical UX gap - now resolved with modern best practices
+- Build verified successful - all functionality working
+
 ## Todo
 
 ### Priority 1: Core Implementation Gaps
