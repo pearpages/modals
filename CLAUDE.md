@@ -36,12 +36,12 @@ React modal library with compound component pattern, accessibility features, and
 ## Todo
 
 ### Priority 1: Core Implementation Gaps
-- [ ] useModalStack hook - Hook not implemented yet
-- [ ] onInteractOutside callback - In specs, needs implementation
+- [x] useModalStack hook - ✅ COMPLETED: Full implementation with programmatic API
+- [x] onInteractOutside callback - ✅ ALREADY IMPLEMENTED: Found in 7 files, working
+- [x] Body scroll lock - ✅ COMPLETED: useBodyScrollLock hook with cross-browser support
+- [ ] Modal.Body component implementation
 - [ ] Complete accessibility (aria-labelledby, aria-describedby linking)
 - [ ] Mobile fullscreen responsive behavior
-- [ ] Body scroll lock (specs specify this should exist)
-- [ ] Modal.Body component implementation
 - [ ] Animation data-state attributes
 
 ### Priority 2: UX Issues
