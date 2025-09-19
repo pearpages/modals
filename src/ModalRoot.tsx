@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ModalRootProps } from './types';
 import { useModalContext } from './ModalProvider';
+import { useBodyScrollLock } from './useBodyScrollLock';
 
 // SSR-safe check for client environment
 const useIsClient = (): boolean => {
@@ -14,16 +15,19 @@ const useIsClient = (): boolean => {
   return isClient;
 };
 
-export const ModalRoot: React.FC<ModalRootProps> = ({ 
+export const ModalRoot: React.FC<ModalRootProps> = ({
   container,
-  baseZIndex = 1000 
+  baseZIndex = 1000
 }) => {
   const isClient = useIsClient();
   const { stack, registry, baseZIndex: contextBaseZIndex, closeModal } = useModalContext();
-  
-  
+
   // Use the effective base z-index (prop takes precedence over context)
   const effectiveBaseZIndex = baseZIndex || contextBaseZIndex;
+
+  // Lock body scroll when any modal is open
+  const hasOpenModals = stack.length > 0;
+  useBodyScrollLock(hasOpenModals);
 
   // Handle escape key events
   useEffect(() => {

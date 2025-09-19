@@ -16,4 +16,5 @@ export { ModalFooter } from './ModalFooter';
 export { useModalId } from './ModalIdContext';
 export { ModalAriaProvider, useModalAria } from './ModalAriaContext';
 export { useFocusTrap, useFocusRestore } from './useFocusTrap';
+export { useBodyScrollLock, useScrollbarCompensation } from './useBodyScrollLock';
 export { Example } from './Example';
