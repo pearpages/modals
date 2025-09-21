@@ -30,7 +30,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
 }) => {
   const modalContext = useModalContext();
   const [isOpen, setIsOpen] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [dataState, setDataState] = useState<'opening' | 'open' | 'closing'>('opening');
   const contentRef = useRef<HTMLDivElement>(null);
   
   // Get the modal ID from context
@@ -60,20 +60,31 @@ export const ModalContent: React.FC<ModalContentProps> = ({
     onInteractOutside
   });
 
-  // Simple mount/unmount logic - CSS handles animation
+  // Manage data-state lifecycle for CSS animations
   useEffect(() => {
     if (isModalOpen) {
       setIsOpen(true);
-    } else {
       if (animated) {
-        // Delay unmount to allow exit animation
+        // Start with opening state
+        setDataState('opening');
+        // Transition to open state after small delay (allows CSS to see the opening state)
+        const timer = setTimeout(() => setDataState('open'), 10);
+        return () => clearTimeout(timer);
+      } else {
+        setDataState('open');
+      }
+    } else {
+      if (animated && isOpen) {
+        // Start closing animation
+        setDataState('closing');
+        // Delay unmount to allow CSS exit animation to complete
         const timer = setTimeout(() => setIsOpen(false), 250);
         return () => clearTimeout(timer);
       } else {
         setIsOpen(false);
       }
     }
-  }, [isModalOpen, animated]);
+  }, [isModalOpen, animated, isOpen]);
 
   // Handle backdrop clicks
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -113,7 +124,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
       aria-modal="true"
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
-      data-state="open"
+      data-state={dataState}
       style={{
         zIndex: zIndex,
         pointerEvents: 'auto'

@@ -84,7 +84,7 @@ React modal library with compound component pattern, accessibility features, and
 
 ## Todo
 
-### 🎉 Priority 1: Core Implementation Gaps - ALL COMPLETE!
+### 🎉 Priority 1: Core Implementation Complete!
 - [x] useModalStack hook - ✅ COMPLETED: Full implementation with programmatic API
 - [x] onInteractOutside callback - ✅ ALREADY IMPLEMENTED: Found in 7 files, working
 - [x] Body scroll lock - ✅ COMPLETED: useBodyScrollLock hook with cross-browser support
@@ -92,22 +92,25 @@ React modal library with compound component pattern, accessibility features, and
 - [x] Complete accessibility (aria-labelledby, aria-describedby linking) - ✅ ALREADY IMPLEMENTED: Full aria context
 - [x] Mobile fullscreen responsive behavior - ✅ ALREADY IMPLEMENTED: CSS responsive rules working
 
-### Priority 1.5: Enhancement Tasks
-- [ ] Animation data-state attributes
+### Priority 1: Specs Compliance Verification & Missing Features
+- [ ] Implement animation data-state attributes for CSS transitions
+- [ ] Add asChild props to all subcomponents (Header, Footer, Close, etc.)
+- [ ] Verify ModalTrigger component is properly exported and working
+- [ ] Verify controlled modal state (open/onOpenChange) works correctly
+- [ ] Verify all size variants (auto, md, full) are properly implemented
 
-### Priority 2: UX Issues
-- [ ] Modal content overflow/scrolling behavior
-- [ ] Header spacing optimization
-- [ ] Footer positioning on mobile
-- [ ] Ensure modal body supports any content type
-
-### Priority 3: Build & Distribution
+### Priority 2: Build & Distribution
 - [ ] Run build and fix any production build issues
 - [ ] Verify library distribution works correctly
 - [ ] Test modal library when imported as external package
 
-### Documentation & Enhancement Tasks
-- [ ] Add asChild props to all subcomponents
+### Priority 3: UX Polish & Enhancements
+- [ ] Modal content overflow/scrolling behavior optimization
+- [ ] Header spacing optimization
+- [ ] Footer positioning on mobile optimization
+- [ ] Ensure modal body supports any content type edge cases
+
+### Documentation & Future Enhancement Tasks
 - [ ] Add error handling/edge cases coverage section to specs
 - [ ] Add testing strategy section to specs
 - [ ] Add async operation handling examples (loading states, confirmations)

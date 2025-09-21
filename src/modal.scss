@@ -77,12 +77,17 @@
     -webkit-backdrop-filter: blur(4px);
   }
 
-  &--animated {
-    transition: 
-      opacity var(--modal-transition-duration) var(--modal-transition-easing),
-      backdrop-filter var(--modal-transition-duration) var(--modal-transition-easing),
-      -webkit-backdrop-filter var(--modal-transition-duration) var(--modal-transition-easing);
+  &[data-state="closing"] {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
   }
+
+  /* Apply transition when animated */
+  transition:
+    opacity var(--modal-transition-duration) var(--modal-transition-easing),
+    backdrop-filter var(--modal-transition-duration) var(--modal-transition-easing),
+    -webkit-backdrop-filter var(--modal-transition-duration) var(--modal-transition-easing);
 }
 
 /* Modal Content Container - Enhanced with beautiful styling */
@@ -113,9 +118,27 @@
     pointer-events: none;
   }
 
-  /* CSS-only animation using animation property */
+  /* Animation states for modal content */
+  &[data-state="opening"] {
+    opacity: 0;
+    transform: scale(0.96) translateY(-8px);
+  }
+
+  &[data-state="open"] {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  &[data-state="closing"] {
+    opacity: 0;
+    transform: scale(0.96) translateY(-8px);
+  }
+
+  /* Apply transition when animated */
   &--animated {
-    animation: modal-enter var(--modal-transition-duration) var(--modal-transition-easing) forwards;
+    transition:
+      opacity var(--modal-transition-duration) var(--modal-transition-easing),
+      transform var(--modal-transition-duration) var(--modal-transition-easing);
   }
 
   /* Size variants */
@@ -144,6 +167,11 @@
       opacity: 1;
       transform: none;
     }
+
+    &[data-state="closing"] {
+      opacity: 0;
+      transform: none;
+    }
   }
 
   /* Responsive behavior - Mobile fullscreen as per specs */
@@ -166,6 +194,11 @@
 
       &[data-state="open"] {
         opacity: 1;
+        transform: none !important;
+      }
+
+      &[data-state="closing"] {
+        opacity: 0;
         transform: none !important;
       }
     }
@@ -404,14 +437,5 @@
   }
 }
 
-/* Keyframe animation for modal entrance */
-@keyframes modal-enter {
-  0% {
-    opacity: 0;
-    transform: scale(0.96) translateY(-8px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
+/* Note: Modal animations now use data-state attributes with CSS transitions
+   instead of keyframes for better control and exit animations */
