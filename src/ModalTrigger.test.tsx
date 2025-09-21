@@ -23,6 +23,7 @@ const MockModalProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     stack: [],
     baseZIndex: 1000,
     updateDismissConfig: vi.fn(),
+    updateOnOpenChange: vi.fn(),
   };
 
   return (

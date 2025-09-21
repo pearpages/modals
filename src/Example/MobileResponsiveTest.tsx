@@ -25,7 +25,7 @@ export function MobileResponsiveTest() {
       }}>
         <strong>📋 Test Instructions:</strong>
         <ol style={{ margin: "0.5rem 0", paddingLeft: "1rem" }}>
-          <li><strong>Desktop</strong> (>768px): Modal should be centered, sized normally</li>
+          <li><strong>Desktop</strong> (&gt;768px): Modal should be centered, sized normally</li>
           <li><strong>Mobile</strong> (≤768px): Modal should be fullscreen (100vw × 100vh)</li>
           <li>Try both auto and md size variants</li>
           <li>Test with content that requires scrolling</li>
