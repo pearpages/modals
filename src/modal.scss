@@ -102,6 +102,9 @@
   position: relative; /* Changed from fixed to relative to work with backdrop flexbox */
   outline: none;
   border: 1px solid rgba(255, 255, 255, 0.18);
+  display: flex;
+  flex-direction: column; /* Enable flexbox layout for header/body/footer */
+  min-height: 0; /* Allow flex children to shrink */
 
 
   /* No need for manual positioning - backdrop centers us */
@@ -213,10 +216,11 @@
   padding: var(--modal-spacing-xl) var(--modal-spacing-xl) var(--modal-spacing-lg);
   border-bottom: var(--modal-border);
   background: linear-gradient(180deg, var(--modal-bg) 0%, rgba(248, 250, 252, 0.5) 100%);
-  
+
   /* Add subtle spacing for better layout */
   gap: var(--modal-spacing-lg);
   min-height: 60px;
+  flex-shrink: 0; /* Prevent header from shrinking */
 }
 
 .modalTitle {
@@ -239,88 +243,85 @@
 }
 
 .modalBody {
-  padding: var(--modal-spacing-xl);
+  padding: var(--modal-spacing-lg) var(--modal-spacing-xl);
   overflow-y: auto;
-  max-height: 60vh;
-  flex: 1; /* Allow body to expand on mobile fullscreen */
-  
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  flex: 1; /* Allow body to expand and handle overflow */
+  min-height: 0; /* Important: allows flex child to shrink below content size */
+
+  /* Smart height constraints */
+  max-height: calc(90vh - 200px); /* Account for header + footer + padding */
+
+  /* Ensure proper scrolling container */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  overscroll-behavior-y: contain; /* Prevent body scroll when at modal boundaries */
+
   /* Mobile fullscreen adjustments */
   @media (max-width: 768px) {
     .modal--auto &,
     .modal--md & {
+      max-height: none; /* Remove height limit on mobile fullscreen */
+      flex: 1; /* Take all available space */
+      padding: var(--modal-spacing-md); /* Reduce padding on mobile */
+    }
+
+    .modal--full & {
       max-height: none;
-      flex: 1;
       padding: var(--modal-spacing-lg);
     }
   }
-  
-  /* Custom scrollbar for better aesthetics */
+
+  /* Enhanced scrollbar styling with better visibility */
   &::-webkit-scrollbar {
-    width: 6px;
-  }
-  
-  &::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 3px;
-  }
-  
-  &::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 3px;
-    
-    &:hover {
-      background: rgba(0, 0, 0, 0.3);
-    }
-  }
-}
-
-.modalBody {
-  padding: var(--modal-spacing-lg) var(--modal-spacing-xl);
-  overflow-y: auto;
-  flex: 1; /* Allow body to expand and handle overflow */
-  max-height: 60vh; /* Prevent modal from becoming too tall */
-
-  /* Mobile fullscreen adjustments */
-  @media (max-width: 768px) {
-    .modal--auto &,
-    .modal--md & {
-      max-height: none;
-      flex: 1;
-    }
-  }
-
-  /* Custom scrollbar for better aesthetics */
-  &::-webkit-scrollbar {
-    width: 6px;
+    width: 8px; /* Slightly wider for better usability */
   }
 
   &::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.05);
-    border-radius: 3px;
+    border-radius: 4px;
+    margin: 4px; /* Add margin to track */
   }
 
   &::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.2);
-    border-radius: 3px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for definition */
 
     &:hover {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    &:active {
+      background: rgba(0, 0, 0, 0.5);
     }
   }
 
-  /* Dark mode scrollbar */
+  /* Dark mode scrollbar with better contrast */
   @media (prefers-color-scheme: dark) {
     &::-webkit-scrollbar-track {
       background: rgba(255, 255, 255, 0.05);
     }
 
     &::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(0, 0, 0, 0.1);
 
       &:hover {
-        background: rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.4);
+      }
+
+      &:active {
+        background: rgba(255, 255, 255, 0.55);
       }
     }
+  }
+
+  /* Firefox scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05);
+
+  @media (prefers-color-scheme: dark) {
+    scrollbar-color: rgba(255, 255, 255, 0.25) rgba(255, 255, 255, 0.05);
   }
 }
 
@@ -333,6 +334,7 @@
   border-top: var(--modal-border);
   background: linear-gradient(180deg, rgba(248, 250, 252, 0.5) 0%, var(--modal-bg) 100%);
   min-height: 64px;
+  flex-shrink: 0; /* Prevent footer from shrinking */
 }
 
 .modalClose {
