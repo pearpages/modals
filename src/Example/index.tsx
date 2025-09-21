@@ -4,6 +4,7 @@ import { ModalExamples } from './ModalExamples';
 import { ModalTriggerDemo } from './ModalTriggerDemo';
 import { ScrollLockDemo } from './ScrollLockDemo';
 import { ModalBodyDemo } from './ModalBodyDemo';
+import { AccessibilityDemo } from './AccessibilityDemo';
 import { Modal } from '../Modal';
 import './index.scss';
 
@@ -61,6 +62,13 @@ export const Example: React.FC = () => {
       <div style={{ marginBottom: '2rem' }}>
         <ModalSystem>
           <ModalBodyDemo />
+        </ModalSystem>
+      </div>
+
+      {/* Accessibility Demo */}
+      <div style={{ marginBottom: '2rem' }}>
+        <ModalSystem>
+          <AccessibilityDemo />
         </ModalSystem>
       </div>
 
