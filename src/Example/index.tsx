@@ -3,6 +3,7 @@ import { ModalSystem } from '../ModalSystem';
 import { ModalExamples } from './ModalExamples';
 import { ModalTriggerDemo } from './ModalTriggerDemo';
 import { ScrollLockDemo } from './ScrollLockDemo';
+import { ModalBodyDemo } from './ModalBodyDemo';
 import { Modal } from '../Modal';
 import './index.scss';
 
@@ -53,6 +54,13 @@ export const Example: React.FC = () => {
       <div style={{ marginBottom: '2rem' }}>
         <ModalSystem>
           <ScrollLockDemo />
+        </ModalSystem>
+      </div>
+
+      {/* Modal.Body Demo */}
+      <div style={{ marginBottom: '2rem' }}>
+        <ModalSystem>
+          <ModalBodyDemo />
         </ModalSystem>
       </div>
 

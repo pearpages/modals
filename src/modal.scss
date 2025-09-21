@@ -241,6 +241,56 @@
   }
 }
 
+.modalBody {
+  padding: var(--modal-spacing-lg) var(--modal-spacing-xl);
+  overflow-y: auto;
+  flex: 1; /* Allow body to expand and handle overflow */
+  max-height: 60vh; /* Prevent modal from becoming too tall */
+
+  /* Mobile fullscreen adjustments */
+  @media (max-width: 768px) {
+    .modal--auto &,
+    .modal--md & {
+      max-height: none;
+      flex: 1;
+    }
+  }
+
+  /* Custom scrollbar for better aesthetics */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  /* Dark mode scrollbar */
+  @media (prefers-color-scheme: dark) {
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+    }
+  }
+}
+
 .modalFooter {
   display: flex;
   align-items: center;

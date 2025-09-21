@@ -10,6 +10,7 @@ import { ModalTitle } from './ModalTitle';
 import { ModalDescription } from './ModalDescription';
 import { ModalClose } from './ModalClose';
 import { ModalFooter } from './ModalFooter';
+import { ModalBody } from './ModalBody';
 
 // Type for compound component
 interface ModalComponent extends React.FC<ModalProps> {
@@ -19,6 +20,7 @@ interface ModalComponent extends React.FC<ModalProps> {
   Title: typeof ModalTitle;
   Description: typeof ModalDescription;
   Close: typeof ModalClose;
+  Body: typeof ModalBody;
   Footer: typeof ModalFooter;
 }
 
@@ -134,6 +136,7 @@ Modal.Header = ModalHeader;
 Modal.Title = ModalTitle;
 Modal.Description = ModalDescription;
 Modal.Close = ModalClose;
+Modal.Body = ModalBody;
 Modal.Footer = ModalFooter;
 
 export { Modal };

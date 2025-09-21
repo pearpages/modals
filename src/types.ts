@@ -102,6 +102,15 @@ export interface ModalCloseProps extends ButtonHTMLAttributes<HTMLButtonElement>
   children?: ReactNode;
 }
 
+export interface ModalBodyProps extends HTMLAttributes<HTMLDivElement> {
+  /** Whether to render as child element */
+  asChild?: boolean;
+  /** Optional CSS class name */
+  className?: string;
+  /** Children components */
+  children: ReactNode;
+}
+
 export interface ModalFooterProps extends HTMLAttributes<HTMLDivElement> {
   /** Whether to render as child element */
   asChild?: boolean;
