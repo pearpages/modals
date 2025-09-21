@@ -210,17 +210,49 @@
 
 /* Modal Subcomponents - Enhanced with beautiful design */
 .modalHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: var(--modal-spacing-xl) var(--modal-spacing-xl) var(--modal-spacing-lg);
+  display: grid;
+  grid-template-columns: 1fr auto; /* Content area + close button */
+  gap: var(--modal-spacing-sm);
+  align-items: start;
+  padding: var(--modal-spacing-md) var(--modal-spacing-lg) var(--modal-spacing-sm);
   border-bottom: var(--modal-border);
   background: linear-gradient(180deg, var(--modal-bg) 0%, rgba(248, 250, 252, 0.5) 100%);
-
-  /* Add subtle spacing for better layout */
-  gap: var(--modal-spacing-lg);
-  min-height: 60px;
+  min-height: 44px; /* Reduced for more compact header */
   flex-shrink: 0; /* Prevent header from shrinking */
+
+  /* Compact mobile spacing */
+  @media (max-width: 768px) {
+    padding: var(--modal-spacing-sm) var(--modal-spacing-md) var(--modal-spacing-xs);
+    gap: var(--modal-spacing-xs);
+    min-height: 36px;
+  }
+
+  /* When header contains only title (no description) - center align content */
+  &:has(.modalTitle:only-child) {
+    align-items: center;
+    min-height: 40px;
+
+    @media (max-width: 768px) {
+      min-height: 32px;
+    }
+  }
+
+  /* Enhanced layout for title + close button only */
+  &:not(:has(.modalDescription)) {
+    padding-bottom: var(--modal-spacing-sm);
+
+    @media (max-width: 768px) {
+      padding-bottom: var(--modal-spacing-xs);
+    }
+  }
+}
+
+/* Header content area - contains title and description */
+.modalHeaderContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem; /* Compact spacing between title and description */
+  min-width: 0; /* Allow text to wrap properly */
 }
 
 .modalTitle {
@@ -230,16 +262,26 @@
   line-height: var(--modal-line-height-title);
   color: var(--modal-color);
   letter-spacing: -0.025em;
-  flex: 1;
+
+  /* Optimize for mobile */
+  @media (max-width: 768px) {
+    font-size: 1.25rem; /* Slightly smaller on mobile */
+    line-height: 1.2;
+  }
 }
 
 .modalDescription {
-  margin: var(--modal-spacing-xs) 0 0 0;
+  margin: 0;
   color: rgba(0, 0, 0, 0.6);
   font-size: var(--modal-font-size-description);
   line-height: var(--modal-line-height-description);
   font-weight: 400;
-  flex: 1;
+
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
 }
 
 .modalBody {
@@ -353,6 +395,24 @@
   font-size: 18px;
   line-height: 1;
   flex-shrink: 0;
+
+  /* Improved positioning in header */
+  .modalHeader & {
+    margin-top: -2px; /* Optical alignment with title */
+    margin-right: -4px; /* Account for visual weight */
+  }
+
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+
+    .modalHeader & {
+      margin-top: -1px;
+      margin-right: -2px;
+    }
+  }
 
   &:hover {
     background: rgba(0, 0, 0, 0.08);

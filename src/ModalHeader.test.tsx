@@ -11,7 +11,7 @@ describe('ModalHeader', () => {
       </ModalHeader>
     );
 
-    const header = screen.getByText('Modal Title').parentElement;
+    const header = screen.getByText('Modal Title').parentElement?.parentElement;
     expect(header).toBeInTheDocument();
     expect(header).toHaveClass('modalHeader');
     expect(screen.getByText('Modal Title')).toBeInTheDocument();
@@ -25,7 +25,7 @@ describe('ModalHeader', () => {
       </ModalHeader>
     );
 
-    const header = screen.getByText('Content').parentElement;
+    const header = screen.getByText('Content').parentElement?.parentElement;
     expect(header).toHaveClass('modalHeader', 'custom-header');
   });
 
