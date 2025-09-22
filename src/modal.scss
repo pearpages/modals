@@ -298,6 +298,37 @@
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
   overscroll-behavior-y: contain; /* Prevent body scroll when at modal boundaries */
 
+  /* Enhanced content type support */
+  word-wrap: break-word; /* Handle long words gracefully */
+  overflow-wrap: break-word; /* Modern property for word breaking */
+
+  /* Support for various content types */
+  img, video, iframe, canvas, svg {
+    max-width: 100%; /* Ensure media doesn't exceed modal bounds */
+    height: auto; /* Maintain aspect ratios */
+  }
+
+  /* Code block support */
+  pre {
+    overflow-x: auto; /* Allow horizontal scroll in code blocks */
+    max-width: 100%;
+    white-space: pre-wrap; /* Allow line wrapping in pre elements */
+    word-break: break-all; /* Break long lines if needed */
+  }
+
+  /* Table support with horizontal scroll */
+  table {
+    max-width: 100%;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  /* Container for wide content that needs its own scroll */
+  .modal-wide-content {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
   /* Mobile fullscreen adjustments */
   @media (max-width: 768px) {
     .modal--auto &,

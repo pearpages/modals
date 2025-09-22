@@ -8,6 +8,7 @@ import { AccessibilityDemo } from './AccessibilityDemo';
 import { ScrollOptimizationDemo } from './ScrollOptimizationDemo';
 import { HeaderSpacingDemo } from './HeaderSpacingDemo';
 import { FooterMobileDemo } from './FooterMobileDemo';
+import { ModalBodyContentTypesDemo } from './ModalBodyContentTypesDemo';
 import { Modal } from '../Modal';
 import './index.scss';
 
@@ -93,6 +94,13 @@ export const Example: React.FC = () => {
       <div style={{ marginBottom: '2rem' }}>
         <ModalSystem>
           <FooterMobileDemo />
+        </ModalSystem>
+      </div>
+
+      {/* Modal Body Content Types Demo */}
+      <div style={{ marginBottom: '2rem' }}>
+        <ModalSystem>
+          <ModalBodyContentTypesDemo />
         </ModalSystem>
       </div>
 
