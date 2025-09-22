@@ -371,12 +371,61 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--modal-spacing-md);
-  padding: var(--modal-spacing-lg) var(--modal-spacing-xl) var(--modal-spacing-xl);
+  gap: var(--modal-spacing-sm);
+  padding: var(--modal-spacing-md) var(--modal-spacing-lg);
   border-top: var(--modal-border);
   background: linear-gradient(180deg, rgba(248, 250, 252, 0.5) 0%, var(--modal-bg) 100%);
-  min-height: 64px;
+  min-height: 48px; /* Reduced from 64px */
   flex-shrink: 0; /* Prevent footer from shrinking */
+
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    /* Compact mobile spacing */
+    padding: var(--modal-spacing-sm) var(--modal-spacing-md);
+    min-height: 44px; /* More compact on mobile */
+    gap: var(--modal-spacing-xs);
+
+    /* Mobile fullscreen modals */
+    .modal--auto &,
+    .modal--md & {
+      /* Add safe area padding for iOS devices */
+      padding-bottom: max(var(--modal-spacing-sm), env(safe-area-inset-bottom));
+
+      /* Stack buttons on mobile when multiple buttons */
+      &:has(button + button), /* Multiple buttons */
+      &:has([role="button"] + [role="button"]) {
+        flex-direction: column-reverse; /* Primary action on bottom */
+        align-items: stretch;
+        gap: var(--modal-spacing-sm);
+
+        /* Buttons take full width on mobile */
+        button,
+        [role="button"] {
+          width: 100%;
+          min-height: 44px; /* iOS touch target guideline */
+          padding: var(--modal-spacing-md) var(--modal-spacing-lg);
+          font-size: 1rem;
+          font-weight: 500;
+        }
+      }
+    }
+
+    /* Full screen modals get bottom spacing */
+    .modal--full & {
+      padding-bottom: max(var(--modal-spacing-md), env(safe-area-inset-bottom));
+    }
+  }
+
+  /* Very small mobile devices */
+  @media (max-width: 480px) {
+    padding: var(--modal-spacing-xs) var(--modal-spacing-sm);
+    min-height: 40px;
+
+    .modal--auto &,
+    .modal--md & {
+      padding-bottom: max(var(--modal-spacing-xs), env(safe-area-inset-bottom));
+    }
+  }
 }
 
 .modalClose {
