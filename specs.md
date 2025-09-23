@@ -15,6 +15,45 @@
 
 ### Architecture
 
+#### Import Conventions
+
+**Absolute Imports (Preferred):**
+Use absolute imports with the `@/` alias for all modal library components:
+
+```tsx
+// ✅ Preferred - absolute imports
+import { Modal } from '@/Modal';
+import { ModalContent } from '@/ModalContent';
+import { ModalHeader } from '@/ModalHeader';
+import { ModalTrigger } from '@/ModalTrigger';
+```
+
+**Configuration:**
+TypeScript configuration includes:
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}
+```
+
+**Benefits:**
+- Cleaner imports regardless of file depth
+- Easier refactoring when moving files
+- Consistent with modern React practices
+- IDE autocomplete support
+
+**Avoid Relative Imports:**
+```tsx
+// ❌ Avoid - relative imports
+import { Modal } from '../../Modal';
+import { ModalContent } from '../../../ModalContent';
+```
+
 ### SSR Behavior
 - `<ModalSystem>` is **safe by default in server-side rendering environments**.
 - On the server, it renders nothing (`null`) to avoid access to `window` or `document`.
@@ -114,11 +153,61 @@
 
 #### CSS Architecture (Direct Classes + CSS Variables)
 
-- **Direct CSS classes** are used without modules (e.g. `.modalBackdrop`, `.modal`, `.modalHeader`) due to portal rendering requirements.
+- **Direct CSS classes** are used without modules due to portal rendering requirements.
 - Portal-rendered elements cannot inherit scoped CSS modules from their React component tree.
 - Styles use semantic classnames for clarity and easy targeting.
 - Key layout styles and theming values are exposed as **CSS variables**.
 - Consumers can override via global CSS, utility classes, or theming systems like Tailwind.
+
+#### Naming Conventions
+
+**Core Library Classes (Current):**
+The modal library currently uses **camelCase** naming for consistency with React/JavaScript conventions:
+- Examples: `.modalBackdrop`, `.modal`, `.modalHeader`, `.modalFooter`
+- This maintains consistency with the existing codebase and React ecosystem
+
+**Custom Components & Demos (Recommended):**
+For example components, demos, and consumer applications, use **BEM (Block Element Modifier)** methodology with **kebab-case** naming:
+
+**Future Migration Plan:**
+We plan to migrate the core library to BEM kebab-case naming in a future major version for consistency with web standards and better CSS maintainability. This will be a breaking change requiring consumer updates.
+
+```scss
+// ✅ Correct BEM with kebab-case
+.my-modal {              // Block
+  &__header {            // Element
+    &--compact {         // Modifier
+      padding: 0.5rem;
+    }
+  }
+
+  &__button {
+    &--primary {         // Modifier
+      background: blue;
+    }
+    &--secondary {       // Modifier
+      background: gray;
+    }
+  }
+}
+```
+
+**Pattern:**
+- **Block**: `.block-name` (component root)
+- **Element**: `.block-name__element-name` (component parts)
+- **Modifier**: `.block-name__element--modifier-name` (variants/states)
+
+**Examples:**
+```tsx
+// Component structure
+<div className="contact-form">
+  <div className="contact-form__header">
+    <button className="contact-form__button contact-form__button--primary">
+      Submit
+    </button>
+  </div>
+</div>
+```
 
 ```scss
 // modal.scss

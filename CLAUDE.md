@@ -212,3 +212,8 @@ All core modal library requirements now complete! The library provides:
 - [ ] File upload with drag-and-drop and progress tracking
 
 **Recommendation:** Ship current version immediately - it's production-ready and demonstrates senior-level React architecture skills completed in an impressive 14-day timeline.
+
+## Current Issues & TODOs
+
+### 🔧 Bug Fixes
+- [ ] **Fix forms inside modals overflow** - Forms overflow the modal body content instead of respecting the container boundaries. Need to implement proper form layout and overflow handling within Modal.Body components.
