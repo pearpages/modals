@@ -54,6 +54,42 @@ import { Modal } from '../../Modal';
 import { ModalContent } from '../../../ModalContent';
 ```
 
+#### Component Import Patterns
+
+The modal library supports **both compound and individual imports** for optimal developer experience and bundle optimization:
+
+**Compound Components (Convenience):**
+```tsx
+// ✅ Compound pattern - best DX, larger bundle
+import { Modal } from '@/Modal';
+
+<Modal.Content>
+  <Modal.Header>
+    <Modal.Title>Title</Modal.Title>
+    <Modal.Button variant="primary">Save</Modal.Button>
+  </Modal.Header>
+</Modal.Content>
+```
+
+**Individual Components (Tree-Shaking):**
+```tsx
+// ✅ Individual imports - optimal bundle size
+import { ModalContent, ModalHeader, ModalTitle, ModalButton } from '@/Modal';
+
+<ModalContent>
+  <ModalHeader>
+    <ModalTitle>Title</ModalTitle>
+    <ModalButton variant="primary">Save</ModalButton>
+  </ModalHeader>
+</ModalContent>
+```
+
+**Bundle Size Considerations:**
+- **Compound imports** (`Modal`) include all subcomponents, prioritizing developer experience
+- **Individual imports** (`ModalButton`, `ModalHeader`) enable tree-shaking for optimal bundle size
+- **Choose based on your priority**: DX vs bundle optimization
+- **Mixing patterns** is supported and recommended based on component usage
+
 ### SSR Behavior
 - `<ModalSystem>` is **safe by default in server-side rendering environments**.
 - On the server, it renders nothing (`null`) to avoid access to `window` or `document`.

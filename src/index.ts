@@ -1,5 +1,6 @@
 // Import styles to ensure they're bundled
 import './modal.scss';
+import './ModalButton.scss';
 
 export * from './types';
 export { ModalSystem } from './ModalSystem';
@@ -14,6 +15,7 @@ export { ModalDescription } from './ModalDescription';
 export { ModalClose } from './ModalClose';
 export { ModalBody } from './ModalBody';
 export { ModalFooter } from './ModalFooter';
+export { ModalButton } from './ModalButton';
 export { useModalId } from './ModalIdContext';
 export { ModalAriaProvider, useModalAria } from './ModalAriaContext';
 export { useFocusTrap, useFocusRestore } from './useFocusTrap';

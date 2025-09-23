@@ -1,11 +1,5 @@
 import { useState } from "react";
 import { Modal } from "@/Modal";
-import { ModalContent } from "@/ModalContent";
-import { ModalHeader } from "@/ModalHeader";
-import { ModalTitle } from "@/ModalTitle";
-import { ModalDescription } from "@/ModalDescription";
-import { ModalClose } from "@/ModalClose";
-import { ModalFooter } from "@/ModalFooter";
 import { ModalTrigger } from "@/ModalTrigger";
 import { useModalStack } from "@/ModalProvider";
 import "./index.scss";
@@ -74,33 +68,34 @@ function CompleteAccessibilityModal() {
 
   return (
     <Modal id="accessibility-complete">
-      <ModalContent>
-        <ModalHeader>
-          <ModalTitle>Delete Account</ModalTitle>
-          <ModalDescription>
+      <Modal.Content>
+        <Modal.Header>
+          <Modal.Title>Delete Account</Modal.Title>
+          <Modal.Description>
             This action cannot be undone. All your data will be permanently
             deleted.
-          </ModalDescription>
-          <ModalClose />
-        </ModalHeader>
+          </Modal.Description>
+          <Modal.Close />
+        </Modal.Header>
         <Modal.Body>{body}</Modal.Body>
-        <ModalFooter>
-          <button
-            className="accessibility-demo__button accessibility-demo__button--secondary accessibility-demo__button--margin-right"
+        <Modal.Footer>
+          <Modal.Button
+            variant="secondary"
             onClick={handleCancel}
             disabled={isDeleting}
           >
             Cancel
-          </button>
-          <button
-            className="accessibility-demo__button accessibility-demo__button--danger"
+          </Modal.Button>
+          <Modal.Button
+            variant="danger"
             onClick={handleDelete}
             disabled={isDeleting || deleteText !== "DELETE"}
+            loading={isDeleting}
           >
-            {isDeleting ? "Deleting..." : "Delete Account"}
-          </button>
-        </ModalFooter>
-      </ModalContent>
+            Delete Account
+          </Modal.Button>
+        </Modal.Footer>
+      </Modal.Content>
     </Modal>
   );
 }
@@ -134,21 +129,18 @@ function TitleOnlyModal() {
   );
   return (
     <Modal id="accessibility-title-only">
-      <ModalContent>
-        <ModalHeader>
-          <ModalTitle>Simple Notification</ModalTitle>
-          <ModalClose />
-        </ModalHeader>
+      <Modal.Content>
+        <Modal.Header>
+          <Modal.Title>Simple Notification</Modal.Title>
+          <Modal.Close />
+        </Modal.Header>
         <Modal.Body>{body}</Modal.Body>
-        <ModalFooter>
-          <button
-            className="accessibility-demo__button accessibility-demo__button--primary"
-            onClick={handleGotIt}
-          >
+        <Modal.Footer>
+          <Modal.Button variant="primary" onClick={handleGotIt}>
             Got it!
-          </button>
-        </ModalFooter>
-      </ModalContent>
+          </Modal.Button>
+        </Modal.Footer>
+      </Modal.Content>
     </Modal>
   );
 }
@@ -188,24 +180,21 @@ function CustomIdsModal() {
   );
   return (
     <Modal id="accessibility-custom-ids">
-      <ModalContent>
-        <ModalHeader>
-          <ModalTitle id="custom-title-id">Custom ID Example</ModalTitle>
-          <ModalDescription id="custom-desc-id">
+      <Modal.Content>
+        <Modal.Header>
+          <Modal.Title id="custom-title-id">Custom ID Example</Modal.Title>
+          <Modal.Description id="custom-desc-id">
             This modal uses custom IDs for title and description elements.
-          </ModalDescription>
-          <ModalClose />
-        </ModalHeader>
+          </Modal.Description>
+          <Modal.Close />
+        </Modal.Header>
         <Modal.Body>{body}</Modal.Body>
-        <ModalFooter>
-          <button
-            className="accessibility-demo__button accessibility-demo__button--purple"
-            onClick={handlePerfect}
-          >
+        <Modal.Footer>
+          <Modal.Button variant="success" onClick={handlePerfect}>
             Perfect!
-          </button>
-        </ModalFooter>
-      </ModalContent>
+          </Modal.Button>
+        </Modal.Footer>
+      </Modal.Content>
     </Modal>
   );
 }
@@ -247,23 +236,23 @@ const AccessibiltyTestBox = () => (
 
 const ButtonGroup = () => (
   <div className="accessibility-demo__button-group">
-    <ModalTrigger target="accessibility-complete" asChild>
-      <button className="accessibility-demo__button accessibility-demo__button--success">
+    <Modal.Trigger target="accessibility-complete" asChild>
+      <Modal.Button variant="success" size="small">
         Complete Accessibility
-      </button>
-    </ModalTrigger>
+      </Modal.Button>
+    </Modal.Trigger>
 
-    <ModalTrigger target="accessibility-title-only" asChild>
-      <button className="accessibility-demo__button accessibility-demo__button--primary">
+    <Modal.Trigger target="accessibility-title-only" asChild>
+      <Modal.Button variant="primary" size="small">
         Title Only (No Description)
-      </button>
-    </ModalTrigger>
+      </Modal.Button>
+    </Modal.Trigger>
 
-    <ModalTrigger target="accessibility-custom-ids" asChild>
-      <button className="accessibility-demo__button accessibility-demo__button--purple">
+    <Modal.Trigger target="accessibility-custom-ids" asChild>
+      <Modal.Button variant="info" size="small">
         Custom IDs
-      </button>
-    </ModalTrigger>
+      </Modal.Button>
+    </Modal.Trigger>
   </div>
 );
 

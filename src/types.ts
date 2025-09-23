@@ -284,3 +284,24 @@ export class ModalNotFoundError extends ModalError {
     this.name = 'ModalNotFoundError';
   }
 }
+
+// Modal Button Types
+export type ModalButtonVariant = 'primary' | 'secondary' | 'danger' | 'success' | 'warning';
+export type ModalButtonSize = 'small' | 'medium' | 'large';
+
+export interface ModalButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className'> {
+  /** Visual variant of the button */
+  variant?: ModalButtonVariant;
+  /** Size of the button */
+  size?: ModalButtonSize;
+  /** Show loading state with spinner */
+  loading?: boolean;
+  /** Disable the button */
+  disabled?: boolean;
+  /** Custom CSS class */
+  className?: string;
+  /** Use asChild pattern to compose with existing elements */
+  asChild?: boolean;
+  /** Button content */
+  children: React.ReactNode;
+}
