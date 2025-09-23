@@ -215,5 +215,11 @@ All core modal library requirements now complete! The library provides:
 
 ## Current Issues & TODOs
 
+### 🚨 High Priority
+- [ ] **Standardize component naming convention** - Currently mixing separate imports (`ModalContent`, `ModalHeader`, `ModalTitle`) with compound components (`Modal.Body`). Need to choose one pattern consistently. Recommended: Convert all to compound components (`Modal.Content`, `Modal.Header`, `Modal.Title`, `Modal.Footer`, etc.) for better namespace clarity, cleaner imports, and modern React patterns.
+
 ### 🔧 Bug Fixes
 - [ ] **Fix forms inside modals overflow** - Forms overflow the modal body content instead of respecting the container boundaries. Need to implement proper form layout and overflow handling within Modal.Body components.
+
+### 🎨 Enhancement Features
+- [ ] **Create Modal.Button component** - Add standardized button component for modal footers with built-in variants (primary, secondary, danger), loading states, and consistent styling. This would replace the current inconsistent button styling across demo components and provide a complete modal API.
