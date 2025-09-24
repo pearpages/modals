@@ -1,0 +1,257 @@
+.modal-body-demo {
+  &__trigger-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  &__trigger-button {
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+
+    &:focus {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    &--primary {
+      background: #007bff;
+      color: white;
+
+      &:hover {
+        background: #0056b3;
+      }
+    }
+
+    &--success {
+      background: #28a745;
+      color: white;
+
+      &:hover {
+        background: #1e7e34;
+      }
+    }
+
+    &--purple {
+      background: #6f42c1;
+      color: white;
+
+      &:hover {
+        background: #5a2d91;
+      }
+    }
+  }
+
+  &__info-box {
+    background: #e7f3ff;
+    padding: 1rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    margin-bottom: 1rem;
+  }
+
+  &__info-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  &__info-list {
+    margin: 0.5rem 0;
+    padding-left: 1rem;
+
+    li {
+      margin-bottom: 0.25rem;
+    }
+
+    strong {
+      color: #007bff;
+    }
+  }
+}
+
+.simple-modal {
+  &__code-example {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+  }
+
+  &__code-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  &__code-block {
+    font-size: 0.8em;
+    margin: 0.5rem 0 0 0;
+    overflow: auto;
+    background: none;
+    border: none;
+    font-family: 'Consolas', 'Monaco', monospace;
+  }
+
+  &__footer-button {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background: #545b62;
+    }
+
+    &:focus {
+      outline: 2px solid #6c757d;
+      outline-offset: 2px;
+    }
+  }
+}
+
+.scrollable-modal {
+  &__intro {
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  &__content-block {
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border-radius: 4px;
+
+    &--even {
+      background: #f8f9fa;
+    }
+
+    &--odd {
+      background: #e9ecef;
+    }
+  }
+
+  &__block-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  &__block-text {
+    margin: 0;
+    font-size: 0.9em;
+    line-height: 1.5;
+  }
+
+  &__end-section {
+    background: #d4edda;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+  }
+
+  &__end-title {
+    font-weight: 600;
+    color: #155724;
+    margin-bottom: 0.5rem;
+  }
+
+  &__end-text {
+    margin: 0.5rem 0 0 0;
+    font-size: 0.9em;
+    color: #155724;
+  }
+
+  &__footer-button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background: #1e7e34;
+    }
+
+    &:focus {
+      outline: 2px solid #28a745;
+      outline-offset: 2px;
+    }
+  }
+}
+
+.custom-modal {
+  &__body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 8px;
+    padding: 2rem;
+  }
+
+  &__title {
+    color: #fff;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+
+  &__description {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  &__features-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+    backdrop-filter: blur(10px);
+  }
+
+  &__features-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  &__features-list {
+    margin: 0.5rem 0;
+    padding-left: 1rem;
+
+    li {
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  &__final-note {
+    margin-bottom: 0;
+    opacity: 0.9;
+    line-height: 1.5;
+  }
+
+  &__footer-button {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    &:focus {
+      outline: 2px solid rgba(255, 255, 255, 0.5);
+      outline-offset: 2px;
+    }
+  }
+}
