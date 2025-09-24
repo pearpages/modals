@@ -1,0 +1,71 @@
+.modal-examples {
+  &__state-section {
+    margin-bottom: 2rem;
+  }
+
+  &__state-title {
+    margin: 0 0 1rem 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+
+  &__state-info {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 0.9em;
+    border: 1px solid #e9ecef;
+  }
+
+  &__state-item {
+    margin-bottom: 0.5rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    strong {
+      color: #495057;
+    }
+  }
+
+  &__examples-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  &__status-section {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #e7f3ff;
+    border-radius: 6px;
+    border: 1px solid #b3d7ff;
+  }
+
+  &__status-title {
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #0056b3;
+  }
+
+  &__status-list {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+
+    li {
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      strong {
+        color: #0056b3;
+      }
+    }
+  }
+}

@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useModalContext } from "@/ModalProvider";
-import { ConfirmationModal } from "./UsageExamples/ConfirmationModal";
-import { InfoModal } from "./UsageExamples/InfoModal";
-import { NestedModals } from "./NestedModals";
-import { ActionDemo } from "./UsageExamples/ActionDemo";
-import { InteractiveActions } from "./InteractiveActions";
+import { ConfirmationModal } from "../UsageExamples/ConfirmationModal";
+import { InfoModal } from "../UsageExamples/InfoModal";
+import { NestedModals } from "../NestedModals";
+import { ActionDemo } from "../UsageExamples/ActionDemo";
+import { InteractiveActions } from "../InteractiveActions";
+import { Demo } from "../Demo";
+import './index.scss';
 
 const ModalExamples: React.FC = () => {
   const { registry, stack } = useModalContext();
@@ -14,40 +16,24 @@ const ModalExamples: React.FC = () => {
   });
 
   return (
-    <div style={{ padding: "1rem" }}>
-      <h2>🚀 Modal Library Usage Examples</h2>
-
-      <div style={{ marginBottom: "2rem" }}>
-        <h3>📊 Modal System State</h3>
-        <div
-          style={{
-            background: "#f8f9fa",
-            padding: "1rem",
-            borderRadius: "6px",
-            fontFamily: "monospace",
-            fontSize: "0.9em",
-          }}
-        >
-          <div>
+    <Demo title="🚀 Modal Library Usage Examples" defaultExpanded={false}>
+      <div className="modal-examples__state-section">
+        <h3 className="modal-examples__state-title">📊 Modal System State</h3>
+        <div className="modal-examples__state-info">
+          <div className="modal-examples__state-item">
             <strong>Active Stack:</strong> [{stack.join(", ") || "empty"}]
           </div>
-          <div>
+          <div className="modal-examples__state-item">
             <strong>Registered Modals:</strong> {Object.keys(registry).length}
           </div>
-          <div>
+          <div className="modal-examples__state-item">
             <strong>Open Modals:</strong>{" "}
             {Object.values(registry).filter((m) => m.open).length}
           </div>
         </div>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gap: "1rem",
-          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-        }}
-      >
+      <div className="modal-examples__examples-grid">
         <ConfirmationModal demoData={demoData} />
         <InfoModal demoData={demoData} stack={stack} />
         <NestedModals registry={registry} />
@@ -55,16 +41,9 @@ const ModalExamples: React.FC = () => {
         <InteractiveActions setDemoData={setDemoData} />
       </div>
 
-      <div
-        style={{
-          marginTop: "2rem",
-          padding: "1rem",
-          background: "#e7f3ff",
-          borderRadius: "6px",
-        }}
-      >
-        <h4>🔧 Implementation Status</h4>
-        <ul style={{ margin: "0.5rem 0", paddingLeft: "1.5rem" }}>
+      <div className="modal-examples__status-section">
+        <h4 className="modal-examples__status-title">🔧 Implementation Status</h4>
+        <ul className="modal-examples__status-list">
           <li>
             ✅ <strong>ModalSystem:</strong> Functional provider + portal setup
           </li>
@@ -88,7 +67,7 @@ const ModalExamples: React.FC = () => {
           </li>
         </ul>
       </div>
-    </div>
+    </Demo>
   );
 };
 
