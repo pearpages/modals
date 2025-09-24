@@ -1,7 +1,7 @@
-import { MockModal } from "./MockModal";
-import { MockModalTrigger } from "./MockModalTrigger";
+import { MockModal } from "../MockModal";
+import { MockModalTrigger } from "../MockModalTrigger";
 
-export function InteractiveActions({ setDemoData }:{ setDemoData: any }) {
+export function InteractiveActions({ setDemoData }: { setDemoData: any }) {
   return (
     <div
       style={{ border: "1px solid #ddd", borderRadius: "8px", padding: "1rem" }}
@@ -40,7 +40,7 @@ export function InteractiveActions({ setDemoData }:{ setDemoData: any }) {
         >
           <button
             onClick={() => {
-              setDemoData((prev: { userCount: number; }) => ({
+              setDemoData((prev: { userCount: number }) => ({
                 ...prev,
                 userCount: prev.userCount + 1,
                 lastAction: "Added user",
@@ -57,7 +57,7 @@ export function InteractiveActions({ setDemoData }:{ setDemoData: any }) {
           </button>
           <button
             onClick={() => {
-              setDemoData((prev: { userCount: number; }) => ({
+              setDemoData((prev: { userCount: number }) => ({
                 ...prev,
                 userCount: Math.max(0, prev.userCount - 1),
                 lastAction: "Removed user",

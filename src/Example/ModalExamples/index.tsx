@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useModalContext } from "@/ModalProvider";
 import { ConfirmationModal } from "../UsageExamples/ConfirmationModal";
 import { InfoModal } from "../UsageExamples/InfoModal";
-import { NestedModals } from "../NestedModals";
+import { NestedModals } from "./NestedModals";
 import { ActionDemo } from "../UsageExamples/ActionDemo";
-import { InteractiveActions } from "../InteractiveActions";
+import { InteractiveActions } from "./InteractiveActions";
 import { Demo } from "../Demo";
 import "./index.scss";
 

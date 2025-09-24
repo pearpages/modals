@@ -1,7 +1,11 @@
-import { MockModal } from "./MockModal";
-import { MockModalTrigger } from "./MockModalTrigger";
+import { MockModal } from "../MockModal";
+import { MockModalTrigger } from "../MockModalTrigger";
 
-export function NestedModals({ registry }: { registry: Record<string, { stackIndex: number }> }) {
+export function NestedModals({
+  registry,
+}: {
+  registry: Record<string, { stackIndex: number }>;
+}) {
   return (
     <div
       style={{ border: "1px solid #ddd", borderRadius: "8px", padding: "1rem" }}
