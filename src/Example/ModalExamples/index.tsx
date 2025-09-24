@@ -6,7 +6,7 @@ import { NestedModals } from "../NestedModals";
 import { ActionDemo } from "../UsageExamples/ActionDemo";
 import { InteractiveActions } from "../InteractiveActions";
 import { Demo } from "../Demo";
-import './index.scss';
+import "./index.scss";
 
 const ModalExamples: React.FC = () => {
   const { registry, stack } = useModalContext();
@@ -42,7 +42,9 @@ const ModalExamples: React.FC = () => {
       </div>
 
       <div className="modal-examples__status-section">
-        <h4 className="modal-examples__status-title">🔧 Implementation Status</h4>
+        <h4 className="modal-examples__status-title">
+          🔧 Implementation Status
+        </h4>
         <ul className="modal-examples__status-list">
           <li>
             ✅ <strong>ModalSystem:</strong> Functional provider + portal setup

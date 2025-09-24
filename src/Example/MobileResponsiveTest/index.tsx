@@ -1,10 +1,8 @@
-import { Modal } from "@/Modal";
-import { ModalTrigger } from "@/ModalTrigger";
 import { Demo } from "@/Example/Demo";
+import "./index.scss";
 import { AutoSizeModal } from "./AutoSizeModal";
 import { MediumSizeModal } from "./MediumSizeModal";
 import { FullscreenModal } from "./FullscreenModal";
-import "./index.scss";
 
 export function MobileResponsiveTest() {
   return (

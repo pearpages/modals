@@ -1,9 +1,8 @@
 import React from "react";
-import ModalSystem from "@/ModalSystem";
 import { Demo } from "../Demo";
-import ConfirmationModal from './ConfirmationModal';
-import InfoModal from './InfoModal';
-import './index.scss';
+import ConfirmationModal from "./ConfirmationModal";
+import InfoModal from "./InfoModal";
+import "./index.scss";
 
 /**
  * Example demonstrating Task 8 implementation:
@@ -11,25 +10,21 @@ import './index.scss';
  */
 export const Task8Example: React.FC = () => {
   return (
-    <ModalSystem>
-      <Demo
-        title="Task 8: Modal Subcomponents"
-        description="This example demonstrates the implemented subcomponents with accessibility features:"
-        defaultExpanded={false}
-      >
-        <div className="task8-example__trigger-buttons">
-          <ConfirmationModal.Trigger>
-            Show Confirmation Modal
-          </ConfirmationModal.Trigger>
+    <Demo
+      title="Task 8: Modal Subcomponents"
+      description="This example demonstrates the implemented subcomponents with accessibility features:"
+      defaultExpanded={false}
+    >
+      <div className="task8-example__trigger-buttons">
+        <ConfirmationModal.Trigger>
+          Show Confirmation Modal
+        </ConfirmationModal.Trigger>
 
-          <InfoModal.Trigger>
-            Show Info Modal
-          </InfoModal.Trigger>
-        </div>
+        <InfoModal.Trigger>Show Info Modal</InfoModal.Trigger>
+      </div>
 
-        <ConfirmationModal />
-        <InfoModal />
-      </Demo>
-    </ModalSystem>
+      <ConfirmationModal />
+      <InfoModal />
+    </Demo>
   );
 };

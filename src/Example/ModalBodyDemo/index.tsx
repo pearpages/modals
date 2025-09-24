@@ -1,9 +1,9 @@
 import React from "react";
 import { Demo } from "@/Example/Demo";
-import SimpleBodyModal from './SimpleBodyModal';
-import ScrollableBodyModal from './ScrollableBodyModal';
-import CustomBodyModal from './CustomBodyModal';
-import './index.scss';
+import SimpleBodyModal from "./SimpleBodyModal";
+import ScrollableBodyModal from "./ScrollableBodyModal";
+import CustomBodyModal from "./CustomBodyModal";
+import "./index.scss";
 
 export function ModalBodyDemo() {
   return (
@@ -13,21 +13,19 @@ export function ModalBodyDemo() {
       defaultExpanded={false}
     >
       <div className="modal-body-demo__trigger-buttons">
-        <SimpleBodyModal.Trigger>
-          Simple Modal.Body
-        </SimpleBodyModal.Trigger>
+        <SimpleBodyModal.Trigger>Simple Modal.Body</SimpleBodyModal.Trigger>
 
         <ScrollableBodyModal.Trigger>
           Scrollable Content
         </ScrollableBodyModal.Trigger>
 
-        <CustomBodyModal.Trigger>
-          Custom Styled Body
-        </CustomBodyModal.Trigger>
+        <CustomBodyModal.Trigger>Custom Styled Body</CustomBodyModal.Trigger>
       </div>
 
       <div className="modal-body-demo__info-box">
-        <div className="modal-body-demo__info-title">✨ Modal.Body Benefits:</div>
+        <div className="modal-body-demo__info-title">
+          ✨ Modal.Body Benefits:
+        </div>
         <ul className="modal-body-demo__info-list">
           <li>
             <strong>Semantic structure</strong> - Clear content organization

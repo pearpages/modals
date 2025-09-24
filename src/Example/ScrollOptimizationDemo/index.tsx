@@ -15,31 +15,29 @@ export function ScrollOptimizationDemo() {
   const [tableContentOpen, setTableContentOpen] = useState(false);
 
   return (
-    <ModalSystem>
-      <Demo
-        title="📜 Scroll Optimization Demo"
-        description="Testing optimized modal content overflow and scrolling behavior."
-        defaultExpanded={false}
-      >
-        <div className="scroll-optimization-demo__actions">
-          <LongContentModal.Trigger onOpenChange={setLongContentOpen} />
-          <MixedContentModal.Trigger onOpenChange={setMixedContentOpen} />
-          <TableContentModal.Trigger onOpenChange={setTableContentOpen} />
-        </div>
+    <Demo
+      title="📜 Scroll Optimization Demo"
+      description="Testing optimized modal content overflow and scrolling behavior."
+      defaultExpanded={false}
+    >
+      <div className="scroll-optimization-demo__actions">
+        <LongContentModal.Trigger onOpenChange={setLongContentOpen} />
+        <MixedContentModal.Trigger onOpenChange={setMixedContentOpen} />
+        <TableContentModal.Trigger onOpenChange={setTableContentOpen} />
+      </div>
 
-        <LongContentModal
-          open={longContentOpen}
-          onOpenChange={setLongContentOpen}
-        />
-        <MixedContentModal
-          open={mixedContentOpen}
-          onOpenChange={setMixedContentOpen}
-        />
-        <TableContentModal
-          open={tableContentOpen}
-          onOpenChange={setTableContentOpen}
-        />
-      </Demo>
-    </ModalSystem>
+      <LongContentModal
+        open={longContentOpen}
+        onOpenChange={setLongContentOpen}
+      />
+      <MixedContentModal
+        open={mixedContentOpen}
+        onOpenChange={setMixedContentOpen}
+      />
+      <TableContentModal
+        open={tableContentOpen}
+        onOpenChange={setTableContentOpen}
+      />
+    </Demo>
   );
 }

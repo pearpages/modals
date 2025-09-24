@@ -1,9 +1,9 @@
 import { useState } from "react";
+import "./index.scss";
 import { useModalStack } from "@/ModalProvider";
 import { Demo } from "@/Example/Demo";
 import { InfoModal } from "./InfoModal";
 import { ConfirmModal } from "./ConfirmModal";
-import "./index.scss";
 
 export function ProgrammaticModalExample() {
   const modalStack = useModalStack();
