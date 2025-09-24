@@ -4,6 +4,8 @@ import { TitleOnlyModal } from "./TitleOnlyModal";
 import { TitleDescriptionModal } from "./TitleDescriptionModal";
 import { LongTitleModal } from "./LongTitleModal";
 import { MultiLineDescriptionModal } from "./MultiLineDescriptionModal";
+import { GridGroup } from "../GridGroup";
+import { Box } from "../Box";
 
 export function HeaderSpacingDemo() {
   return (
@@ -12,15 +14,14 @@ export function HeaderSpacingDemo() {
       description="Testing optimized header spacing for different content combinations."
       defaultExpanded={false}
     >
-      <div className="header-spacing-demo__grid">
+      <GridGroup>
         <TitleOnlyModal.Trigger />
         <TitleDescriptionModal.Trigger />
         <LongTitleModal.Trigger />
         <MultiLineDescriptionModal.Trigger />
-      </div>
+      </GridGroup>
 
-      <div className="header-spacing-demo__info-box">
-        <h4>🎯 Optimizations Applied:</h4>
+      <Box variant="success" title="🎯 Optimizations Applied:">
         <ul>
           <li>
             ✅ <strong>Smart alignment:</strong> Center-aligned when title only,
@@ -47,7 +48,7 @@ export function HeaderSpacingDemo() {
             for better balance
           </li>
         </ul>
-      </div>
+      </Box>
 
       <TitleOnlyModal />
       <TitleDescriptionModal />
