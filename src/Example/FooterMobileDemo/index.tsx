@@ -4,23 +4,24 @@ import { MultiButtonModal } from "./MultiButtonModal";
 import { FormModal } from "./FormModal";
 import { FullscreenModal } from "./FullscreenModal";
 import { Demo } from "@/Example/Demo";
+import { GridGroup } from "../GridGroup";
+import { Box } from "../Box";
 
 export function FooterMobileDemo() {
   return (
     <Demo
-      title="💡 Use Case 4: Mobile Footer Optimization"
+      title="💡 Mobile Footer Optimization"
       description="Modals with optimized footers for mobile devices."
       defaultExpanded={false}
     >
-      <div className="footer-mobile-demo__grid">
+      <GridGroup>
         <SingleButtonModal.Trigger />
         <MultiButtonModal.Trigger />
         <FormModal.Trigger />
         <FullscreenModal.Trigger />
-      </div>
+      </GridGroup>
 
-      <div className="footer-mobile-demo__info-box">
-        <h4>📱 Mobile Optimizations Applied:</h4>
+      <Box variant="success" title="📱 Mobile Optimizations Applied:">
         <ul>
           <li>
             ✅ <strong>Compact spacing:</strong> Reduced padding and min-height
@@ -47,7 +48,7 @@ export function FooterMobileDemo() {
             bottom when stacked
           </li>
         </ul>
-      </div>
+      </Box>
 
       <SingleButtonModal />
       <MultiButtonModal />

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Modal } from "@/Modal";
+import { Box } from "../Box";
 
 function FullscreenModal() {
   const [open, setOpen] = useState(false);
@@ -25,8 +26,7 @@ function FullscreenModal() {
             devices.
           </p>
 
-          <div className="footer-mobile-demo__safe-area-box">
-            <strong>🍎 iOS Safe Area Features:</strong>
+          <Box variant="success" title="🍎 iOS Safe Area Features:">
             <ul>
               <li>
                 <code>env(safe-area-inset-bottom)</code> automatically adds
@@ -36,10 +36,9 @@ function FullscreenModal() {
               <li>Works on iPhone X, 11, 12, 13, 14 series and newer</li>
               <li>Gracefully degrades on devices without safe areas</li>
             </ul>
-          </div>
+          </Box>
 
-          <div className="footer-mobile-demo__instructions">
-            <h4>Test Instructions:</h4>
+          <Box variant="warning" title="Test Instructions:">
             <ol>
               <li>Open this page on an iPhone (iOS Safari)</li>
               <li>Tap this "Fullscreen Modal" button</li>
@@ -49,7 +48,7 @@ function FullscreenModal() {
               </li>
               <li>Try rotating to landscape to see how it adapts</li>
             </ol>
-          </div>
+          </Box>
         </Modal.Body>
         <Modal.Footer>
           <Modal.Button variant="secondary" onClick={handleClose}>

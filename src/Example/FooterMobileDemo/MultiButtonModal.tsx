@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Modal } from "@/Modal";
+import { Box } from "../Box";
 
 function MultiButtonModal() {
   const [open, setOpen] = useState(false);
@@ -27,15 +28,14 @@ function MultiButtonModal() {
             This modal demonstrates mobile optimization when multiple buttons
             are present.
           </p>
-          <div className="footer-mobile-demo__mobile-info">
-            <strong>📱 On Mobile (≤768px):</strong>
+          <Box variant="success" title="📱 On Mobile (≤768px):">
             <ul>
               <li>Buttons stack vertically (column-reverse)</li>
               <li>Primary action appears at bottom</li>
               <li>Full-width buttons (100% width)</li>
               <li>44px min-height for touch accessibility</li>
             </ul>
-          </div>
+          </Box>
         </Modal.Body>
         <Modal.Footer>
           <Modal.Button variant="secondary" onClick={handleClose}>

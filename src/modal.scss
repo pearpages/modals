@@ -104,7 +104,8 @@
   flex-direction: column; /* Enable flexbox layout for header/body/footer */
   min-height: 0; /* Allow flex children to shrink */
 
-  input {
+  input,
+  textarea {
     box-sizing: border-box;
   }
 
