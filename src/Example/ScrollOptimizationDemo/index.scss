@@ -1,0 +1,285 @@
+// ScrollOptimizationDemo Component Styles
+// BEM naming convention with kebab-case
+
+.scroll-optimization-demo {
+  // Action buttons layout
+  &__actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  // Modal content styles
+  &__paragraph {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+    color: #495057;
+  }
+
+  // Test features section
+  &__test-features {
+    padding: 0 0 1rem 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 1rem;
+  }
+
+  &__features-title {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #495057;
+  }
+
+  &__features-list {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+    color: #495057;
+
+    li {
+      margin-bottom: 0.25rem;
+      line-height: 1.4;
+    }
+  }
+
+  // Modal buttons
+  &__modal-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+    &--primary {
+      background: #007bff;
+      color: white;
+
+      &:hover {
+        background: #0056b3;
+      }
+    }
+
+    &--secondary {
+      background: #6c757d;
+      color: white;
+
+      &:hover {
+        background: #545b62;
+      }
+    }
+
+    &--success {
+      background: #28a745;
+      color: white;
+
+      &:hover {
+        background: #1e7e34;
+      }
+    }
+
+    &--purple {
+      background: #6f42c1;
+      color: white;
+
+      &:hover {
+        background: #5a32a3;
+      }
+    }
+  }
+
+  // Form section styles
+  &__form-section {
+    margin-bottom: 2rem;
+  }
+
+  &__section-title {
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #495057;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__input,
+  &__textarea {
+    padding: 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 1rem;
+    transition: border-color 0.15s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+
+    &::placeholder {
+      color: #6c757d;
+    }
+  }
+
+  &__textarea {
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+  }
+
+  // Image section styles
+  &__image-section {
+    margin-bottom: 2rem;
+  }
+
+  &__placeholder-image {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    font-weight: 500;
+    border: 2px dashed #dee2e6;
+  }
+
+  // Table section styles
+  &__table-intro {
+    margin-bottom: 1rem;
+  }
+
+  &__table-title {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #495057;
+  }
+
+  &__table-description {
+    margin: 0;
+    color: #6c757d;
+    line-height: 1.5;
+  }
+
+  &__table-container {
+    overflow-x: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    margin-bottom: 2rem;
+  }
+
+  &__table {
+    width: 100%;
+    min-width: 700px; // Ensures horizontal scroll in smaller modals
+    border-collapse: collapse;
+  }
+
+  &__table-head {
+    background: #f8f9fa;
+  }
+
+  &__table-header {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+    font-weight: 600;
+    color: #495057;
+    white-space: nowrap;
+  }
+
+  &__table-row {
+    &:hover {
+      background: #f8f9fa;
+    }
+  }
+
+  &__table-cell {
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+    color: #495057;
+    white-space: nowrap;
+  }
+
+  &__table-button {
+    padding: 0.25rem 0.5rem;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background: #0056b3;
+    }
+  }
+
+  // Table summary styles
+  &__table-summary {
+    margin-top: 2rem;
+  }
+
+  &__summary-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #495057;
+  }
+
+  &__summary-text {
+    margin: 0;
+    color: #6c757d;
+    line-height: 1.5;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .scroll-optimization-demo {
+    padding: 1rem;
+
+    &__title {
+      font-size: 1.5rem;
+    }
+
+    &__actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__button {
+      width: 100%;
+      text-align: center;
+    }
+
+    &__table-container {
+      // Allow horizontal scroll on mobile
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .scroll-optimization-demo {
+    padding: 0.75rem;
+
+    &__title {
+      font-size: 1.25rem;
+    }
+
+    &__button {
+      padding: 0.625rem 1rem;
+      font-size: 0.875rem;
+    }
+  }
+}
