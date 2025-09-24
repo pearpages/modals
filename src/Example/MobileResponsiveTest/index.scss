@@ -1,0 +1,216 @@
+// MobileResponsiveTest Component Styles
+// BEM naming convention with kebab-case
+
+.mobile-responsive-test {
+  // Instructions section
+  &__instructions {
+    background: #e7f3ff;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+
+  &__instructions-title {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #495057;
+    font-weight: 600;
+  }
+
+  &__instructions-list {
+    margin: 0.5rem 0;
+    padding-left: 1rem;
+    color: #495057;
+  }
+
+  &__instruction {
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+
+    strong {
+      color: #212529;
+    }
+  }
+
+  // Action buttons
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  // Modal content styles
+  &__behavior-info {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+
+    strong {
+      color: #495057;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    ul {
+      margin: 0.5rem 0;
+      padding-left: 1rem;
+      font-size: 0.9rem;
+
+      li {
+        margin-bottom: 0.25rem;
+
+        strong {
+          display: inline;
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  &__test-info {
+    background: #d1ecf1;
+    padding: 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #495057;
+    margin-top: 1rem;
+
+    strong {
+      color: #212529;
+    }
+  }
+
+  &__content-block {
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border-radius: 4px;
+
+    &--even {
+      background: #f8f9fa;
+    }
+
+    &--odd {
+      background: #e9ecef;
+    }
+
+    strong {
+      color: #495057;
+    }
+
+    p {
+      margin: 0.25rem 0 0 0;
+      font-size: 0.9rem;
+      color: #6c757d;
+      line-height: 1.4;
+    }
+  }
+
+  &__features {
+    background: #d4edda;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+
+    strong {
+      color: #155724;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    ul {
+      margin: 0.5rem 0;
+      padding-left: 1rem;
+      font-size: 0.9rem;
+
+      li {
+        margin-bottom: 0.25rem;
+        color: #155724;
+      }
+    }
+  }
+
+  &__note {
+    background: #fff3cd;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+    color: #856404;
+
+    strong {
+      color: #533f03;
+    }
+
+    code {
+      background: rgba(0, 0, 0, 0.1);
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 0.85rem;
+    }
+  }
+
+  // Modal body content
+  &__modal-content {
+    p {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+      color: #495057;
+
+      code {
+        background: #f8f9fa;
+        padding: 0.2rem 0.4rem;
+        border-radius: 3px;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        font-size: 0.9rem;
+        color: #e83e8c;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .mobile-responsive-test {
+    &__actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__instructions {
+      padding: 0.75rem;
+      font-size: 0.85rem;
+    }
+
+    &__instructions-list {
+      padding-left: 0.75rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-responsive-test {
+    &__instructions {
+      padding: 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    &__content-block {
+      padding: 0.5rem;
+
+      p {
+        font-size: 0.85rem;
+      }
+    }
+
+    &__behavior-info,
+    &__test-info,
+    &__features,
+    &__note {
+      padding: 0.75rem;
+      font-size: 0.85rem;
+    }
+  }
+}
