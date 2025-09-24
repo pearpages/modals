@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { useModalContext } from "@/ModalProvider";
 import { ConfirmationModal } from "../UsageExamples/ConfirmationModal";
-import { InfoModal } from "../UsageExamples/InfoModal";
-import { NestedModals } from "./NestedModals";
 import { ActionDemo } from "../UsageExamples/ActionDemo";
-import { InteractiveActions } from "./InteractiveActions";
 import { Demo } from "../Demo";
 import "./index.scss";
 
@@ -35,10 +32,7 @@ const ModalExamples: React.FC = () => {
 
       <div className="modal-examples__examples-grid">
         <ConfirmationModal demoData={demoData} />
-        <InfoModal demoData={demoData} stack={stack} />
-        <NestedModals registry={registry} />
         <ActionDemo />
-        <InteractiveActions setDemoData={setDemoData} />
       </div>
 
       <div className="modal-examples__status-section">
