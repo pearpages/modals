@@ -17,6 +17,7 @@ export function ModalTriggerDemo() {
         <Demo
           title="✨ Modal.Trigger Demo"
           description="Task 6 implementation: Modal.Trigger sugar component"
+          defaultExpanded={false}
         >
           <div className="modal-trigger-demo__sections">
             {/* Basic trigger section */}

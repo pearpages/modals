@@ -12,6 +12,7 @@ export function FooterMobileDemo() {
       <Demo
         title="💡 Use Case 4: Mobile Footer Optimization"
         description="Modals with optimized footers for mobile devices."
+        defaultExpanded={false}
       >
         <div className="footer-mobile-demo__grid">
           <SingleButtonModal.Trigger />

@@ -19,6 +19,7 @@ export function ScrollOptimizationDemo() {
       <Demo
         title="📜 Scroll Optimization Demo"
         description="Testing optimized modal content overflow and scrolling behavior."
+        defaultExpanded={false}
       >
         <div className="scroll-optimization-demo__actions">
           <LongContentModal.Trigger onOpenChange={setLongContentOpen} />

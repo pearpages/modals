@@ -11,6 +11,7 @@ export function ConfirmationModal({ demoData }: Props) {
     <Demo
       title="💡 Use Case 1: Confirmation Dialog"
       description="Classic confirmation pattern for destructive actions."
+      defaultExpanded={false}
     >
       <DeleteUserModal.Trigger />
       <DeleteUserModal demoData={demoData} />

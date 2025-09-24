@@ -44,6 +44,7 @@ export function AccessibilityDemo() {
     <Demo
       title="♿ Accessibility Demo"
       description="Demonstrates proper ARIA linking and accessibility features."
+      defaultExpanded={false}
     >
       <FeatureBox />
       <AccessibiltyTestBox />

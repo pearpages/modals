@@ -9,6 +9,7 @@ export function ActionDemo() {
     <Demo
       title="⚡ Use Case 4: Dismiss Behavior"
       description="Test different dismiss configurations."
+      defaultExpanded={false}
     >
       <div className="action-demo__button-group">
         <NoBackdropModal.Trigger />
