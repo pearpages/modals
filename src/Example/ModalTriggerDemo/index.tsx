@@ -1,6 +1,5 @@
 import { ModalSystem } from "@/ModalSystem";
 import { Demo } from "@/Example/Demo";
-import { Task8Example } from "@/Task8Example";
 import { BasicTriggerModal } from "./BasicTriggerModal";
 import { CustomStyledModal } from "./CustomStyledModal";
 import { DisabledTriggerModal } from "./DisabledTriggerModal";

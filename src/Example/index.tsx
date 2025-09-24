@@ -12,7 +12,7 @@ import { ModalBodyContentTypesDemo } from "./ModalBodyContentTypesDemo";
 import "./index.scss";
 import { MobileResponsiveTest } from "./MobileResponsiveTest";
 import { ProgrammaticModalExample } from "./ProgrammaticModalExample";
-import { Task8Example } from "@/Task8Example";
+import { Task8Example } from "@/Example/Task8Example";
 import { ModalContentShowcase } from "./ModalContentShowcase";
 
 /**
