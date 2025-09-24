@@ -4,6 +4,7 @@ import { CompleteAccessibilityModal } from "./CompleteAccessibilityModal";
 import { TitleOnlyModal } from "./TitleOnlyModal";
 import { CustomIdsModal } from "./CustomIdsModal";
 import { Box } from "../Box";
+import { FlexGroup } from "../FlexGroup";
 
 const FeatureBox = () => (
   <Box variant="success" title="✅ Accessibility Features Implemented:">
@@ -48,11 +49,11 @@ export function AccessibilityDemo() {
       <FeatureBox />
       <AccessibiltyTestBox />
 
-      <div className="accessibility-demo__button-group">
+      <FlexGroup>
         <CompleteAccessibilityModal.Trigger />
         <TitleOnlyModal.Trigger />
         <CustomIdsModal.Trigger />
-      </div>
+      </FlexGroup>
 
       <CompleteAccessibilityModal />
       <TitleOnlyModal />

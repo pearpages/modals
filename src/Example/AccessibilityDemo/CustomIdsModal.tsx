@@ -17,7 +17,7 @@ function CustomIdsModal() {
       </p>
 
       <Box variant="success" title="🔍 Custom IDs in use:">
-        <ul className="accessibility-demo__list">
+        <ul>
           <li>
             Modal.Title: <code>id="custom-title-id"</code>
           </li>

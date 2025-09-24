@@ -17,7 +17,7 @@ function TitleOnlyModal() {
       </p>
 
       <Box variant="warning" title="🔍 Check the attributes:">
-        <ul className="accessibility-demo__list">
+        <ul>
           <li>
             <code>aria-labelledby</code> will point to Modal.Title
           </li>

@@ -1,18 +1,4 @@
 .accessibility-demo {
-  &__button-group {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  &__info-box {
-    background: #d1ecf1;
-    padding: 1rem;
-    border-radius: 4px;
-    margin-top: 1rem;
-    font-size: 0.9em;
-  }
-
   &__input {
     width: 100%;
     padding: 0.5rem;
