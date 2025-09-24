@@ -257,3 +257,41 @@ Modal library now features advanced component architecture and enhanced develope
 
 ### 🎨 Enhancement Features
 - [x] **Create Modal.Button component** - ✅ COMPLETED: Full implementation with 5 variants (primary, secondary, danger, success, warning), 3 sizes, loading states, asChild pattern, and complete TypeScript definitions. Integrated into compound component pattern and hybrid export strategy.
+
+## Development Recipes & Patterns
+
+### 📋 Recipe: Component Refactoring with Folder Structure
+
+**Use Case:** Refactoring large components with inline styles into organized, modular architecture with external CSS files.
+
+**Steps:**
+1. **Create component folder** - `src/Example/ComponentName/`
+2. **Create index.tsx** - Move component logic, convert inline styles to CSS classes
+3. **Create index.scss** - Extract all inline styles using BEM kebab-case naming
+4. **Add functionality** - Wire up hooks, event handlers, real interactions
+5. **Extract subcomponents** - Break large components into smaller, focused files
+6. **Create compound patterns** - Add `.Trigger` components for self-contained behavior
+
+**Example Structure:**
+```
+src/Example/AccessibilityDemo/
+├── index.tsx              # Main component, imports others
+├── index.scss             # Shared styles (BEM kebab-case)
+├── CompleteAccessibilityModal.tsx  # Self-contained modal + trigger
+├── TitleOnlyModal.tsx     # Self-contained modal + trigger
+├── CustomIdsModal.tsx     # Self-contained modal + trigger
+└── Demo.tsx              # Reusable collapsible demo component
+```
+
+**Key Patterns:**
+- **BEM naming**: `.accessibility-demo__button--primary` (kebab-case)
+- **Compound components**: `CompleteAccessibilityModal.Trigger`
+- **Absolute imports**: `import { Modal } from '@/Modal'`
+- **asChild pattern**: `<Modal.Trigger asChild><Modal.Button></Modal.Trigger>`
+- **Self-contained**: Each modal file includes both modal and trigger
+
+**Benefits:**
+- Clean file organization and easier maintenance
+- Reusable components with clear boundaries
+- Consistent styling patterns across components
+- Better developer experience with logical separation

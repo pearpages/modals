@@ -1,0 +1,13 @@
+.action-demo {
+  &__button-group {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  &__code-hint {
+    font-size: 0.9em;
+    color: #666;
+    margin: 0;
+  }
+}
