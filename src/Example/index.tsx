@@ -12,6 +12,7 @@ import { ModalBodyContentTypesDemo } from "./ModalBodyContentTypesDemo";
 import { Modal } from "../Modal";
 import "./index.scss";
 import { MobileResponsiveTest } from "./MobileResponsiveTest";
+import { ProgrammaticModalExample } from "./ProgrammaticModalExample";
 
 /**
  * Example component showcasing the Modal Library in action
@@ -104,6 +105,12 @@ export const Example: React.FC = () => {
       <div style={{ marginBottom: "2rem" }}>
         <ModalSystem>
           <MobileResponsiveTest />
+        </ModalSystem>
+      </div>
+
+      <div style={{ marginBottom: "2rem" }}>
+        <ModalSystem>
+          <ProgrammaticModalExample />
         </ModalSystem>
       </div>
 
