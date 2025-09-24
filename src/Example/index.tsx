@@ -13,6 +13,7 @@ import { Modal } from "../Modal";
 import "./index.scss";
 import { MobileResponsiveTest } from "./MobileResponsiveTest";
 import { ProgrammaticModalExample } from "./ProgrammaticModalExample";
+import { Task8Example } from "@/Task8Example";
 
 /**
  * Example component showcasing the Modal Library in action
@@ -72,6 +73,10 @@ export const Example: React.FC = () => {
         <ModalSystem>
           <ModalBodyDemo />
         </ModalSystem>
+      </div>
+
+      <div style={{ marginBottom: "2rem" }}>
+        <Task8Example />
       </div>
 
       {/* Accessibility Demo */}
