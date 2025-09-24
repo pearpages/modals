@@ -1,5 +1,6 @@
 import { Modal } from "@/Modal";
 import { useModalStack } from "@/ModalProvider";
+import { Box } from "../Box";
 
 function TitleOnlyModal() {
   const modals = useModalStack();
@@ -14,8 +15,8 @@ function TitleOnlyModal() {
         This modal only has a title, no description. The Modal.Content will have{" "}
         <code>aria-labelledby</code> but no <code>aria-describedby</code>.
       </p>
-      <div className="accessibility-demo__info-box">
-        <strong>🔍 Check the attributes:</strong>
+
+      <Box variant="warning" title="🔍 Check the attributes:">
         <ul className="accessibility-demo__list">
           <li>
             <code>aria-labelledby</code> will point to Modal.Title
@@ -25,7 +26,7 @@ function TitleOnlyModal() {
           </li>
           <li>This is perfectly valid - description is optional</li>
         </ul>
-      </div>
+      </Box>
     </>
   );
 

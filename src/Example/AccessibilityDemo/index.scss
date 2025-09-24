@@ -1,21 +1,8 @@
 .accessibility-demo {
-  &__list {
-    margin: 0.5rem 0;
-    padding-left: 1rem;
-  }
-
   &__button-group {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
-  }
-
-  &__warning-box {
-    background: #f8d7da;
-    padding: 1rem;
-    border-radius: 4px;
-    border: 1px solid #f5c6cb;
-    margin-bottom: 1rem;
   }
 
   &__info-box {

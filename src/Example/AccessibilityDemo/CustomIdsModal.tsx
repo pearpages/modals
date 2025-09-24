@@ -1,5 +1,6 @@
 import { Modal } from "@/Modal";
 import { useModalStack } from "@/ModalProvider";
+import { Box } from "../Box";
 
 function CustomIdsModal() {
   const modals = useModalStack();
@@ -15,8 +16,7 @@ function CustomIdsModal() {
         needed. The aria linking will work with your custom IDs.
       </p>
 
-      <div className="accessibility-demo__info-box">
-        <strong>🔍 Custom IDs in use:</strong>
+      <Box variant="success" title="🔍 Custom IDs in use:">
         <ul className="accessibility-demo__list">
           <li>
             Modal.Title: <code>id="custom-title-id"</code>
@@ -31,7 +31,7 @@ function CustomIdsModal() {
             Modal.Content: <code>aria-describedby="custom-desc-id"</code>
           </li>
         </ul>
-      </div>
+      </Box>
     </>
   );
 

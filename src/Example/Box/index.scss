@@ -1,4 +1,4 @@
-.list {
+.box {
   padding: 1rem;
   border-radius: 4px;
   margin-bottom: 1rem;
@@ -10,5 +10,9 @@
 
   &--warning {
     background: #fff3cd;
+  }
+
+  &--danger {
+    background: #f8d7da;
   }
 }

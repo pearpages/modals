@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal } from "@/Modal";
 import { useModalStack } from "@/index";
+import { Box } from "../Box";
 
 export function CompleteAccessibilityModal() {
   const modals = useModalStack();
@@ -9,7 +10,7 @@ export function CompleteAccessibilityModal() {
 
   const handleCancel = () => {
     modals.close("accessibility-complete");
-    setDeleteText(""); // Reset form when canceling
+    setDeleteText("");
   };
 
   const handleDelete = async () => {
@@ -19,8 +20,7 @@ export function CompleteAccessibilityModal() {
     }
 
     setIsDeleting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate API call
 
     alert("Account deleted successfully! (This is just a demo)");
     modals.close("accessibility-complete");
@@ -30,14 +30,15 @@ export function CompleteAccessibilityModal() {
 
   const body = (
     <>
-      <div className="accessibility-demo__warning-box">
-        <strong>⚠️ Warning:</strong> This will permanently delete your account
-        and all associated data. This action cannot be reversed.
-      </div>
+      <Box variant="danger" title="⚠️ Warning: ">
+        This will permanently delete your account and all associated data. This
+        action cannot be reversed.
+      </Box>
 
       <p>
         To confirm deletion, type <strong>"DELETE"</strong> in the field below:
       </p>
+
       <input
         type="text"
         placeholder="Type DELETE to confirm"
@@ -47,9 +48,11 @@ export function CompleteAccessibilityModal() {
         disabled={isDeleting}
       />
 
-      <div className="accessibility-demo__info-box">
-        <strong>🔍 Inspect this modal:</strong>
-        <ul className="accessibility-demo__list">
+      <br />
+      <br />
+
+      <Box variant="success" title="🔍 Inspect this modal:">
+        <ul>
           <li>
             Modal.Content has <code>aria-labelledby</code> pointing to title
           </li>
@@ -59,7 +62,7 @@ export function CompleteAccessibilityModal() {
           </li>
           <li>Screen readers will announce both title and description</li>
         </ul>
-      </div>
+      </Box>
     </>
   );
 
