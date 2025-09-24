@@ -3,10 +3,10 @@ import { Demo } from "@/Example/Demo";
 import { CompleteAccessibilityModal } from "./CompleteAccessibilityModal";
 import { TitleOnlyModal } from "./TitleOnlyModal";
 import { CustomIdsModal } from "./CustomIdsModal";
+import { List } from "../List";
 
 const FeatureBox = () => (
-  <div className="accessibility-demo__feature-box">
-    <strong>✅ Accessibility Features Implemented:</strong>
+  <List variant="success" title="✅ Accessibility Features Implemented:">
     <ul className="accessibility-demo__list">
       <li>
         <code>role="dialog"</code> on Modal.Content
@@ -23,12 +23,11 @@ const FeatureBox = () => (
       <li>Focus trap and focus restoration</li>
       <li>Keyboard navigation (Escape key)</li>
     </ul>
-  </div>
+  </List>
 );
 
 const AccessibiltyTestBox = () => (
-  <div className="accessibility-demo__test-box">
-    <strong>🔍 How to test accessibility:</strong>
+  <List variant="warning" title="🔍 How to test accessibility:">
     <ol className="accessibility-demo__list">
       <li>Use screen reader (VoiceOver on Mac, NVDA on Windows)</li>
       <li>Open modal and listen to announcements</li>
@@ -36,7 +35,7 @@ const AccessibiltyTestBox = () => (
       <li>Tab through elements to test focus trap</li>
       <li>Press Escape to test keyboard navigation</li>
     </ol>
-  </div>
+  </List>
 );
 
 export function AccessibilityDemo() {
