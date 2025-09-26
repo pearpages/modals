@@ -1,15 +1,15 @@
-import React from 'react';
-import { Modal } from '@/Modal';
+import React from "react";
+import { Modal } from "@/Modal";
 
 const NoBackdropModal = () => {
   const features = [
-    { icon: '✅', text: 'Close button still works' },
-    { icon: '✅', text: 'Escape key still works (unless disabled)' },
-    { icon: '❌', text: 'Backdrop clicks are ignored' }
+    { icon: "✅", text: "Close button still works" },
+    { icon: "✅", text: "Escape key still works (unless disabled)" },
+    { icon: "❌", text: "Backdrop clicks are ignored" },
   ];
 
   const handleClose = () => {
-    console.log('Closing no backdrop modal (button works!)...');
+    console.log("Closing no backdrop modal (button works!)...");
   };
 
   return (
@@ -36,12 +36,14 @@ const NoBackdropModal = () => {
 
           <ul className="no-backdrop-modal__features-list">
             {features.map((feature, index) => (
-              <li key={index}>{feature.icon} {feature.text}</li>
+              <li key={index}>
+                {feature.icon} {feature.text}
+              </li>
             ))}
           </ul>
 
           <div className="no-backdrop-modal__code-example">
-            {'<Modal.Content closeOnBackdrop={false}>'}
+            {"<Modal.Content closeOnBackdrop={false}>"}
           </div>
         </div>
 
@@ -59,23 +61,24 @@ const NoBackdropModal = () => {
 };
 
 // Create compound component with Trigger
-NoBackdropModal.Trigger = ({ children, onClick, ...props }: {
+NoBackdropModal.Trigger = ({
+  children,
+  onClick,
+  ...props
+}: {
   children: React.ReactNode;
   onClick?: () => void;
-} & React.ComponentProps<'div'>) => {
+} & React.ComponentProps<"div">) => {
   const handleClick = () => {
-    console.log('Opening no backdrop modal...');
+    console.log("Opening no backdrop modal...");
     onClick?.();
   };
 
   return (
-    <Modal.Trigger target="no-backdrop-modal" {...props}>
-      <button
-        className="modal-content-showcase__trigger-button modal-content-showcase__trigger-button--warning"
-        onClick={handleClick}
-      >
+    <Modal.Trigger target="no-backdrop-modal" {...props} asChild>
+      <Modal.Button variant="warning" onClick={handleClick}>
         {children}
-      </button>
+      </Modal.Button>
     </Modal.Trigger>
   );
 };

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Modal } from '@/Modal';
+import React from "react";
+import { Modal } from "@/Modal";
 
 const AutoSizeModal = () => {
   return (
@@ -21,7 +21,7 @@ const AutoSizeModal = () => {
         <Modal.Footer>
           <Modal.Button
             variant="secondary"
-            onClick={() => console.log('Auto modal closed')}
+            onClick={() => console.log("Auto modal closed")}
           >
             Close
           </Modal.Button>
@@ -32,23 +32,24 @@ const AutoSizeModal = () => {
 };
 
 // Create compound component with Trigger
-AutoSizeModal.Trigger = ({ children, onClick, ...props }: {
+AutoSizeModal.Trigger = ({
+  children,
+  onClick,
+  ...props
+}: {
   children: React.ReactNode;
   onClick?: () => void;
-} & React.ComponentProps<'div'>) => {
+} & React.ComponentProps<"div">) => {
   const handleClick = () => {
-    console.log('Opening auto size modal...');
+    console.log("Opening auto size modal...");
     onClick?.();
   };
 
   return (
-    <Modal.Trigger target="auto-modal" {...props}>
-      <button
-        className="modal-content-showcase__trigger-button modal-content-showcase__trigger-button--primary"
-        onClick={handleClick}
-      >
+    <Modal.Trigger target="auto-modal" {...props} asChild>
+      <Modal.Button variant="primary" onClick={handleClick}>
         {children}
-      </button>
+      </Modal.Button>
     </Modal.Trigger>
   );
 };

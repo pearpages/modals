@@ -6,6 +6,7 @@ import FullScreenModal from "./FullScreenModal";
 import CustomStyledModal from "./CustomStyledModal";
 import NoBackdropModal from "./NoBackdropModal";
 import "./index.scss";
+import { FlexGroup } from "../FlexGroup";
 
 /**
  * Showcase component demonstrating Modal.Content with different sizes
@@ -13,21 +14,17 @@ import "./index.scss";
 export const ModalContentShowcase: React.FC = () => {
   return (
     <Demo title="🎨 Modal.Content Examples" defaultExpanded={false}>
-      <div className="modal-content-showcase__trigger-buttons">
+      <FlexGroup>
         <AutoSizeModal.Trigger>Auto Size Modal</AutoSizeModal.Trigger>
-
         <MediumModal.Trigger>Medium Modal</MediumModal.Trigger>
-
         <FullScreenModal.Trigger>Full Screen Modal</FullScreenModal.Trigger>
-
         <CustomStyledModal.Trigger>
           Custom Styled Modal
         </CustomStyledModal.Trigger>
-
         <NoBackdropModal.Trigger>
           No Backdrop Close Modal
         </NoBackdropModal.Trigger>
-      </div>
+      </FlexGroup>
 
       <AutoSizeModal />
       <MediumModal />

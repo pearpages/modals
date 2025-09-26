@@ -250,7 +250,7 @@
     font-size: 0.875rem;
     line-height: 1.5;
     margin-bottom: 1rem;
-    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-family: var(--modal-font-family-mono);
   }
 
   &__json-example {
@@ -274,7 +274,7 @@
       overflow-x: auto;
       font-size: 0.8rem;
       margin: 0;
-      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-family: var(--modal-font-family-mono);
     }
   }
 

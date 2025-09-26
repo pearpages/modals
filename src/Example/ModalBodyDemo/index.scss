@@ -93,7 +93,7 @@
     overflow: auto;
     background: none;
     border: none;
-    font-family: 'Consolas', 'Monaco', monospace;
+    font-family: var(--modal-font-family-mono);
   }
 
   &__footer-button {

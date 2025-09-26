@@ -130,7 +130,7 @@
   &__textarea {
     resize: vertical;
     min-height: 100px;
-    font-family: inherit;
+    font-family: var(--modal-font-family);
   }
 
   // Image section styles

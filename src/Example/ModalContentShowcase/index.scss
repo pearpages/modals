@@ -325,7 +325,7 @@
       background: rgba(0, 0, 0, 0.1);
       padding: 0.2em 0.4em;
       border-radius: 3px;
-      font-family: 'Consolas', 'Monaco', monospace;
+      font-family: var(--modal-font-family-mono);
     }
   }
 
@@ -343,7 +343,7 @@
     padding: 1rem;
     background: #f8f9fa;
     border-radius: 4px;
-    font-family: monospace;
+    font-family: var(--modal-font-family-mono);
     font-size: 0.9em;
     border: 1px solid #e9ecef;
   }

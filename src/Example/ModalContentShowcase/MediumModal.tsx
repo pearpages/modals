@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
-import { Modal } from '@/Modal';
+import React, { useState } from "react";
+import { Modal } from "@/Modal";
 
 const MediumModal = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: ''
+    name: "",
+    email: "",
   });
 
-  const handleInputChange = (field: 'name' | 'email') => (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({ ...prev, [field]: e.target.value }));
-  };
+  const handleInputChange =
+    (field: "name" | "email") => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData((prev) => ({ ...prev, [field]: e.target.value }));
+    };
 
   const handleSave = () => {
-    console.log('Saving form data:', formData);
+    console.log("Saving form data:", formData);
     // Reset form
-    setFormData({ name: '', email: '' });
+    setFormData({ name: "", email: "" });
   };
 
   const handleCancel = () => {
-    console.log('Canceling form...');
+    console.log("Canceling form...");
     // Reset form
-    setFormData({ name: '', email: '' });
+    setFormData({ name: "", email: "" });
   };
 
   return (
@@ -45,27 +46,23 @@ const MediumModal = () => {
 
           <form className="md-modal__form">
             <div className="md-modal__form-field">
-              <label className="md-modal__label">
-                Name:
-              </label>
+              <label className="md-modal__label">Name:</label>
               <input
                 type="text"
                 className="md-modal__input"
                 placeholder="Enter your name"
                 value={formData.name}
-                onChange={handleInputChange('name')}
+                onChange={handleInputChange("name")}
               />
             </div>
             <div className="md-modal__form-field">
-              <label className="md-modal__label">
-                Email:
-              </label>
+              <label className="md-modal__label">Email:</label>
               <input
                 type="email"
                 className="md-modal__input"
                 placeholder="Enter your email"
                 value={formData.email}
-                onChange={handleInputChange('email')}
+                onChange={handleInputChange("email")}
               />
             </div>
           </form>
@@ -91,23 +88,24 @@ const MediumModal = () => {
 };
 
 // Create compound component with Trigger
-MediumModal.Trigger = ({ children, onClick, ...props }: {
+MediumModal.Trigger = ({
+  children,
+  onClick,
+  ...props
+}: {
   children: React.ReactNode;
   onClick?: () => void;
-} & React.ComponentProps<'div'>) => {
+} & React.ComponentProps<"div">) => {
   const handleClick = () => {
-    console.log('Opening medium modal with form...');
+    console.log("Opening medium modal with form...");
     onClick?.();
   };
 
   return (
-    <Modal.Trigger target="md-modal" {...props}>
-      <button
-        className="modal-content-showcase__trigger-button modal-content-showcase__trigger-button--success"
-        onClick={handleClick}
-      >
+    <Modal.Trigger target="md-modal" {...props} asChild>
+      <Modal.Button variant="success" onClick={handleClick}>
         {children}
-      </button>
+      </Modal.Button>
     </Modal.Trigger>
   );
 };

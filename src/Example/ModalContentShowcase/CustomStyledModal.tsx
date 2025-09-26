@@ -1,25 +1,22 @@
-import React from 'react';
-import { Modal } from '@/Modal';
+import React from "react";
+import { Modal } from "@/Modal";
 
 const CustomStyledModal = () => {
   const features = [
-    'Custom gradient background',
-    'Custom typography and colors',
-    'Backdrop blur effects',
-    'Maintained accessibility',
-    'Full animation support'
+    "Custom gradient background",
+    "Custom typography and colors",
+    "Backdrop blur effects",
+    "Maintained accessibility",
+    "Full animation support",
   ];
 
   const handleClose = () => {
-    console.log('Closing custom styled modal...');
+    console.log("Closing custom styled modal...");
   };
 
   return (
     <Modal id="custom-modal">
-      <Modal.Content
-        size="md"
-        className="custom-modal__content"
-      >
+      <Modal.Content size="md" className="custom-modal__content">
         <Modal.Header className="custom-modal__header">
           <Modal.Title>Custom Styled Modal</Modal.Title>
           <Modal.Description className="custom-modal__description">
@@ -29,13 +26,11 @@ const CustomStyledModal = () => {
         </Modal.Header>
 
         <div className="custom-modal__body">
-          <h3 className="custom-modal__title">
-            Beautiful Custom Design
-          </h3>
+          <h3 className="custom-modal__title">Beautiful Custom Design</h3>
           <p className="custom-modal__intro">
-            Modal.Content accepts custom className and style props, allowing
-            you to create stunning designs while maintaining all the
-            accessibility and behavior features.
+            Modal.Content accepts custom className and style props, allowing you
+            to create stunning designs while maintaining all the accessibility
+            and behavior features.
           </p>
 
           <div className="custom-modal__features-box">
@@ -51,10 +46,7 @@ const CustomStyledModal = () => {
         </div>
 
         <Modal.Footer className="custom-modal__footer">
-          <button
-            className="custom-modal__footer-button"
-            onClick={handleClose}
-          >
+          <button className="custom-modal__footer-button" onClick={handleClose}>
             Amazing! Close Modal
           </button>
         </Modal.Footer>
@@ -64,23 +56,24 @@ const CustomStyledModal = () => {
 };
 
 // Create compound component with Trigger
-CustomStyledModal.Trigger = ({ children, onClick, ...props }: {
+CustomStyledModal.Trigger = ({
+  children,
+  onClick,
+  ...props
+}: {
   children: React.ReactNode;
   onClick?: () => void;
-} & React.ComponentProps<'div'>) => {
+} & React.ComponentProps<"div">) => {
   const handleClick = () => {
-    console.log('Opening custom styled modal...');
+    console.log("Opening custom styled modal...");
     onClick?.();
   };
 
   return (
-    <Modal.Trigger target="custom-modal" {...props}>
-      <button
-        className="modal-content-showcase__trigger-button modal-content-showcase__trigger-button--purple"
-        onClick={handleClick}
-      >
+    <Modal.Trigger target="custom-modal" {...props} asChild>
+      <Modal.Button variant="secondary" onClick={handleClick}>
         {children}
-      </button>
+      </Modal.Button>
     </Modal.Trigger>
   );
 };

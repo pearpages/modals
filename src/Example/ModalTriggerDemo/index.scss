@@ -233,7 +233,7 @@
         background: #f8f9fa;
         padding: 0.125rem 0.25rem;
         border-radius: 3px;
-        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        font-family: var(--modal-font-family-mono);
         font-size: 0.875rem;
         color: #e83e8c;
       }
