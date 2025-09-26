@@ -1,7 +1,9 @@
 import React from "react";
 import { Modal } from "@/Modal";
+import { useModalStack } from "@/index";
 
 export const CustomStyledModal = () => {
+  const modals = useModalStack();
   const features = [
     "Custom gradient background",
     "Custom typography and colors",
@@ -10,12 +12,10 @@ export const CustomStyledModal = () => {
     "Full animation support",
   ];
 
-  const handleClose = () => {
-    console.log("Closing custom styled modal...");
-  };
+  const handleClose = () => modals.close(CustomStyledModal.ID);
 
   return (
-    <Modal id="custom-modal-99">
+    <Modal id={CustomStyledModal.ID}>
       <Modal.Content size="md" className="custom-modal__content">
         <Modal.Header className="custom-modal__header">
           <Modal.Title>Custom Styled Modal</Modal.Title>
@@ -55,7 +55,8 @@ export const CustomStyledModal = () => {
   );
 };
 
-// Create compound component with Trigger
+CustomStyledModal.ID = "custom-modal-99" as const;
+
 CustomStyledModal.Trigger = ({
   children,
   onClick,
@@ -70,7 +71,7 @@ CustomStyledModal.Trigger = ({
   };
 
   return (
-    <Modal.Trigger target="custom-modal-99" {...props} asChild>
+    <Modal.Trigger target={CustomStyledModal.ID} {...props} asChild>
       <Modal.Button variant="secondary" onClick={handleClick}>
         {children}
       </Modal.Button>

@@ -1,19 +1,21 @@
 import React from "react";
 import { Modal } from "@/Modal";
+import { useModalStack } from "@/index";
+import { Box } from "../Box";
+
+const features = [
+  { icon: "✅", text: "Close button still works" },
+  { icon: "✅", text: "Escape key still works (unless disabled)" },
+  { icon: "❌", text: "Backdrop clicks are ignored" },
+];
 
 export const NoBackdropModal = () => {
-  const features = [
-    { icon: "✅", text: "Close button still works" },
-    { icon: "✅", text: "Escape key still works (unless disabled)" },
-    { icon: "❌", text: "Backdrop clicks are ignored" },
-  ];
+  const modals = useModalStack();
 
-  const handleClose = () => {
-    console.log("Closing no backdrop modal (button works!)...");
-  };
+  const handleClose = () => modals.close(NoBackdropModal.ID);
 
   return (
-    <Modal id="no-backdrop-modal">
+    <Modal id={NoBackdropModal.ID}>
       <Modal.Content size="md" closeOnBackdrop={false}>
         <Modal.Header>
           <Modal.Title>🚫 No Backdrop Close</Modal.Title>
@@ -24,10 +26,9 @@ export const NoBackdropModal = () => {
         </Modal.Header>
 
         <Modal.Body>
-          <div className="no-backdrop-modal__warning-box">
-            <strong>🎯 Try this:</strong> Click outside this modal (on the
-            backdrop) - it won't close!
-          </div>
+          <Box variant="warning" title="🎯 Try this: ">
+            Click outside this modal (on the backdrop) - it won't close!
+          </Box>
 
           <p className="no-backdrop-modal__description">
             This demonstrates the <code>closeOnBackdrop={false}</code>{" "}
@@ -42,9 +43,9 @@ export const NoBackdropModal = () => {
             ))}
           </ul>
 
-          <div className="no-backdrop-modal__code-example">
-            {"<Modal.Content closeOnBackdrop={false}>"}
-          </div>
+          <Box variant="success">
+            <code>{"<Modal.Content closeOnBackdrop={false}>"}</code>
+          </Box>
         </Modal.Body>
 
         <Modal.Footer>
@@ -57,7 +58,8 @@ export const NoBackdropModal = () => {
   );
 };
 
-// Create compound component with Trigger
+NoBackdropModal.ID = "no-backdrop-modal" as const;
+
 NoBackdropModal.Trigger = ({
   children,
   onClick,
@@ -72,7 +74,7 @@ NoBackdropModal.Trigger = ({
   };
 
   return (
-    <Modal.Trigger target="no-backdrop-modal" {...props} asChild>
+    <Modal.Trigger target={NoBackdropModal.ID} {...props} asChild>
       <Modal.Button variant="warning" onClick={handleClick}>
         {children}
       </Modal.Button>
