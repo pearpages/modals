@@ -1,36 +1,38 @@
 import React from "react";
 import { Modal } from "@/Modal";
+import { useModalStack } from "@/index";
+const dashboardCards = [
+  {
+    title: "Analytics",
+    description:
+      "View detailed analytics and reports with plenty of space for charts and graphs.",
+  },
+  {
+    title: "Settings Panel",
+    description:
+      "Complex configuration interfaces with multiple tabs and sections.",
+  },
+  {
+    title: "Data Tables",
+    description:
+      "Large datasets that need maximum screen real estate for optimal viewing.",
+  },
+  {
+    title: "Media Viewers",
+    description:
+      "Image galleries, video players, or document viewers benefit from full screen.",
+  },
+];
 
-const FullScreenModal = () => {
-  const dashboardCards = [
-    {
-      title: "Analytics",
-      description:
-        "View detailed analytics and reports with plenty of space for charts and graphs.",
-    },
-    {
-      title: "Settings Panel",
-      description:
-        "Complex configuration interfaces with multiple tabs and sections.",
-    },
-    {
-      title: "Data Tables",
-      description:
-        "Large datasets that need maximum screen real estate for optimal viewing.",
-    },
-    {
-      title: "Media Viewers",
-      description:
-        "Image galleries, video players, or document viewers benefit from full screen.",
-    },
-  ];
+export const FullScreenModal = () => {
+  const modals = useModalStack();
 
   const handleExitFullScreen = () => {
-    console.log("Exiting full screen modal...");
+    modals.close(FullScreenModal.ID);
   };
 
   return (
-    <Modal id="full-modal">
+    <Modal id={FullScreenModal.ID}>
       <Modal.Content size="full">
         <Modal.Header>
           <Modal.Title>Full Screen Modal</Modal.Title>
@@ -40,7 +42,7 @@ const FullScreenModal = () => {
           <Modal.Close />
         </Modal.Header>
 
-        <div className="full-modal__content">
+        <Modal.Body>
           <h3 className="full-modal__title">Dashboard Overview</h3>
           <p className="full-modal__description">
             Full screen modals are perfect for:
@@ -54,22 +56,24 @@ const FullScreenModal = () => {
               </div>
             ))}
           </div>
-        </div>
+        </Modal.Body>
 
         <Modal.Footer>
-          <button
+          <Modal.Button
+            variant="danger"
             className="full-modal__footer-button"
             onClick={handleExitFullScreen}
           >
             Exit Full Screen
-          </button>
+          </Modal.Button>
         </Modal.Footer>
       </Modal.Content>
     </Modal>
   );
 };
 
-// Create compound component with Trigger
+FullScreenModal.ID = "full-modal" as const;
+
 FullScreenModal.Trigger = ({
   children,
   onClick,
@@ -84,12 +88,10 @@ FullScreenModal.Trigger = ({
   };
 
   return (
-    <Modal.Trigger target="full-modal" {...props} asChild>
+    <Modal.Trigger target={FullScreenModal.ID} {...props} asChild>
       <Modal.Button variant="danger" onClick={handleClick}>
         {children}
       </Modal.Button>
     </Modal.Trigger>
   );
 };
-
-export default FullScreenModal;

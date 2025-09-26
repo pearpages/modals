@@ -1,27 +1,35 @@
 import React from "react";
 import { Modal } from "@/Modal";
+import { useModalStack } from "@/index";
+import { Box } from "../Box";
 
-const AutoSizeModal = () => {
+export const AutoSizeModal = () => {
+  const modals = useModalStack();
   return (
-    <Modal id="auto-modal">
+    <Modal id={AutoSizeModal.ID}>
       <Modal.Content size="auto">
         <Modal.Header>
           <Modal.Title>Auto Size Modal</Modal.Title>
           <Modal.Close />
         </Modal.Header>
 
-        <div className="auto-modal__content">
+        <Modal.Body>
           <p>
             This modal automatically sizes to fit its content. Perfect for
             alerts, confirmations, or small forms.
           </p>
           <p>The modal will never be larger than necessary.</p>
-        </div>
+          <Box variant="success" title="&lt;Modal.Body&gt;: ">
+            Remember to use &lt;Modal.Body&gt; for the main content, if you want
+            it to be scrollable when the content overflows. Also so the footer
+            renders at the bottom.
+          </Box>
+        </Modal.Body>
 
         <Modal.Footer>
           <Modal.Button
             variant="secondary"
-            onClick={() => console.log("Auto modal closed")}
+            onClick={() => modals.close(AutoSizeModal.ID)}
           >
             Close
           </Modal.Button>
@@ -30,6 +38,8 @@ const AutoSizeModal = () => {
     </Modal>
   );
 };
+
+AutoSizeModal.ID = "auto-modal" as const;
 
 // Create compound component with Trigger
 AutoSizeModal.Trigger = ({
@@ -46,12 +56,10 @@ AutoSizeModal.Trigger = ({
   };
 
   return (
-    <Modal.Trigger target="auto-modal" {...props} asChild>
+    <Modal.Trigger target={AutoSizeModal.ID} {...props} asChild>
       <Modal.Button variant="primary" onClick={handleClick}>
         {children}
       </Modal.Button>
     </Modal.Trigger>
   );
 };
-
-export default AutoSizeModal;

@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal } from "@/Modal";
 
-const NoBackdropModal = () => {
+export const NoBackdropModal = () => {
   const features = [
     { icon: "✅", text: "Close button still works" },
     { icon: "✅", text: "Escape key still works (unless disabled)" },
@@ -23,7 +23,7 @@ const NoBackdropModal = () => {
           <Modal.Close />
         </Modal.Header>
 
-        <div className="no-backdrop-modal__content">
+        <Modal.Body>
           <div className="no-backdrop-modal__warning-box">
             <strong>🎯 Try this:</strong> Click outside this modal (on the
             backdrop) - it won't close!
@@ -45,15 +45,12 @@ const NoBackdropModal = () => {
           <div className="no-backdrop-modal__code-example">
             {"<Modal.Content closeOnBackdrop={false}>"}
           </div>
-        </div>
+        </Modal.Body>
 
         <Modal.Footer>
-          <button
-            className="no-backdrop-modal__footer-button"
-            onClick={handleClose}
-          >
+          <Modal.Button variant="warning" onClick={handleClose}>
             Close Modal (Button Works!)
-          </button>
+          </Modal.Button>
         </Modal.Footer>
       </Modal.Content>
     </Modal>
@@ -82,5 +79,3 @@ NoBackdropModal.Trigger = ({
     </Modal.Trigger>
   );
 };
-
-export default NoBackdropModal;

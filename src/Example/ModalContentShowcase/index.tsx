@@ -1,10 +1,10 @@
 import React from "react";
 import { Demo } from "../Demo";
-import AutoSizeModal from "./AutoSizeModal";
-import MediumModal from "./MediumModal";
-import FullScreenModal from "./FullScreenModal";
-import CustomStyledModal from "./CustomStyledModal";
-import NoBackdropModal from "./NoBackdropModal";
+import { AutoSizeModal } from "./AutoSizeModal";
+import { MediumModal } from "./MediumModal";
+import { FullScreenModal } from "./FullScreenModal";
+import { CustomStyledModal } from "./CustomStyledModal";
+import { NoBackdropModal } from "./NoBackdropModal";
 import "./index.scss";
 import { FlexGroup } from "../FlexGroup";
 

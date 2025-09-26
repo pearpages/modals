@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal } from "@/Modal";
 
-const CustomStyledModal = () => {
+export const CustomStyledModal = () => {
   const features = [
     "Custom gradient background",
     "Custom typography and colors",
@@ -25,7 +25,7 @@ const CustomStyledModal = () => {
           <Modal.Close className="custom-modal__close" />
         </Modal.Header>
 
-        <div className="custom-modal__body">
+        <Modal.Body>
           <h3 className="custom-modal__title">Beautiful Custom Design</h3>
           <p className="custom-modal__intro">
             Modal.Content accepts custom className and style props, allowing you
@@ -43,7 +43,7 @@ const CustomStyledModal = () => {
               ))}
             </ul>
           </div>
-        </div>
+        </Modal.Body>
 
         <Modal.Footer className="custom-modal__footer">
           <button className="custom-modal__footer-button" onClick={handleClose}>
@@ -77,5 +77,3 @@ CustomStyledModal.Trigger = ({
     </Modal.Trigger>
   );
 };
-
-export default CustomStyledModal;

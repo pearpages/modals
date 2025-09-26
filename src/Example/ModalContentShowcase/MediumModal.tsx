@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Modal } from "@/Modal";
+import { useModalStack } from "@/index";
+import { Box } from "../Box";
 
-const MediumModal = () => {
+export const MediumModal = () => {
+  const modals = useModalStack();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -13,20 +16,22 @@ const MediumModal = () => {
     };
 
   const handleSave = () => {
-    console.log("Saving form data:", formData);
+    alert("Saving form data: " + JSON.stringify(formData));
     // Reset form
     setFormData({ name: "", email: "" });
+    modals.close(MediumModal.ID);
   };
 
   const handleCancel = () => {
     console.log("Canceling form...");
     // Reset form
     setFormData({ name: "", email: "" });
+    modals.close(MediumModal.ID);
   };
 
   return (
     <Modal id="md-modal">
-      <Modal.Content size="md">
+      <Modal.Content size="md" closeOnBackdrop={false} closeOnEscape={false}>
         <Modal.Header>
           <Modal.Title>Medium Modal</Modal.Title>
           <Modal.Description>
@@ -34,8 +39,7 @@ const MediumModal = () => {
           </Modal.Description>
           <Modal.Close />
         </Modal.Header>
-
-        <div className="md-modal__content">
+        <Modal.Body>
           <p>This is the default medium size modal, perfect for:</p>
           <ul className="md-modal__use-cases">
             <li>Forms with multiple fields</li>
@@ -66,26 +70,35 @@ const MediumModal = () => {
               />
             </div>
           </form>
-        </div>
+
+          <Box
+            variant="success"
+            title="💡 Backdrop and escape close disabled: "
+          >
+            Additionally this modal is preventing the user from closing it by
+            clicking on the backdrop or pressing the escape key.
+          </Box>
+
+          <Box variant="danger" title="Buttons behavior: ">
+            When more than one button is present in the footer and in mobile
+            view, they will stack vertically.
+          </Box>
+        </Modal.Body>
 
         <Modal.Footer>
-          <button
-            className="md-modal__footer-button md-modal__footer-button--cancel"
-            onClick={handleCancel}
-          >
+          <Modal.Button variant="secondary" onClick={handleCancel}>
             Cancel
-          </button>
-          <button
-            className="md-modal__footer-button md-modal__footer-button--save"
-            onClick={handleSave}
-          >
+          </Modal.Button>
+          <Modal.Button variant="primary" onClick={handleSave}>
             Save
-          </button>
+          </Modal.Button>
         </Modal.Footer>
       </Modal.Content>
     </Modal>
   );
 };
+
+MediumModal.ID = "md-modal" as const;
 
 // Create compound component with Trigger
 MediumModal.Trigger = ({
@@ -95,19 +108,18 @@ MediumModal.Trigger = ({
 }: {
   children: React.ReactNode;
   onClick?: () => void;
-} & React.ComponentProps<"div">) => {
+} & React.ComponentProps<"button">) => {
+  const modals = useModalStack();
+
   const handleClick = () => {
     console.log("Opening medium modal with form...");
+    modals.open(MediumModal.ID);
     onClick?.();
   };
 
   return (
-    <Modal.Trigger target="md-modal" {...props} asChild>
-      <Modal.Button variant="success" onClick={handleClick}>
-        {children}
-      </Modal.Button>
-    </Modal.Trigger>
+    <Modal.Button variant="success" onClick={handleClick} {...props}>
+      {children}
+    </Modal.Button>
   );
 };
-
-export default MediumModal;
