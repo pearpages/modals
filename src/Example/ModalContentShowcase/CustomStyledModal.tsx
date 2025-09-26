@@ -15,7 +15,7 @@ const CustomStyledModal = () => {
   };
 
   return (
-    <Modal id="custom-modal">
+    <Modal id="custom-modal-99">
       <Modal.Content size="md" className="custom-modal__content">
         <Modal.Header className="custom-modal__header">
           <Modal.Title>Custom Styled Modal</Modal.Title>
@@ -70,7 +70,7 @@ CustomStyledModal.Trigger = ({
   };
 
   return (
-    <Modal.Trigger target="custom-modal" {...props} asChild>
+    <Modal.Trigger target="custom-modal-99" {...props} asChild>
       <Modal.Button variant="secondary" onClick={handleClick}>
         {children}
       </Modal.Button>
