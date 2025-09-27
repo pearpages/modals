@@ -1,16 +1,96 @@
 /* Modal SCSS with namespace for library distribution */
 
-/* CSS Custom Properties (Tokens) - Enhanced for beautiful design */
+/* CSS Custom Properties (Tokens) - Enhanced with semantic color system */
 :root {
-  --modal-bg: #ffffff;
-  --modal-color: #1a1a1a;
+  /* === SEMANTIC COLOR TOKENS === */
+
+  /* Surface Colors */
+  --modal-bg: #ffffff;                                 /* Main modal background */
+  --modal-backdrop-bg: rgba(0, 0, 0, 0.6);            /* Backdrop overlay */
+
+  /* Text Colors */
+  --modal-color: #1a1a1a;                             /* Primary text color */
+  --modal-text-secondary: rgba(0, 0, 0, 0.6);         /* Secondary/description text */
+  --modal-text-muted: rgba(0, 0, 0, 0.6);             /* Muted/disabled text */
+
+  /* Border Colors */
+  --modal-border-primary-color: rgba(0, 0, 0, 0.08);        /* Main borders */
+  --modal-border-hover-color: rgba(0, 0, 0, 0.12);          /* Hover state borders */
+  --modal-border-focus-color: rgba(59, 130, 246, 0.5);      /* Focus indicators */
+  --modal-border-accent-color: rgba(255, 255, 255, 0.18);   /* Accent borders */
+
+  /* Interactive Colors */
+  --modal-interactive-hover: rgba(0, 0, 0, 0.04);     /* Hover backgrounds */
+  --modal-interactive-active: rgba(0, 0, 0, 0.08);    /* Active/pressed states */
+  --modal-interactive-focus: rgba(59, 130, 246, 0.1); /* Focus backgrounds */
+
+  /* Component-Specific Colors */
+  --modal-close-bg: rgba(0, 0, 0, 0.04);              /* Close button background */
+  --modal-close-text: rgba(0, 0, 0, 0.6);             /* Close button text */
+  --modal-close-hover-bg: rgba(0, 0, 0, 0.08);        /* Close button hover */
+  --modal-close-hover-text: rgba(0, 0, 0, 0.8);       /* Close button hover text */
+
+  /* Scrollbar Colors */
+  --modal-scrollbar-track: rgba(0, 0, 0, 0.05);       /* Scrollbar track */
+  --modal-scrollbar-thumb: rgba(0, 0, 0, 0.2);        /* Scrollbar thumb */
+  --modal-scrollbar-thumb-hover: rgba(0, 0, 0, 0.35); /* Scrollbar thumb hover */
+  --modal-scrollbar-thumb-active: rgba(0, 0, 0, 0.5); /* Scrollbar thumb active */
+  --modal-scrollbar-border: rgba(255, 255, 255, 0.1); /* Scrollbar thumb border */
+
+  /* Gradient and Surface Colors */
+  --modal-surface-elevated: #f8fafc;                  /* Header/footer elevated surface */
+  --modal-surface-subtle: rgba(248, 250, 252, 0.5);   /* Subtle surface tint */
+  --modal-gradient-highlight: rgba(255, 255, 255, 0.4); /* Top highlight line */
+
+  /* === COMPONENT DESIGN TOKENS === */
+
+  /* Border Radius */
   --modal-radius: 16px;
+  --modal-radius-sm: 4px;
+  --modal-radius-md: 8px;
+
+  /* Blur Effects */
+  --modal-blur-amount: 4px;
+
+  /* Transforms & Animations */
+  --modal-animation-scale: 0.96;
+  --modal-animation-translate-y: -8px;
+
+  /* Breakpoints */
+  --modal-breakpoint-mobile: 768px;
+  --modal-breakpoint-small: 480px;
+
+  /* Component Dimensions */
+  --modal-close-size: 32px;
+  --modal-close-size-mobile: 28px;
+  --modal-min-width: 300px;
+  --modal-min-height-header: 44px;
+  --modal-min-height-header-mobile: 36px;
+  --modal-min-height-footer: 48px;
+  --modal-min-height-footer-mobile: 44px;
+  --modal-touch-target: 44px;
+
+  /* Typography Mobile */
+  --modal-font-size-title-mobile: 1.25rem;
+  --modal-font-size-description-mobile: 0.8rem;
+  --modal-font-size-button: 1rem;
+  --modal-font-size-close: 18px;
+  --modal-font-size-close-mobile: 16px;
+
+  /* Scrollbar Dimensions */
+  --modal-scrollbar-width: 8px;
+  --modal-scrollbar-margin: 4px;
+
+  /* Outline & Focus */
+  --modal-outline-width: 2px;
+  --modal-outline-offset: 2px;
+
+  /* Base Design Tokens */
   --modal-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --modal-width-md: 520px;
   --modal-width-full: 100vw;
-  --modal-backdrop-bg: rgba(0, 0, 0, 0.6);
   --modal-z-index-base: 1000;
   --modal-padding: 1.5rem;
   --modal-transition-duration: 0.25s;
@@ -35,8 +115,8 @@
   --modal-spacing-xl: 2rem;
 
   /* Border and effects */
-  --modal-border: 1px solid rgba(0, 0, 0, 0.08);
-  --modal-border-hover: 1px solid rgba(0, 0, 0, 0.12);
+  --modal-border: 1px solid var(--modal-border-primary-color);
+  --modal-border-hover: 1px solid var(--modal-border-hover-color);
 }
 
 /* Backdrop - Enhanced with better blur effect */
@@ -44,8 +124,8 @@
   position: fixed;
   inset: 0;
   background: var(--modal-backdrop-bg);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px); /* Safari support */
+  backdrop-filter: blur(var(--modal-blur-amount));
+  -webkit-backdrop-filter: blur(var(--modal-blur-amount)); /* Safari support */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -59,7 +139,7 @@
   }
 
   /* Ensure mobile modals are not affected by centering */
-  @media (max-width: 768px) {
+  @media (max-width: var(--modal-breakpoint-mobile)) {
     padding: 0;
     align-items: flex-start;
     justify-content: flex-start;
@@ -74,8 +154,8 @@
 
   &[data-state="open"] {
     opacity: 1;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(var(--modal-blur-amount));
+    -webkit-backdrop-filter: blur(var(--modal-blur-amount));
   }
 
   &[data-state="closing"] {
@@ -102,7 +182,7 @@
   overflow: hidden;
   position: relative; /* Changed from fixed to relative to work with backdrop flexbox */
   outline: none;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid var(--modal-border-accent-color);
   display: flex;
   flex-direction: column; /* Enable flexbox layout for header/body/footer */
   min-height: 0; /* Allow flex children to shrink */
@@ -126,7 +206,7 @@
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(255, 255, 255, 0.4),
+      var(--modal-gradient-highlight),
       transparent
     );
     pointer-events: none;
@@ -135,7 +215,7 @@
   /* Animation states for modal content */
   &[data-state="opening"] {
     opacity: 0;
-    transform: scale(0.96) translateY(-8px);
+    transform: scale(var(--modal-animation-scale)) translateY(var(--modal-animation-translate-y));
   }
 
   &[data-state="open"] {
@@ -145,7 +225,7 @@
 
   &[data-state="closing"] {
     opacity: 0;
-    transform: scale(0.96) translateY(-8px);
+    transform: scale(var(--modal-animation-scale)) translateY(var(--modal-animation-translate-y));
   }
 
   /* Apply transition when animated */
@@ -158,7 +238,7 @@
   /* Size variants */
   &--auto {
     width: auto;
-    min-width: 300px;
+    min-width: var(--modal-min-width);
   }
 
   &--md {
@@ -189,7 +269,7 @@
   }
 
   /* Responsive behavior - Mobile fullscreen as per specs */
-  @media (max-width: 768px) {
+  @media (max-width: var(--modal-breakpoint-mobile)) {
     &--auto,
     &--md {
       width: 100vw;
@@ -231,17 +311,17 @@
   background: linear-gradient(
     180deg,
     var(--modal-bg) 0%,
-    rgba(248, 250, 252, 0.5) 100%
+    var(--modal-surface-subtle) 100%
   );
-  min-height: 44px; /* Reduced for more compact header */
+  min-height: var(--modal-min-height-header); /* Reduced for more compact header */
   flex-shrink: 0; /* Prevent header from shrinking */
 
   /* Compact mobile spacing */
-  @media (max-width: 768px) {
+  @media (max-width: var(--modal-breakpoint-mobile)) {
     padding: var(--modal-spacing-sm) var(--modal-spacing-md)
       var(--modal-spacing-xs);
     gap: var(--modal-spacing-xs);
-    min-height: 36px;
+    min-height: var(--modal-min-height-header-mobile);
   }
 
   /* When header contains only title (no description) - center align content */
@@ -249,7 +329,7 @@
     align-items: center;
     min-height: 40px;
 
-    @media (max-width: 768px) {
+    @media (max-width: var(--modal-breakpoint-mobile)) {
       min-height: 32px;
     }
   }
@@ -258,7 +338,7 @@
   &:not(:has(.modalDescription)) {
     padding-bottom: var(--modal-spacing-sm);
 
-    @media (max-width: 768px) {
+    @media (max-width: var(--modal-breakpoint-mobile)) {
       padding-bottom: var(--modal-spacing-xs);
     }
   }
@@ -281,22 +361,22 @@
   letter-spacing: -0.025em;
 
   /* Optimize for mobile */
-  @media (max-width: 768px) {
-    font-size: 1.25rem; /* Slightly smaller on mobile */
+  @media (max-width: var(--modal-breakpoint-mobile)) {
+    font-size: var(--modal-font-size-title-mobile); /* Slightly smaller on mobile */
     line-height: 1.2;
   }
 }
 
 .modalDescription {
   margin: 0;
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--modal-text-secondary);
   font-size: var(--modal-font-size-description);
   line-height: var(--modal-line-height-description);
   font-weight: 400;
 
   /* Mobile optimizations */
-  @media (max-width: 768px) {
-    font-size: 0.8rem;
+  @media (max-width: var(--modal-breakpoint-mobile)) {
+    font-size: var(--modal-font-size-description-mobile);
     line-height: 1.4;
   }
 }
@@ -348,7 +428,7 @@
   }
 
   /* Mobile fullscreen adjustments */
-  @media (max-width: 768px) {
+  @media (max-width: var(--modal-breakpoint-mobile)) {
     .modal--auto &,
     .modal--md & {
       max-height: none; /* Remove height limit on mobile fullscreen */
@@ -364,26 +444,26 @@
 
   /* Enhanced scrollbar styling with better visibility */
   &::-webkit-scrollbar {
-    width: 8px; /* Slightly wider for better usability */
+    width: var(--modal-scrollbar-width); /* Slightly wider for better usability */
   }
 
   &::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 4px;
-    margin: 4px; /* Add margin to track */
+    background: var(--modal-scrollbar-track);
+    border-radius: var(--modal-radius-sm);
+    margin: var(--modal-scrollbar-margin); /* Add margin to track */
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for definition */
+    background: var(--modal-scrollbar-thumb);
+    border-radius: var(--modal-radius-sm);
+    border: 1px solid var(--modal-scrollbar-border); /* Subtle border for definition */
 
     &:hover {
-      background: rgba(0, 0, 0, 0.35);
+      background: var(--modal-scrollbar-thumb-hover);
     }
 
     &:active {
-      background: rgba(0, 0, 0, 0.5);
+      background: var(--modal-scrollbar-thumb-active);
     }
   }
 
@@ -409,10 +489,10 @@
 
   /* Firefox scrollbar styling */
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05);
+  scrollbar-color: var(--modal-scrollbar-thumb) var(--modal-scrollbar-track);
 
   @media (prefers-color-scheme: dark) {
-    scrollbar-color: rgba(255, 255, 255, 0.25) rgba(255, 255, 255, 0.05);
+    scrollbar-color: var(--modal-scrollbar-thumb) var(--modal-scrollbar-track);
   }
 }
 
@@ -425,17 +505,17 @@
   border-top: var(--modal-border);
   background: linear-gradient(
     180deg,
-    rgba(248, 250, 252, 0.5) 0%,
+    var(--modal-surface-subtle) 0%,
     var(--modal-bg) 100%
   );
-  min-height: 48px; /* Reduced from 64px */
+  min-height: var(--modal-min-height-footer); /* Reduced from 64px */
   flex-shrink: 0; /* Prevent footer from shrinking */
 
   /* Mobile optimizations */
-  @media (max-width: 768px) {
+  @media (max-width: var(--modal-breakpoint-mobile)) {
     /* Compact mobile spacing */
     padding: var(--modal-spacing-sm) var(--modal-spacing-md);
-    min-height: 44px; /* More compact on mobile */
+    min-height: var(--modal-min-height-footer-mobile); /* More compact on mobile */
     gap: var(--modal-spacing-xs);
 
     /* Mobile fullscreen modals */
@@ -455,9 +535,9 @@
         button,
         [role="button"] {
           width: 100%;
-          min-height: 44px; /* iOS touch target guideline */
+          min-height: var(--modal-touch-target); /* iOS touch target guideline */
           padding: var(--modal-spacing-md) var(--modal-spacing-lg);
-          font-size: 1rem;
+          font-size: var(--modal-font-size-button);
           font-weight: 500;
         }
       }
@@ -470,7 +550,7 @@
   }
 
   /* Very small mobile devices */
-  @media (max-width: 480px) {
+  @media (max-width: var(--modal-breakpoint-small)) {
     padding: var(--modal-spacing-xs) var(--modal-spacing-sm);
     min-height: 40px;
 
@@ -482,19 +562,19 @@
 }
 
 .modalClose {
-  background: rgba(0, 0, 0, 0.04);
+  background: var(--modal-close-bg);
   border: none;
   cursor: pointer;
   padding: var(--modal-spacing-sm);
-  border-radius: 8px;
-  color: rgba(0, 0, 0, 0.6);
+  border-radius: var(--modal-radius-md);
+  color: var(--modal-close-text);
   transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 32px;
-  height: 32px;
+  width: var(--modal-close-size);
+  height: var(--modal-close-size);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: var(--modal-font-size-close);
   line-height: 1;
   flex-shrink: 0;
 
@@ -505,10 +585,10 @@
   }
 
   /* Mobile optimizations */
-  @media (max-width: 768px) {
-    width: 28px;
-    height: 28px;
-    font-size: 16px;
+  @media (max-width: var(--modal-breakpoint-mobile)) {
+    width: var(--modal-close-size-mobile);
+    height: var(--modal-close-size-mobile);
+    font-size: var(--modal-font-size-close-mobile);
 
     .modalHeader & {
       margin-top: -1px;
@@ -517,15 +597,15 @@
   }
 
   &:hover {
-    background: rgba(0, 0, 0, 0.08);
-    color: rgba(0, 0, 0, 0.8);
+    background: var(--modal-close-hover-bg);
+    color: var(--modal-close-hover-text);
     transform: scale(1.05);
   }
 
   &:focus {
-    outline: 2px solid rgba(59, 130, 246, 0.5);
-    outline-offset: 2px;
-    background: rgba(59, 130, 246, 0.1);
+    outline: var(--modal-outline-width) solid var(--modal-border-focus-color);
+    outline-offset: var(--modal-outline-offset);
+    background: var(--modal-interactive-focus);
   }
 
   &:active {
@@ -537,24 +617,62 @@
 /* Enhanced Dark mode support */
 @media (prefers-color-scheme: dark) {
   :root {
+    /* Surface Colors */
     --modal-bg: #1f1f23;
-    --modal-color: #f8fafc;
     --modal-backdrop-bg: rgba(0, 0, 0, 0.8);
-    --modal-border: 1px solid rgba(255, 255, 255, 0.08);
-    --modal-border-hover: 1px solid rgba(255, 255, 255, 0.12);
+
+    /* Text Colors */
+    --modal-color: #f8fafc;
+    --modal-text-secondary: rgba(255, 255, 255, 0.7);
+    --modal-text-muted: rgba(255, 255, 255, 0.6);
+
+    /* Border Colors */
+    --modal-border-primary-color: rgba(255, 255, 255, 0.08);
+    --modal-border-hover-color: rgba(255, 255, 255, 0.12);
+    --modal-border-focus-color: rgba(96, 165, 250, 0.6);
+    --modal-border-accent-color: rgba(255, 255, 255, 0.1);
+
+    /* Interactive Colors */
+    --modal-interactive-hover: rgba(255, 255, 255, 0.06);
+    --modal-interactive-active: rgba(255, 255, 255, 0.12);
+    --modal-interactive-focus: rgba(96, 165, 250, 0.15);
+
+    /* Component-Specific Colors */
+    --modal-close-bg: rgba(255, 255, 255, 0.06);
+    --modal-close-text: rgba(255, 255, 255, 0.7);
+    --modal-close-hover-bg: rgba(255, 255, 255, 0.12);
+    --modal-close-hover-text: rgba(255, 255, 255, 0.9);
+
+    /* Scrollbar Colors */
+    --modal-scrollbar-track: rgba(255, 255, 255, 0.05);
+    --modal-scrollbar-thumb: rgba(255, 255, 255, 0.25);
+    --modal-scrollbar-thumb-hover: rgba(255, 255, 255, 0.4);
+    --modal-scrollbar-thumb-active: rgba(255, 255, 255, 0.55);
+    --modal-scrollbar-border: rgba(0, 0, 0, 0.1);
+
+    /* Gradient and Surface Colors */
+    --modal-surface-elevated: #0f0f14;
+    --modal-surface-subtle: rgba(15, 15, 20, 0.5);
+    --modal-gradient-highlight: rgba(255, 255, 255, 0.1);
+
+    /* Component Tokens */
     --modal-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
       0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 20px 25px -5px rgba(0, 0, 0, 0.4),
       0 10px 10px -5px rgba(0, 0, 0, 0.2);
+
+    /* Border Properties */
+    --modal-border: 1px solid var(--modal-border-primary-color);
+    --modal-border-hover: 1px solid var(--modal-border-hover-color);
   }
 
   .modal {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--modal-border-accent-color);
 
     &::before {
       background: linear-gradient(
         90deg,
         transparent,
-        rgba(255, 255, 255, 0.1),
+        var(--modal-gradient-highlight),
         transparent
       );
     }
@@ -564,49 +682,49 @@
     background: linear-gradient(
       180deg,
       var(--modal-bg) 0%,
-      rgba(15, 15, 20, 0.5) 100%
+      var(--modal-surface-subtle) 100%
     );
-    border-bottom-color: rgba(255, 255, 255, 0.08);
+    border-bottom-color: var(--modal-border-primary-color);
   }
 
   .modalDescription {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--modal-text-secondary);
   }
 
   .modalFooter {
-    border-top-color: rgba(255, 255, 255, 0.08);
+    border-top-color: var(--modal-border-primary-color);
     background: linear-gradient(
       180deg,
-      rgba(15, 15, 20, 0.5) 0%,
+      var(--modal-surface-subtle) 0%,
       var(--modal-bg) 100%
     );
   }
 
   .modalClose {
-    background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.7);
+    background: var(--modal-close-bg);
+    color: var(--modal-close-text);
 
     &:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: rgba(255, 255, 255, 0.9);
+      background: var(--modal-close-hover-bg);
+      color: var(--modal-close-hover-text);
     }
 
     &:focus {
-      outline-color: rgba(96, 165, 250, 0.6);
-      background: rgba(96, 165, 250, 0.15);
+      outline-color: var(--modal-border-focus-color);
+      background: var(--modal-interactive-focus);
     }
   }
 
   .modalBody {
     &::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--modal-scrollbar-track);
     }
 
     &::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.2);
+      background: var(--modal-scrollbar-thumb);
 
       &:hover {
-        background: rgba(255, 255, 255, 0.3);
+        background: var(--modal-scrollbar-thumb-hover);
       }
     }
   }
