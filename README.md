@@ -5,7 +5,7 @@
 
 # Modals
 
-[Demo](modals.pearpages.com)
+[Demo](https://modals.pearpages.com)
 
 # Modal Component
 
@@ -29,7 +29,7 @@ A comprehensive, accessible, and flexible modal system for React applications bu
 Wrap your app with `ModalProvider` and include `ModalRoot`:
 
 ```tsx
-import { ModalProvider, ModalRoot } from './components/Modal';
+import { ModalProvider, ModalRoot } from "./components/Modal";
 
 function App() {
   return (
