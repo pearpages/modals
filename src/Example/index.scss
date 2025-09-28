@@ -1,4 +1,11 @@
 .example-container {
   padding: 2rem;
   font-family: var(--modal-font-family);
+
+  .sections {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
 }

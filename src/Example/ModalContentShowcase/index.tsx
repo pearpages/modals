@@ -13,7 +13,11 @@ import { FlexGroup } from "../FlexGroup";
  */
 export const ModalContentShowcase: React.FC = () => {
   return (
-    <Demo title="🎨 Modal.Content Examples" defaultExpanded={false}>
+    <Demo
+      title="🎨 Modal.Content"
+      defaultExpanded={false}
+      description="Adds scroll and mobile responsiveness"
+    >
       <FlexGroup>
         <AutoSizeModal.Trigger>Auto Size Modal</AutoSizeModal.Trigger>
         <MediumModal.Trigger>Medium Modal</MediumModal.Trigger>

@@ -1,0 +1,30 @@
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 2rem auto;
+
+  h3 {
+    margin: 0 0 1rem 0;
+    color: #495057;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0 0 1rem 0;
+    color: #6c757d;
+    line-height: 1.6;
+
+    code {
+      background: #f8f9fa;
+      padding: 0.125rem 0.25rem;
+      border-radius: 3px;
+      font-family: var(--modal-font-family-mono);
+      font-size: 0.875rem;
+      color: #e83e8c;
+    }
+  }
+}
