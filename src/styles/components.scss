@@ -1,6 +1,8 @@
 /* Modal Component Styles */
 /* Implementation styles for modal components using design tokens */
 
+@use './tokens' as tokens;
+
 /* Backdrop - Enhanced with better blur effect */
 .modalBackdrop {
   position: fixed;
@@ -21,7 +23,7 @@
   }
 
   /* Ensure mobile modals are not affected by centering */
-  @media (max-width: var(--modal-breakpoint-mobile)) {
+  @media (max-width: #{tokens.$modal-breakpoint-mobile}) {
     padding: 0;
     align-items: flex-start;
     justify-content: flex-start;
@@ -151,7 +153,7 @@
   }
 
   /* Responsive behavior - Mobile fullscreen as per specs */
-  @media (max-width: var(--modal-breakpoint-mobile)) {
+  @media (max-width: #{tokens.$modal-breakpoint-mobile}) {
     &--auto,
     &--md {
       width: 100vw;
@@ -199,7 +201,7 @@
   flex-shrink: 0; /* Prevent header from shrinking */
 
   /* Compact mobile spacing */
-  @media (max-width: var(--modal-breakpoint-mobile)) {
+  @media (max-width: #{tokens.$modal-breakpoint-mobile}) {
     padding: var(--modal-spacing-sm) var(--modal-spacing-md)
       var(--modal-spacing-xs);
     gap: var(--modal-spacing-xs);
@@ -211,7 +213,7 @@
     align-items: center;
     min-height: 40px;
 
-    @media (max-width: var(--modal-breakpoint-mobile)) {
+    @media (max-width: #{tokens.$modal-breakpoint-mobile}) {
       min-height: 32px;
     }
   }
@@ -220,7 +222,7 @@
   &:not(:has(.modalDescription)) {
     padding-bottom: var(--modal-spacing-sm);
 
-    @media (max-width: var(--modal-breakpoint-mobile)) {
+    @media (max-width: #{tokens.$modal-breakpoint-mobile}) {
       padding-bottom: var(--modal-spacing-xs);
     }
   }
@@ -243,7 +245,7 @@
   letter-spacing: -0.025em;
 
   /* Optimize for mobile */
-  @media (max-width: var(--modal-breakpoint-mobile)) {
+  @media (max-width: #{tokens.$modal-breakpoint-mobile}) {
     font-size: var(--modal-font-size-title-mobile); /* Slightly smaller on mobile */
     line-height: 1.2;
   }
@@ -257,7 +259,7 @@
   font-weight: 400;
 
   /* Mobile optimizations */
-  @media (max-width: var(--modal-breakpoint-mobile)) {
+  @media (max-width: #{tokens.$modal-breakpoint-mobile}) {
     font-size: var(--modal-font-size-description-mobile);
     line-height: 1.4;
   }
@@ -310,7 +312,7 @@
   }
 
   /* Mobile fullscreen adjustments */
-  @media (max-width: var(--modal-breakpoint-mobile)) {
+  @media (max-width: #{tokens.$modal-breakpoint-mobile}) {
     .modal--auto &,
     .modal--md & {
       max-height: none; /* Remove height limit on mobile fullscreen */
@@ -370,7 +372,7 @@
   flex-shrink: 0; /* Prevent footer from shrinking */
 
   /* Mobile optimizations */
-  @media (max-width: var(--modal-breakpoint-mobile)) {
+  @media (max-width: #{tokens.$modal-breakpoint-mobile}) {
     /* Compact mobile spacing */
     padding: var(--modal-spacing-sm) var(--modal-spacing-md);
     min-height: var(--modal-min-height-footer-mobile); /* More compact on mobile */
@@ -408,7 +410,7 @@
   }
 
   /* Very small mobile devices */
-  @media (max-width: var(--modal-breakpoint-small)) {
+  @media (max-width: #{tokens.$modal-breakpoint-small}) {
     padding: var(--modal-spacing-xs) var(--modal-spacing-sm);
     min-height: 40px;
 
@@ -443,7 +445,7 @@
   }
 
   /* Mobile optimizations */
-  @media (max-width: var(--modal-breakpoint-mobile)) {
+  @media (max-width: #{tokens.$modal-breakpoint-mobile}) {
     width: var(--modal-close-size-mobile);
     height: var(--modal-close-size-mobile);
     font-size: var(--modal-font-size-close-mobile);

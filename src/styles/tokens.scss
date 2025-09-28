@@ -1,6 +1,10 @@
 /* Modal Design Tokens */
 /* Semantic color system and component design tokens for modal library */
 
+// SCSS Variables for compile-time values (media queries, calculations)
+$modal-breakpoint-mobile: 768px;
+$modal-breakpoint-small: 480px;
+
 :root {
   /* === SEMANTIC COLOR TOKENS === */
 
@@ -57,8 +61,8 @@
   --modal-animation-translate-y: -8px;
 
   /* Breakpoints */
-  --modal-breakpoint-mobile: 768px;
-  --modal-breakpoint-small: 480px;
+  --modal-breakpoint-mobile: #{$modal-breakpoint-mobile};
+  --modal-breakpoint-small: #{$modal-breakpoint-small};
 
   /* Component Dimensions */
   --modal-close-size: 32px;
