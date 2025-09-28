@@ -1,0 +1,257 @@
+/* Modal Design Tokens */
+/* Semantic color system and component design tokens for modal library */
+
+:root {
+  /* === SEMANTIC COLOR TOKENS === */
+
+  /* Surface Colors */
+  --modal-bg: #ffffff;                                 /* Main modal background */
+  --modal-backdrop-bg: rgba(0, 0, 0, 0.6);            /* Backdrop overlay */
+
+  /* Text Colors */
+  --modal-color: #1a1a1a;                             /* Primary text color */
+  --modal-text-secondary: rgba(0, 0, 0, 0.6);         /* Secondary/description text */
+  --modal-text-muted: rgba(0, 0, 0, 0.6);             /* Muted/disabled text */
+
+  /* Border Colors */
+  --modal-border-primary-color: rgba(0, 0, 0, 0.08);        /* Main borders */
+  --modal-border-hover-color: rgba(0, 0, 0, 0.12);          /* Hover state borders */
+  --modal-border-focus-color: rgba(59, 130, 246, 0.5);      /* Focus indicators */
+  --modal-border-accent-color: rgba(255, 255, 255, 0.18);   /* Accent borders */
+
+  /* Interactive Colors */
+  --modal-interactive-hover: rgba(0, 0, 0, 0.04);     /* Hover backgrounds */
+  --modal-interactive-active: rgba(0, 0, 0, 0.08);    /* Active/pressed states */
+  --modal-interactive-focus: rgba(59, 130, 246, 0.1); /* Focus backgrounds */
+
+  /* Component-Specific Colors */
+  --modal-close-bg: rgba(0, 0, 0, 0.04);              /* Close button background */
+  --modal-close-text: rgba(0, 0, 0, 0.6);             /* Close button text */
+  --modal-close-hover-bg: rgba(0, 0, 0, 0.08);        /* Close button hover */
+  --modal-close-hover-text: rgba(0, 0, 0, 0.8);       /* Close button hover text */
+
+  /* Scrollbar Colors */
+  --modal-scrollbar-track: rgba(0, 0, 0, 0.05);       /* Scrollbar track */
+  --modal-scrollbar-thumb: rgba(0, 0, 0, 0.2);        /* Scrollbar thumb */
+  --modal-scrollbar-thumb-hover: rgba(0, 0, 0, 0.35); /* Scrollbar thumb hover */
+  --modal-scrollbar-thumb-active: rgba(0, 0, 0, 0.5); /* Scrollbar thumb active */
+  --modal-scrollbar-border: rgba(255, 255, 255, 0.1); /* Scrollbar thumb border */
+
+  /* Gradient and Surface Colors */
+  --modal-surface-elevated: #f8fafc;                  /* Header/footer elevated surface */
+  --modal-surface-subtle: rgba(248, 250, 252, 0.5);   /* Subtle surface tint */
+  --modal-gradient-highlight: rgba(255, 255, 255, 0.4); /* Top highlight line */
+
+  /* === COMPONENT DESIGN TOKENS === */
+
+  /* Border Radius */
+  --modal-radius: 16px;
+  --modal-radius-sm: 4px;
+  --modal-radius-md: 8px;
+
+  /* Blur Effects */
+  --modal-blur-amount: 4px;
+
+  /* Transforms & Animations */
+  --modal-animation-scale: 0.96;
+  --modal-animation-translate-y: -8px;
+
+  /* Breakpoints */
+  --modal-breakpoint-mobile: 768px;
+  --modal-breakpoint-small: 480px;
+
+  /* Component Dimensions */
+  --modal-close-size: 32px;
+  --modal-close-size-mobile: 28px;
+  --modal-min-width: 300px;
+  --modal-min-height-header: 44px;
+  --modal-min-height-header-mobile: 36px;
+  --modal-min-height-footer: 48px;
+  --modal-min-height-footer-mobile: 44px;
+  --modal-touch-target: 44px;
+
+  /* Typography Mobile */
+  --modal-font-size-title-mobile: 1.25rem;
+  --modal-font-size-description-mobile: 0.8rem;
+  --modal-font-size-button: 1rem;
+  --modal-font-size-close: 18px;
+  --modal-font-size-close-mobile: 16px;
+
+  /* Scrollbar Dimensions */
+  --modal-scrollbar-width: 8px;
+  --modal-scrollbar-margin: 4px;
+
+  /* Outline & Focus */
+  --modal-outline-width: 2px;
+  --modal-outline-offset: 2px;
+
+  /* Button Design Tokens */
+  --modal-button-radius: 4px;
+  --modal-button-focus-color: #007bff;
+
+  /* Button Variants */
+  --modal-button-primary-bg: #007bff;
+  --modal-button-primary-color: #ffffff;
+  --modal-button-primary-border: #007bff;
+  --modal-button-primary-hover-bg: #0056b3;
+  --modal-button-primary-hover-border: #0056b3;
+  --modal-button-primary-active-bg: #004085;
+  --modal-button-primary-active-border: #004085;
+
+  --modal-button-secondary-bg: #6c757d;
+  --modal-button-secondary-color: #ffffff;
+  --modal-button-secondary-border: #6c757d;
+  --modal-button-secondary-hover-bg: #545b62;
+  --modal-button-secondary-hover-border: #545b62;
+  --modal-button-secondary-active-bg: #3d4142;
+  --modal-button-secondary-active-border: #3d4142;
+
+  --modal-button-danger-bg: #dc3545;
+  --modal-button-danger-color: #ffffff;
+  --modal-button-danger-border: #dc3545;
+  --modal-button-danger-hover-bg: #c82333;
+  --modal-button-danger-hover-border: #c82333;
+  --modal-button-danger-active-bg: #a71e2a;
+  --modal-button-danger-active-border: #a71e2a;
+
+  --modal-button-success-bg: #28a745;
+  --modal-button-success-color: #ffffff;
+  --modal-button-success-border: #28a745;
+  --modal-button-success-hover-bg: #218838;
+  --modal-button-success-hover-border: #218838;
+  --modal-button-success-active-bg: #1e7e34;
+  --modal-button-success-active-border: #1e7e34;
+
+  --modal-button-warning-bg: #ffc107;
+  --modal-button-warning-color: #000000;
+  --modal-button-warning-border: #ffc107;
+  --modal-button-warning-hover-bg: #e0a800;
+  --modal-button-warning-hover-border: #e0a800;
+  --modal-button-warning-active-bg: #d39e00;
+  --modal-button-warning-active-border: #d39e00;
+
+  /* Base Design Tokens */
+  --modal-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --modal-width-md: 520px;
+  --modal-width-full: 100vw;
+  --modal-z-index-base: 1000;
+  --modal-padding: 1.5rem;
+  --modal-transition-duration: 0.25s;
+  --modal-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Typography scale */
+  --modal-font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --modal-font-family-mono: "Monaco", "Menlo", "Ubuntu Mono", "Consolas",
+    monospace;
+  --modal-font-size-title: 1.5rem;
+  --modal-font-weight-title: 600;
+  --modal-font-size-description: 0.875rem;
+  --modal-line-height-title: 1.3;
+  --modal-line-height-description: 1.5;
+
+  /* Spacing scale */
+  --modal-spacing-xs: 0.5rem;
+  --modal-spacing-sm: 0.75rem;
+  --modal-spacing-md: 1rem;
+  --modal-spacing-lg: 1.5rem;
+  --modal-spacing-xl: 2rem;
+
+  /* Border and effects */
+  --modal-border: 1px solid var(--modal-border-primary-color);
+  --modal-border-hover: 1px solid var(--modal-border-hover-color);
+}
+
+/* === DARK MODE TOKENS === */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Surface Colors */
+    --modal-bg: #1f1f23;
+    --modal-backdrop-bg: rgba(0, 0, 0, 0.8);
+
+    /* Text Colors */
+    --modal-color: #f8fafc;
+    --modal-text-secondary: rgba(255, 255, 255, 0.7);
+    --modal-text-muted: rgba(255, 255, 255, 0.6);
+
+    /* Border Colors */
+    --modal-border-primary-color: rgba(255, 255, 255, 0.08);
+    --modal-border-hover-color: rgba(255, 255, 255, 0.12);
+    --modal-border-focus-color: rgba(96, 165, 250, 0.6);
+    --modal-border-accent-color: rgba(255, 255, 255, 0.1);
+
+    /* Interactive Colors */
+    --modal-interactive-hover: rgba(255, 255, 255, 0.06);
+    --modal-interactive-active: rgba(255, 255, 255, 0.12);
+    --modal-interactive-focus: rgba(96, 165, 250, 0.15);
+
+    /* Component-Specific Colors */
+    --modal-close-bg: rgba(255, 255, 255, 0.06);
+    --modal-close-text: rgba(255, 255, 255, 0.7);
+    --modal-close-hover-bg: rgba(255, 255, 255, 0.12);
+    --modal-close-hover-text: rgba(255, 255, 255, 0.9);
+
+    /* Scrollbar Colors */
+    --modal-scrollbar-track: rgba(255, 255, 255, 0.05);
+    --modal-scrollbar-thumb: rgba(255, 255, 255, 0.25);
+    --modal-scrollbar-thumb-hover: rgba(255, 255, 255, 0.4);
+    --modal-scrollbar-thumb-active: rgba(255, 255, 255, 0.55);
+    --modal-scrollbar-border: rgba(0, 0, 0, 0.1);
+
+    /* Gradient and Surface Colors */
+    --modal-surface-elevated: #0f0f14;
+    --modal-surface-subtle: rgba(15, 15, 20, 0.5);
+    --modal-gradient-highlight: rgba(255, 255, 255, 0.1);
+
+    /* Component Tokens */
+    --modal-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+      0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 20px 25px -5px rgba(0, 0, 0, 0.4),
+      0 10px 10px -5px rgba(0, 0, 0, 0.2);
+
+    /* Border Properties */
+    --modal-border: 1px solid var(--modal-border-primary-color);
+    --modal-border-hover: 1px solid var(--modal-border-hover-color);
+
+    /* Button Dark Mode Tokens */
+    --modal-button-focus-color: #60a5fa;
+
+    /* Dark mode button variants - adjusted for better contrast */
+    --modal-button-primary-bg: #3b82f6;
+    --modal-button-primary-hover-bg: #2563eb;
+    --modal-button-primary-active-bg: #1d4ed8;
+    --modal-button-primary-border: #3b82f6;
+    --modal-button-primary-hover-border: #2563eb;
+    --modal-button-primary-active-border: #1d4ed8;
+
+    --modal-button-secondary-bg: #6b7280;
+    --modal-button-secondary-hover-bg: #4b5563;
+    --modal-button-secondary-active-bg: #374151;
+    --modal-button-secondary-border: #6b7280;
+    --modal-button-secondary-hover-border: #4b5563;
+    --modal-button-secondary-active-border: #374151;
+
+    --modal-button-danger-bg: #ef4444;
+    --modal-button-danger-hover-bg: #dc2626;
+    --modal-button-danger-active-bg: #b91c1c;
+    --modal-button-danger-border: #ef4444;
+    --modal-button-danger-hover-border: #dc2626;
+    --modal-button-danger-active-border: #b91c1c;
+
+    --modal-button-success-bg: #22c55e;
+    --modal-button-success-hover-bg: #16a34a;
+    --modal-button-success-active-bg: #15803d;
+    --modal-button-success-border: #22c55e;
+    --modal-button-success-hover-border: #16a34a;
+    --modal-button-success-active-border: #15803d;
+
+    --modal-button-warning-bg: #eab308;
+    --modal-button-warning-color: #000000;
+    --modal-button-warning-hover-bg: #ca8a04;
+    --modal-button-warning-active-bg: #a16207;
+    --modal-button-warning-border: #eab308;
+    --modal-button-warning-hover-border: #ca8a04;
+    --modal-button-warning-active-border: #a16207;
+  }
+}

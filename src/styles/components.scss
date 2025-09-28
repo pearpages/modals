@@ -1,123 +1,5 @@
-/* Modal SCSS with namespace for library distribution */
-
-/* CSS Custom Properties (Tokens) - Enhanced with semantic color system */
-:root {
-  /* === SEMANTIC COLOR TOKENS === */
-
-  /* Surface Colors */
-  --modal-bg: #ffffff;                                 /* Main modal background */
-  --modal-backdrop-bg: rgba(0, 0, 0, 0.6);            /* Backdrop overlay */
-
-  /* Text Colors */
-  --modal-color: #1a1a1a;                             /* Primary text color */
-  --modal-text-secondary: rgba(0, 0, 0, 0.6);         /* Secondary/description text */
-  --modal-text-muted: rgba(0, 0, 0, 0.6);             /* Muted/disabled text */
-
-  /* Border Colors */
-  --modal-border-primary-color: rgba(0, 0, 0, 0.08);        /* Main borders */
-  --modal-border-hover-color: rgba(0, 0, 0, 0.12);          /* Hover state borders */
-  --modal-border-focus-color: rgba(59, 130, 246, 0.5);      /* Focus indicators */
-  --modal-border-accent-color: rgba(255, 255, 255, 0.18);   /* Accent borders */
-
-  /* Interactive Colors */
-  --modal-interactive-hover: rgba(0, 0, 0, 0.04);     /* Hover backgrounds */
-  --modal-interactive-active: rgba(0, 0, 0, 0.08);    /* Active/pressed states */
-  --modal-interactive-focus: rgba(59, 130, 246, 0.1); /* Focus backgrounds */
-
-  /* Component-Specific Colors */
-  --modal-close-bg: rgba(0, 0, 0, 0.04);              /* Close button background */
-  --modal-close-text: rgba(0, 0, 0, 0.6);             /* Close button text */
-  --modal-close-hover-bg: rgba(0, 0, 0, 0.08);        /* Close button hover */
-  --modal-close-hover-text: rgba(0, 0, 0, 0.8);       /* Close button hover text */
-
-  /* Scrollbar Colors */
-  --modal-scrollbar-track: rgba(0, 0, 0, 0.05);       /* Scrollbar track */
-  --modal-scrollbar-thumb: rgba(0, 0, 0, 0.2);        /* Scrollbar thumb */
-  --modal-scrollbar-thumb-hover: rgba(0, 0, 0, 0.35); /* Scrollbar thumb hover */
-  --modal-scrollbar-thumb-active: rgba(0, 0, 0, 0.5); /* Scrollbar thumb active */
-  --modal-scrollbar-border: rgba(255, 255, 255, 0.1); /* Scrollbar thumb border */
-
-  /* Gradient and Surface Colors */
-  --modal-surface-elevated: #f8fafc;                  /* Header/footer elevated surface */
-  --modal-surface-subtle: rgba(248, 250, 252, 0.5);   /* Subtle surface tint */
-  --modal-gradient-highlight: rgba(255, 255, 255, 0.4); /* Top highlight line */
-
-  /* === COMPONENT DESIGN TOKENS === */
-
-  /* Border Radius */
-  --modal-radius: 16px;
-  --modal-radius-sm: 4px;
-  --modal-radius-md: 8px;
-
-  /* Blur Effects */
-  --modal-blur-amount: 4px;
-
-  /* Transforms & Animations */
-  --modal-animation-scale: 0.96;
-  --modal-animation-translate-y: -8px;
-
-  /* Breakpoints */
-  --modal-breakpoint-mobile: 768px;
-  --modal-breakpoint-small: 480px;
-
-  /* Component Dimensions */
-  --modal-close-size: 32px;
-  --modal-close-size-mobile: 28px;
-  --modal-min-width: 300px;
-  --modal-min-height-header: 44px;
-  --modal-min-height-header-mobile: 36px;
-  --modal-min-height-footer: 48px;
-  --modal-min-height-footer-mobile: 44px;
-  --modal-touch-target: 44px;
-
-  /* Typography Mobile */
-  --modal-font-size-title-mobile: 1.25rem;
-  --modal-font-size-description-mobile: 0.8rem;
-  --modal-font-size-button: 1rem;
-  --modal-font-size-close: 18px;
-  --modal-font-size-close-mobile: 16px;
-
-  /* Scrollbar Dimensions */
-  --modal-scrollbar-width: 8px;
-  --modal-scrollbar-margin: 4px;
-
-  /* Outline & Focus */
-  --modal-outline-width: 2px;
-  --modal-outline-offset: 2px;
-
-  /* Base Design Tokens */
-  --modal-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --modal-width-md: 520px;
-  --modal-width-full: 100vw;
-  --modal-z-index-base: 1000;
-  --modal-padding: 1.5rem;
-  --modal-transition-duration: 0.25s;
-  --modal-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* Typography scale */
-  --modal-font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
-  --modal-font-family-mono: "Monaco", "Menlo", "Ubuntu Mono", "Consolas",
-    monospace;
-  --modal-font-size-title: 1.5rem;
-  --modal-font-weight-title: 600;
-  --modal-font-size-description: 0.875rem;
-  --modal-line-height-title: 1.3;
-  --modal-line-height-description: 1.5;
-
-  /* Spacing scale */
-  --modal-spacing-xs: 0.5rem;
-  --modal-spacing-sm: 0.75rem;
-  --modal-spacing-md: 1rem;
-  --modal-spacing-lg: 1.5rem;
-  --modal-spacing-xl: 2rem;
-
-  /* Border and effects */
-  --modal-border: 1px solid var(--modal-border-primary-color);
-  --modal-border-hover: 1px solid var(--modal-border-hover-color);
-}
+/* Modal Component Styles */
+/* Implementation styles for modal components using design tokens */
 
 /* Backdrop - Enhanced with better blur effect */
 .modalBackdrop {
@@ -467,33 +349,9 @@
     }
   }
 
-  /* Dark mode scrollbar with better contrast */
-  @media (prefers-color-scheme: dark) {
-    &::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.25);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-
-      &:hover {
-        background: rgba(255, 255, 255, 0.4);
-      }
-
-      &:active {
-        background: rgba(255, 255, 255, 0.55);
-      }
-    }
-  }
-
   /* Firefox scrollbar styling */
   scrollbar-width: thin;
   scrollbar-color: var(--modal-scrollbar-thumb) var(--modal-scrollbar-track);
-
-  @media (prefers-color-scheme: dark) {
-    scrollbar-color: var(--modal-scrollbar-thumb) var(--modal-scrollbar-track);
-  }
 }
 
 .modalFooter {
@@ -614,119 +472,176 @@
   }
 }
 
-/* Enhanced Dark mode support */
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Surface Colors */
-    --modal-bg: #1f1f23;
-    --modal-backdrop-bg: rgba(0, 0, 0, 0.8);
+/* Modal Button Component */
+.modalButton {
+  /* Base button styles */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--modal-font-family);
+  font-weight: 500;
+  border: 1px solid;
+  border-radius: var(--modal-button-radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
 
-    /* Text Colors */
-    --modal-color: #f8fafc;
-    --modal-text-secondary: rgba(255, 255, 255, 0.7);
-    --modal-text-muted: rgba(255, 255, 255, 0.6);
-
-    /* Border Colors */
-    --modal-border-primary-color: rgba(255, 255, 255, 0.08);
-    --modal-border-hover-color: rgba(255, 255, 255, 0.12);
-    --modal-border-focus-color: rgba(96, 165, 250, 0.6);
-    --modal-border-accent-color: rgba(255, 255, 255, 0.1);
-
-    /* Interactive Colors */
-    --modal-interactive-hover: rgba(255, 255, 255, 0.06);
-    --modal-interactive-active: rgba(255, 255, 255, 0.12);
-    --modal-interactive-focus: rgba(96, 165, 250, 0.15);
-
-    /* Component-Specific Colors */
-    --modal-close-bg: rgba(255, 255, 255, 0.06);
-    --modal-close-text: rgba(255, 255, 255, 0.7);
-    --modal-close-hover-bg: rgba(255, 255, 255, 0.12);
-    --modal-close-hover-text: rgba(255, 255, 255, 0.9);
-
-    /* Scrollbar Colors */
-    --modal-scrollbar-track: rgba(255, 255, 255, 0.05);
-    --modal-scrollbar-thumb: rgba(255, 255, 255, 0.25);
-    --modal-scrollbar-thumb-hover: rgba(255, 255, 255, 0.4);
-    --modal-scrollbar-thumb-active: rgba(255, 255, 255, 0.55);
-    --modal-scrollbar-border: rgba(0, 0, 0, 0.1);
-
-    /* Gradient and Surface Colors */
-    --modal-surface-elevated: #0f0f14;
-    --modal-surface-subtle: rgba(15, 15, 20, 0.5);
-    --modal-gradient-highlight: rgba(255, 255, 255, 0.1);
-
-    /* Component Tokens */
-    --modal-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
-      0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 20px 25px -5px rgba(0, 0, 0, 0.4),
-      0 10px 10px -5px rgba(0, 0, 0, 0.2);
-
-    /* Border Properties */
-    --modal-border: 1px solid var(--modal-border-primary-color);
-    --modal-border-hover: 1px solid var(--modal-border-hover-color);
+  /* Focus styles */
+  &:focus {
+    outline: var(--modal-outline-width) solid var(--modal-button-focus-color);
+    outline-offset: var(--modal-outline-offset);
   }
 
-  .modal {
-    border: 1px solid var(--modal-border-accent-color);
+  /* Size variants */
+  &--small {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.25;
+  }
 
-    &::before {
-      background: linear-gradient(
-        90deg,
-        transparent,
-        var(--modal-gradient-highlight),
-        transparent
-      );
+  &--medium {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  &--large {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
+
+  /* Variant styles */
+  &--primary {
+    background: var(--modal-button-primary-bg);
+    color: var(--modal-button-primary-color);
+    border-color: var(--modal-button-primary-border);
+
+    &:hover:not(.modalButton--disabled) {
+      background: var(--modal-button-primary-hover-bg);
+      border-color: var(--modal-button-primary-hover-border);
+    }
+
+    &:active:not(.modalButton--disabled) {
+      background: var(--modal-button-primary-active-bg);
+      border-color: var(--modal-button-primary-active-border);
     }
   }
 
-  .modalHeader {
-    background: linear-gradient(
-      180deg,
-      var(--modal-bg) 0%,
-      var(--modal-surface-subtle) 100%
-    );
-    border-bottom-color: var(--modal-border-primary-color);
-  }
+  &--secondary {
+    background: var(--modal-button-secondary-bg);
+    color: var(--modal-button-secondary-color);
+    border-color: var(--modal-button-secondary-border);
 
-  .modalDescription {
-    color: var(--modal-text-secondary);
-  }
-
-  .modalFooter {
-    border-top-color: var(--modal-border-primary-color);
-    background: linear-gradient(
-      180deg,
-      var(--modal-surface-subtle) 0%,
-      var(--modal-bg) 100%
-    );
-  }
-
-  .modalClose {
-    background: var(--modal-close-bg);
-    color: var(--modal-close-text);
-
-    &:hover {
-      background: var(--modal-close-hover-bg);
-      color: var(--modal-close-hover-text);
+    &:hover:not(.modalButton--disabled) {
+      background: var(--modal-button-secondary-hover-bg);
+      border-color: var(--modal-button-secondary-hover-border);
     }
 
-    &:focus {
-      outline-color: var(--modal-border-focus-color);
-      background: var(--modal-interactive-focus);
+    &:active:not(.modalButton--disabled) {
+      background: var(--modal-button-secondary-active-bg);
+      border-color: var(--modal-button-secondary-active-border);
     }
   }
 
-  .modalBody {
-    &::-webkit-scrollbar-track {
-      background: var(--modal-scrollbar-track);
+  &--danger {
+    background: var(--modal-button-danger-bg);
+    color: var(--modal-button-danger-color);
+    border-color: var(--modal-button-danger-border);
+
+    &:hover:not(.modalButton--disabled) {
+      background: var(--modal-button-danger-hover-bg);
+      border-color: var(--modal-button-danger-hover-border);
     }
 
-    &::-webkit-scrollbar-thumb {
-      background: var(--modal-scrollbar-thumb);
-
-      &:hover {
-        background: var(--modal-scrollbar-thumb-hover);
-      }
+    &:active:not(.modalButton--disabled) {
+      background: var(--modal-button-danger-active-bg);
+      border-color: var(--modal-button-danger-active-border);
     }
+  }
+
+  &--success {
+    background: var(--modal-button-success-bg);
+    color: var(--modal-button-success-color);
+    border-color: var(--modal-button-success-border);
+
+    &:hover:not(.modalButton--disabled) {
+      background: var(--modal-button-success-hover-bg);
+      border-color: var(--modal-button-success-hover-border);
+    }
+
+    &:active:not(.modalButton--disabled) {
+      background: var(--modal-button-success-active-bg);
+      border-color: var(--modal-button-success-active-border);
+    }
+  }
+
+  &--warning {
+    background: var(--modal-button-warning-bg);
+    color: var(--modal-button-warning-color);
+    border-color: var(--modal-button-warning-border);
+
+    &:hover:not(.modalButton--disabled) {
+      background: var(--modal-button-warning-hover-bg);
+      border-color: var(--modal-button-warning-hover-border);
+    }
+
+    &:active:not(.modalButton--disabled) {
+      background: var(--modal-button-warning-active-bg);
+      border-color: var(--modal-button-warning-active-border);
+    }
+  }
+
+  /* Disabled state */
+  &--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Loading state */
+  &--loading {
+    position: relative;
+  }
+
+  &__spinner {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__spinnerIcon {
+    width: 1em;
+    height: 1em;
+    animation: modalButtonSpin 1s linear infinite;
+  }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &--loading {
+      opacity: 0.7;
+    }
+  }
+}
+
+/* Spinner animation */
+@keyframes modalButtonSpin {
+  0% {
+    transform: rotate(0deg);
+    stroke-dashoffset: 32;
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    transform: rotate(360deg);
+    stroke-dashoffset: -32;
   }
 }
 
