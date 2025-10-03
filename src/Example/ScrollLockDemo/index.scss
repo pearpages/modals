@@ -1,87 +1,23 @@
-.scroll-lock-demo {
-  border: 1px solid #ddd;
-  border-radius: 8px;
+.content-block {
   padding: 1rem;
+  margin: 0.5rem 0;
+  border-radius: 4px;
+
+  &--even {
+    background: #f8f9fa;
+  }
+
+  &--odd {
+    background: #e9ecef;
+  }
 
   &__title {
-    margin: 0 0 1rem 0;
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
-
-  &__description {
-    font-size: 0.9em;
-    color: #666;
-    margin-bottom: 1.5rem;
-  }
-
-  &__test-section {
-    margin-bottom: 2rem;
-  }
-
-  &__test-title {
-    margin: 0 0 1rem 0;
-    font-size: 1.1rem;
-    font-weight: 600;
-  }
-
-  &__test-instructions {
-    font-size: 0.9em;
-    padding-left: 1rem;
-    margin: 0;
-  }
-
-  &__trigger-button {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background: #0056b3;
-    }
-
-    &:focus {
-      outline: 2px solid #0056b3;
-      outline-offset: 2px;
-    }
-  }
-
-  &__content-section {
-    margin-top: 2rem;
-  }
-
-  &__content-title {
-    margin: 0 0 1rem 0;
-    font-size: 1.1rem;
-    font-weight: 600;
-  }
-
-  &__content-block {
-    padding: 1rem;
-    margin: 0.5rem 0;
-    border-radius: 4px;
-
-    &--even {
-      background: #f8f9fa;
-    }
-
-    &--odd {
-      background: #e9ecef;
-    }
-  }
-
-  &__block-title {
     margin: 0 0 0.5rem 0;
     font-size: 1rem;
     font-weight: 600;
   }
 
-  &__block-text {
+  &__text {
     margin: 0.5rem 0;
     font-size: 0.9em;
     line-height: 1.5;
@@ -89,10 +25,6 @@
 }
 
 .scroll-lock-modal {
-  &__content {
-    padding: 1rem;
-  }
-
   &__main-text {
     margin-bottom: 1rem;
 
@@ -105,33 +37,6 @@
   &__description {
     margin-bottom: 1.5rem;
     line-height: 1.5;
-  }
-
-  &__technical-details {
-    background: #e7f3ff;
-    padding: 1rem;
-    border-radius: 4px;
-    margin: 1rem 0;
-  }
-
-  &__technical-title {
-    margin: 0 0 0.5rem 0;
-    font-size: 1rem;
-    font-weight: 600;
-  }
-
-  &__technical-list {
-    font-size: 0.9em;
-    padding-left: 1rem;
-    margin: 0;
-
-    code {
-      background: rgba(0, 0, 0, 0.1);
-      padding: 0.2em 0.4em;
-      border-radius: 3px;
-      font-family: var(--modal-font-family-mono);
-      font-size: 0.9em;
-    }
   }
 
   &__closing-note {
