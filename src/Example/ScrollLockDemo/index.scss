@@ -1,29 +1,3 @@
-.content-block {
-  padding: 1rem;
-  margin: 0.5rem 0;
-  border-radius: 4px;
-
-  &--even {
-    background: #f8f9fa;
-  }
-
-  &--odd {
-    background: #e9ecef;
-  }
-
-  &__title {
-    margin: 0 0 0.5rem 0;
-    font-size: 1rem;
-    font-weight: 600;
-  }
-
-  &__text {
-    margin: 0.5rem 0;
-    font-size: 0.9em;
-    line-height: 1.5;
-  }
-}
-
 .scroll-lock-modal {
   &__main-text {
     margin-bottom: 1rem;

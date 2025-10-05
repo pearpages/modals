@@ -4,6 +4,7 @@ import { ScrollLockTestModal } from "./ScrollLockTestModal";
 import { Demo } from "@/Example/Demo";
 import { Modal } from "@/Modal";
 import { Box } from "../Box";
+import { ContentBlock } from "../ContentBlock";
 
 const ContentBlocks = ({ length = 20 }: { length?: number }) => {
   const data = Array.from({ length }, (_, i) => ({
@@ -15,15 +16,12 @@ const ContentBlocks = ({ length = 20 }: { length?: number }) => {
   }));
 
   return data.map((block) => (
-    <div
+    <ContentBlock
       key={block.id}
-      className={`content-block content-block--${
-        block.id % 2 === 0 ? "even" : "odd"
-      }`}
-    >
-      <h6 className="content-block__title">{block.title}</h6>
-      <p className="content-block__text">{block.text}</p>
-    </div>
+      title={block.title}
+      text={block.text}
+      className={block.id % 2 === 0 ? "even" : "odd"}
+    />
   ));
 };
 
