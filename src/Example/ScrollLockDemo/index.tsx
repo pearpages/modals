@@ -36,7 +36,7 @@ export function ScrollLockDemo() {
 
   return (
     <Demo
-      title="🔒 Body Scroll Lock Demo"
+      title="🔒 Body Scroll Lock"
       description="When a modal is open, the background page scroll is locked to prevent unwanted scrolling."
       defaultExpanded={false}
     >

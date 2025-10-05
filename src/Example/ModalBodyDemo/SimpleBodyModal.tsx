@@ -1,9 +1,12 @@
-import React from 'react';
-import { Modal } from '@/Modal';
+import React from "react";
+import { Modal } from "@/Modal";
+import { useModalStack } from "@/ModalProvider";
+import { Box } from "../Box";
 
 const SimpleBodyModal = () => {
+  const modals = useModalStack();
   return (
-    <Modal id="simple-body-modal">
+    <Modal id={SimpleBodyModal.id}>
       <Modal.Content>
         <Modal.Header>
           <Modal.Title>📄 Simple Modal.Body</Modal.Title>
@@ -18,10 +21,9 @@ const SimpleBodyModal = () => {
             Notice how the content has proper spacing and is clearly separated
             from the header and footer areas.
           </p>
-          <div className="simple-modal__code-example">
-            <div className="simple-modal__code-title"><strong>Code structure:</strong></div>
-            <pre className="simple-modal__code-block">
-{`<Modal.Content>
+          <Box variant="success" title="Code structure: ">
+            <pre>
+              {`<Modal.Content>
   <Modal.Header>...</Modal.Header>
   <Modal.Body>
     <p>Content goes here</p>
@@ -29,38 +31,44 @@ const SimpleBodyModal = () => {
   <Modal.Footer>...</Modal.Footer>
 </Modal.Content>`}
             </pre>
-          </div>
+          </Box>
         </Modal.Body>
         <Modal.Footer>
-          <button className="simple-modal__footer-button">
+          <Modal.Button
+            variant="secondary"
+            size="small"
+            onClick={() => modals.close(SimpleBodyModal.id)}
+          >
             Got it!
-          </button>
+          </Modal.Button>
         </Modal.Footer>
       </Modal.Content>
     </Modal>
   );
 };
 
-// Create compound component with Trigger
-SimpleBodyModal.Trigger = ({ children, onClick, ...props }: {
+SimpleBodyModal.id = "simple-body-modal" as const;
+
+SimpleBodyModal.Trigger = ({
+  children,
+  onClick,
+  ...props
+}: {
   children: React.ReactNode;
   onClick?: () => void;
-} & React.ComponentProps<'div'>) => {
+} & React.ComponentProps<"div">) => {
   const handleClick = () => {
-    console.log('Opening simple Modal.Body example...');
+    console.log("Opening simple Modal.Body example...");
     onClick?.();
   };
 
   return (
-    <Modal.Trigger target="simple-body-modal" {...props}>
-      <button
-        className="modal-body-demo__trigger-button modal-body-demo__trigger-button--primary"
-        onClick={handleClick}
-      >
+    <Modal.Trigger target={SimpleBodyModal.id} {...props} asChild>
+      <Modal.Button variant="primary" onClick={handleClick}>
         {children}
-      </button>
+      </Modal.Button>
     </Modal.Trigger>
   );
 };
 
-export default SimpleBodyModal;
+export { SimpleBodyModal };

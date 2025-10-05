@@ -1,7 +1,7 @@
 /* Modal Component Styles */
 /* Implementation styles for modal components using design tokens */
 
-@use './tokens' as tokens;
+@use "./tokens" as tokens;
 
 /* Backdrop - Enhanced with better blur effect */
 .modalBackdrop {
@@ -99,7 +99,8 @@
   /* Animation states for modal content */
   &[data-state="opening"] {
     opacity: 0;
-    transform: scale(var(--modal-animation-scale)) translateY(var(--modal-animation-translate-y));
+    transform: scale(var(--modal-animation-scale))
+      translateY(var(--modal-animation-translate-y));
   }
 
   &[data-state="open"] {
@@ -109,7 +110,8 @@
 
   &[data-state="closing"] {
     opacity: 0;
-    transform: scale(var(--modal-animation-scale)) translateY(var(--modal-animation-translate-y));
+    transform: scale(var(--modal-animation-scale))
+      translateY(var(--modal-animation-translate-y));
   }
 
   /* Apply transition when animated */
@@ -123,10 +125,12 @@
   &--auto {
     width: auto;
     min-width: var(--modal-min-width);
+    max-height: 90vh; /* Allow modal to grow but constrain height for scrolling */
   }
 
   &--md {
     width: var(--modal-width-md);
+    max-height: 90vh; /* Allow modal to grow but constrain height for scrolling */
   }
 
   &--full {
@@ -197,7 +201,9 @@
     var(--modal-bg) 0%,
     var(--modal-surface-subtle) 100%
   );
-  min-height: var(--modal-min-height-header); /* Reduced for more compact header */
+  min-height: var(
+    --modal-min-height-header
+  ); /* Reduced for more compact header */
   flex-shrink: 0; /* Prevent header from shrinking */
 
   /* Compact mobile spacing */
@@ -246,7 +252,9 @@
 
   /* Optimize for mobile */
   @media (max-width: #{tokens.$modal-breakpoint-mobile}) {
-    font-size: var(--modal-font-size-title-mobile); /* Slightly smaller on mobile */
+    font-size: var(
+      --modal-font-size-title-mobile
+    ); /* Slightly smaller on mobile */
     line-height: 1.2;
   }
 }
@@ -328,7 +336,9 @@
 
   /* Enhanced scrollbar styling with better visibility */
   &::-webkit-scrollbar {
-    width: var(--modal-scrollbar-width); /* Slightly wider for better usability */
+    width: var(
+      --modal-scrollbar-width
+    ); /* Slightly wider for better usability */
   }
 
   &::-webkit-scrollbar-track {
@@ -375,7 +385,9 @@
   @media (max-width: #{tokens.$modal-breakpoint-mobile}) {
     /* Compact mobile spacing */
     padding: var(--modal-spacing-sm) var(--modal-spacing-md);
-    min-height: var(--modal-min-height-footer-mobile); /* More compact on mobile */
+    min-height: var(
+      --modal-min-height-footer-mobile
+    ); /* More compact on mobile */
     gap: var(--modal-spacing-xs);
 
     /* Mobile fullscreen modals */
@@ -395,7 +407,9 @@
         button,
         [role="button"] {
           width: 100%;
-          min-height: var(--modal-touch-target); /* iOS touch target guideline */
+          min-height: var(
+            --modal-touch-target
+          ); /* iOS touch target guideline */
           padding: var(--modal-spacing-md) var(--modal-spacing-lg);
           font-size: var(--modal-font-size-button);
           font-weight: 500;

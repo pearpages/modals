@@ -1,32 +1,29 @@
 import React from "react";
 import { Demo } from "@/Example/Demo";
-import SimpleBodyModal from "./SimpleBodyModal";
+import { SimpleBodyModal } from "./SimpleBodyModal";
 import ScrollableBodyModal from "./ScrollableBodyModal";
 import CustomBodyModal from "./CustomBodyModal";
 import "./index.scss";
+import { FlexGroup } from "../FlexGroup";
+import { Box } from "../Box";
 
 export function ModalBodyDemo() {
   return (
     <Demo
-      title="📄 Modal.Body Component Demo"
+      title="📄 Modal.Body Component"
       description="Demonstrates the new Modal.Body component with overflow handling and semantic structure."
       defaultExpanded={false}
     >
-      <div className="modal-body-demo__trigger-buttons">
+      <FlexGroup>
         <SimpleBodyModal.Trigger>Simple Modal.Body</SimpleBodyModal.Trigger>
-
         <ScrollableBodyModal.Trigger>
           Scrollable Content
         </ScrollableBodyModal.Trigger>
-
         <CustomBodyModal.Trigger>Custom Styled Body</CustomBodyModal.Trigger>
-      </div>
+      </FlexGroup>
 
-      <div className="modal-body-demo__info-box">
-        <div className="modal-body-demo__info-title">
-          ✨ Modal.Body Benefits:
-        </div>
-        <ul className="modal-body-demo__info-list">
+      <Box variant="success" title="✨ Modal.Body Benefits:">
+        <ul>
           <li>
             <strong>Semantic structure</strong> - Clear content organization
           </li>
@@ -42,7 +39,7 @@ export function ModalBodyDemo() {
             functionality
           </li>
         </ul>
-      </div>
+      </Box>
 
       <SimpleBodyModal />
       <ScrollableBodyModal />
