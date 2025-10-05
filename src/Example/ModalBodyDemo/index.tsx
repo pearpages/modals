@@ -1,8 +1,8 @@
 import React from "react";
 import { Demo } from "@/Example/Demo";
 import { SimpleBodyModal } from "./SimpleBodyModal";
-import ScrollableBodyModal from "./ScrollableBodyModal";
-import CustomBodyModal from "./CustomBodyModal";
+import { ScrollableBodyModal } from "./ScrollableBodyModal";
+import { CustomBodyModal } from "./CustomBodyModal";
 import "./index.scss";
 import { FlexGroup } from "../FlexGroup";
 import { Box } from "../Box";

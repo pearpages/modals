@@ -1,18 +1,19 @@
-import React from 'react';
-import { Modal } from '@/Modal';
+import React from "react";
+import { Modal } from "@/Modal";
+import { useModalStack } from "@/ModalProvider";
+import "./CustomBodyModal.scss";
 
-const CustomBodyModal = () => {
+export const CustomBodyModal = () => {
+  const modal = useModalStack();
   return (
-    <Modal id="custom-body-modal">
+    <Modal id={CustomBodyModal.id}>
       <Modal.Content>
         <Modal.Header>
           <Modal.Title>🎨 Custom Styled Modal.Body</Modal.Title>
           <Modal.Close />
         </Modal.Header>
         <Modal.Body className="custom-modal__body">
-          <h3 className="custom-modal__title">
-            Beautiful Custom Styling
-          </h3>
+          <h3 className="custom-modal__title">Beautiful Custom Styling</h3>
           <p className="custom-modal__description">
             Modal.Body supports custom className and style props, allowing you
             to create stunning designs while maintaining the overflow handling
@@ -37,7 +38,10 @@ const CustomBodyModal = () => {
           </p>
         </Modal.Body>
         <Modal.Footer>
-          <button className="custom-modal__footer-button">
+          <button
+            onClick={() => modal.close(CustomBodyModal.id)}
+            className="custom-modal__footer-button"
+          >
             Awesome!
           </button>
         </Modal.Footer>
@@ -46,26 +50,26 @@ const CustomBodyModal = () => {
   );
 };
 
-// Create compound component with Trigger
-CustomBodyModal.Trigger = ({ children, onClick, ...props }: {
+CustomBodyModal.id = "custom-body-modal";
+
+CustomBodyModal.Trigger = ({
+  children,
+  onClick,
+  ...props
+}: {
   children: React.ReactNode;
   onClick?: () => void;
-} & React.ComponentProps<'div'>) => {
+} & React.ComponentProps<"div">) => {
   const handleClick = () => {
-    console.log('Opening custom styled Modal.Body example...');
+    console.log("Opening custom styled Modal.Body example...");
     onClick?.();
   };
 
   return (
-    <Modal.Trigger target="custom-body-modal" {...props}>
-      <button
-        className="modal-body-demo__trigger-button modal-body-demo__trigger-button--purple"
-        onClick={handleClick}
-      >
+    <Modal.Trigger target={CustomBodyModal.id} {...props} asChild>
+      <Modal.Button variant="secondary" onClick={handleClick}>
         {children}
-      </button>
+      </Modal.Button>
     </Modal.Trigger>
   );
 };
-
-export default CustomBodyModal;
