@@ -12,7 +12,7 @@ import { FooterMobileDemo } from "./FooterMobileDemo";
 import { ModalBodyContentTypesDemo } from "./ModalBodyContentTypesDemo";
 import { MobileResponsiveTest } from "./MobileResponsiveTest";
 import { ProgrammaticModalExample } from "./ProgrammaticModalExample";
-import { Task8Example } from "@/Example/Task8Example";
+import { ModalSubcomponents } from "./ModalSubcomponents";
 import { ModalContentShowcase } from "./ModalContentShowcase";
 
 export const Example: React.FC = () => {
@@ -24,7 +24,7 @@ export const Example: React.FC = () => {
         <ModalTriggerDemo />
         <ScrollLockDemo />
         <ModalBodyDemo />
-        <Task8Example />
+        <ModalSubcomponents />
         <AccessibilityDemo />
         <ScrollOptimizationDemo />
         <HeaderSpacingDemo />
