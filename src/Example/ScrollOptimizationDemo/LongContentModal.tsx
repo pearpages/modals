@@ -1,4 +1,19 @@
 import { Modal } from "@/Modal";
+import { Box } from "../Box";
+import "./index.scss";
+
+const generateLongContent = (paragraphs: number) => {
+  return Array.from({ length: paragraphs }, (_, i) => (
+    <p key={i}>
+      This is paragraph {i + 1} of the long content test. Lorem ipsum dolor sit
+      amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
+      labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+      aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+      fugiat nulla pariatur.
+    </p>
+  ));
+};
 
 interface LongContentModalProps {
   open: boolean;
@@ -9,19 +24,6 @@ export function LongContentModal({
   open,
   onOpenChange,
 }: LongContentModalProps) {
-  const generateLongContent = (paragraphs: number) => {
-    return Array.from({ length: paragraphs }, (_, i) => (
-      <p key={i} className="scroll-optimization-demo__paragraph">
-        This is paragraph {i + 1} of the long content test. Lorem ipsum dolor
-        sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt
-        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-        dolore eu fugiat nulla pariatur.
-      </p>
-    ));
-  };
-
   const handleSubmit = () => {
     console.log("Long content modal: marked as read");
     onOpenChange(false);
@@ -32,7 +34,7 @@ export function LongContentModal({
   };
 
   return (
-    <Modal id="long-content" open={open} onOpenChange={onOpenChange}>
+    <Modal id={LongContentModal.id} open={open} onOpenChange={onOpenChange}>
       <Modal.Content size="md">
         <Modal.Header>
           <Modal.Title>Long Content Test</Modal.Title>
@@ -42,11 +44,8 @@ export function LongContentModal({
           <Modal.Close />
         </Modal.Header>
         <Modal.Body>
-          <div className="scroll-optimization-demo__test-features">
-            <strong className="scroll-optimization-demo__features-title">
-              🎯 Test Features:
-            </strong>
-            <ul className="scroll-optimization-demo__features-list">
+          <Box variant="success" title="🎯 Test Features: ">
+            <ul>
               <li>
                 ✅ Enhanced scrollbar styling (8px width, better hover states)
               </li>
@@ -60,8 +59,8 @@ export function LongContentModal({
               </li>
               <li>✅ Proper flexbox layout with min-height: 0</li>
             </ul>
-          </div>
-          {generateLongContent(15)}
+          </Box>
+          <div className="long-text">{generateLongContent(15)}</div>
         </Modal.Body>
         <Modal.Footer>
           <Modal.Button variant="secondary" onClick={handleClose} size="small">
@@ -76,7 +75,7 @@ export function LongContentModal({
   );
 }
 
-// Compound component with trigger
+LongContentModal.id = "long-content";
 LongContentModal.Trigger = function LongContentModalTrigger({
   onOpenChange,
 }: {

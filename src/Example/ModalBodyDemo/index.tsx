@@ -10,7 +10,7 @@ import { Box } from "../Box";
 export function ModalBodyDemo() {
   return (
     <Demo
-      title="📄 Modal.Body Component"
+      title="📄 Modal.Body"
       description="Demonstrates the new Modal.Body component with overflow handling and semantic structure."
       defaultExpanded={false}
     >

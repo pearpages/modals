@@ -42,7 +42,7 @@ const AccessibiltyTestBox = () => (
 export function AccessibilityDemo() {
   return (
     <Demo
-      title="♿ Accessibility Demo"
+      title="♿ Accessibility"
       description="Demonstrates proper ARIA linking and accessibility features."
       defaultExpanded={false}
     >
