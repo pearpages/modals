@@ -10,7 +10,7 @@ import { Box } from "../Box";
 export function HeaderSpacingDemo() {
   return (
     <Demo
-      title="📐 Header Spacing Optimization Demo"
+      title="📐 Header Spacing Optimization"
       description="Testing optimized header spacing for different content combinations."
       defaultExpanded={false}
     >

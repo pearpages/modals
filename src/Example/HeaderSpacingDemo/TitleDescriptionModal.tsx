@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { Modal } from "@/Modal";
 
 function TitleDescriptionModal() {
@@ -14,13 +14,17 @@ function TitleDescriptionModal() {
         <Modal.Header>
           <Modal.Title>Title with Description</Modal.Title>
           <Modal.Description>
-            This description provides additional context about the modal's purpose
+            This description provides additional context about the modal's
+            purpose
           </Modal.Description>
           <Modal.Close />
         </Modal.Header>
         <Modal.Body>
           <div className="header-spacing-demo__modal-content">
-            <p>This modal demonstrates optimized spacing between title and description.</p>
+            <p>
+              This modal demonstrates optimized spacing between title and
+              description.
+            </p>
             <ul>
               <li>Title and description have proper margin relationships</li>
               <li>Close button is optically aligned with the title baseline</li>
@@ -42,8 +46,7 @@ function TitleDescriptionModalTrigger() {
   return (
     <Modal.Trigger target="title-desc" asChild>
       <Modal.Button variant="success" size="large">
-        <strong>Title + Description</strong>
-        <small>Balanced spacing</small>
+        Balanced spacing
       </Modal.Button>
     </Modal.Trigger>
   );

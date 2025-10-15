@@ -214,9 +214,7 @@
     min-height: var(--modal-min-height-header-mobile);
   }
 
-  /* When header contains only title (no description) - center align content */
   &:has(.modalTitle:only-child) {
-    align-items: center;
     min-height: 40px;
 
     @media (max-width: #{tokens.$modal-breakpoint-mobile}) {

@@ -53,8 +53,7 @@ function MultiLineDescriptionModalTrigger() {
   return (
     <Modal.Trigger target="multiline-desc" asChild>
       <Modal.Button variant="secondary" size="large">
-        <strong>Multi-line Description</strong>
-        <small>Complex layout</small>
+        Complex layout
       </Modal.Button>
     </Modal.Trigger>
   );

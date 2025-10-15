@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { Modal } from "@/Modal";
 
 function TitleOnlyModal() {
@@ -17,8 +17,10 @@ function TitleOnlyModal() {
         </Modal.Header>
         <Modal.Body>
           <div className="header-spacing-demo__modal-content">
-            <p>This modal demonstrates header spacing when only a title is present.</p>
-            <p><strong>Notice:</strong> The title and close button are center-aligned for better visual balance.</p>
+            <p>
+              This modal demonstrates header spacing when only a title is
+              present.
+            </p>
           </div>
         </Modal.Body>
         <Modal.Footer>
@@ -35,8 +37,7 @@ function TitleOnlyModalTrigger() {
   return (
     <Modal.Trigger target="title-only" asChild>
       <Modal.Button variant="primary" size="large">
-        <strong>Title Only</strong>
-        <small>Optimized centering</small>
+        Optimized centering
       </Modal.Button>
     </Modal.Trigger>
   );
