@@ -1,20 +1,22 @@
 import { Modal } from "@/Modal";
+import { Box } from "../Box";
+import { useModalStack } from "@/ModalProvider";
 
 export function AutoSizeModal() {
+  const modals = useModalStack();
   const handleClose = () => {
-    console.log("Auto size modal closed");
+    modals.close(AutoSizeModal.id);
   };
 
   return (
-    <Modal id="responsive-auto">
+    <Modal id={AutoSizeModal.id}>
       <Modal.Content size="auto">
         <Modal.Header>
           <Modal.Title>📱 Auto Size (Responsive)</Modal.Title>
           <Modal.Close />
         </Modal.Header>
         <Modal.Body>
-          <div className="mobile-responsive-test__behavior-info">
-            <strong>Current behavior:</strong>
+          <Box variant="danger" title="Current Behavior: ">
             <ul>
               <li>
                 <strong>Desktop:</strong> Auto-sizes to content, centered
@@ -23,7 +25,7 @@ export function AutoSizeModal() {
                 <strong>Mobile:</strong> Fullscreen (100vw × 100vh)
               </li>
             </ul>
-          </div>
+          </Box>
 
           <div className="mobile-responsive-test__modal-content">
             <p>
@@ -38,19 +40,14 @@ export function AutoSizeModal() {
             </p>
           </div>
 
-          <div className="mobile-responsive-test__test-info">
-            <strong>🔍 How to test:</strong>
-            <br />
+          <Box variant="success" title="🔍 How to test: ">
             Open Chrome DevTools → Toggle device toolbar → Select a mobile
             device
-          </div>
+          </Box>
         </Modal.Body>
         <Modal.Footer>
           <Modal.Button variant="secondary" onClick={handleClose}>
             Close
-          </Modal.Button>
-          <Modal.Button variant="primary" onClick={handleClose}>
-            Test Complete
           </Modal.Button>
         </Modal.Footer>
       </Modal.Content>
@@ -58,10 +55,10 @@ export function AutoSizeModal() {
   );
 }
 
-// Compound component with trigger
+AutoSizeModal.id = "responsive-auto";
 AutoSizeModal.Trigger = function AutoSizeModalTrigger() {
   return (
-    <Modal.Trigger target="responsive-auto" asChild>
+    <Modal.Trigger target={AutoSizeModal.id} asChild>
       <Modal.Button variant="primary" size="small">
         Auto Size Modal
       </Modal.Button>

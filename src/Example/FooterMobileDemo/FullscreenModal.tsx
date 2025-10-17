@@ -10,7 +10,7 @@ function FullscreenModal() {
   };
 
   return (
-    <Modal id="fullscreen-mobile" open={open} onOpenChange={setOpen}>
+    <Modal id={FullscreenModal.id} open={open} onOpenChange={setOpen}>
       <Modal.Content size="full">
         <Modal.Header>
           <Modal.Title>Fullscreen with Safe Area</Modal.Title>
@@ -62,16 +62,15 @@ function FullscreenModal() {
 
 function FullscreenModalTrigger() {
   return (
-    <Modal.Trigger target="fullscreen-mobile" asChild>
+    <Modal.Trigger target={FullscreenModal.id} asChild>
       <Modal.Button variant="secondary" size="large">
-        <strong>Fullscreen Modal</strong>
-        <small>Safe area support</small>
+        Safe area support
       </Modal.Button>
     </Modal.Trigger>
   );
 }
 
-// Compound component pattern
+FullscreenModal.id = "fullscreen-mobile";
 FullscreenModal.Trigger = FullscreenModalTrigger;
 
 export { FullscreenModal };

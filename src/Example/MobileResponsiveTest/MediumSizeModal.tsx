@@ -1,29 +1,28 @@
 import { Modal } from "@/Modal";
+import { ContentBlock } from "../ContentBlock";
+import { Box } from "../Box";
+import { useModalStack } from "@/ModalProvider";
 
 export function MediumSizeModal() {
+  const modals = useModalStack();
   const handleClose = () => {
-    console.log("Medium size modal: Perfect!");
+    modals.close(MediumSizeModal.id);
   };
 
   const generateContentBlocks = () => {
     return Array.from({ length: 8 }, (_, i) => (
-      <div
+      <ContentBlock
         key={i}
-        className={`mobile-responsive-test__content-block mobile-responsive-test__content-block--${
-          i % 2 === 0 ? "even" : "odd"
-        }`}
-      >
-        <strong>Content Block {i + 1}</strong>
-        <p>
-          Sample content to test scrolling behavior on both desktop and mobile.
-          The Modal.Body should handle overflow gracefully in both modes.
-        </p>
-      </div>
+        className={i % 2 === 0 ? "even" : "odd"}
+        title={`Content Block ${i + 1}`}
+        text="Sample content to test scrolling behavior on both desktop and mobile.
+          The Modal.Body should handle overflow gracefully in both modes."
+      />
     ));
   };
 
   return (
-    <Modal id="responsive-md">
+    <Modal id={MediumSizeModal.id}>
       <Modal.Content size="md">
         <Modal.Header>
           <Modal.Title>📱 Medium Size (Responsive)</Modal.Title>
@@ -40,20 +39,16 @@ export function MediumSizeModal() {
           {/* Add content to test scrolling */}
           {generateContentBlocks()}
 
-          <div className="mobile-responsive-test__features">
-            <strong>✅ Mobile fullscreen features:</strong>
+          <Box variant="success" title="✅ Mobile fullscreen features:">
             <ul>
               <li>No border radius (sharp corners)</li>
               <li>Full viewport coverage</li>
               <li>Proper flex layout for header/body/footer</li>
               <li>Body scrolling when content overflows</li>
             </ul>
-          </div>
+          </Box>
         </Modal.Body>
         <Modal.Footer>
-          <Modal.Button variant="secondary" size="small">
-            Cancel
-          </Modal.Button>
           <Modal.Button variant="success" onClick={handleClose} size="small">
             Perfect!
           </Modal.Button>
@@ -63,10 +58,10 @@ export function MediumSizeModal() {
   );
 }
 
-// Compound component with trigger
+MediumSizeModal.id = "responsive-md";
 MediumSizeModal.Trigger = function MediumSizeModalTrigger() {
   return (
-    <Modal.Trigger target="responsive-md" asChild>
+    <Modal.Trigger target={MediumSizeModal.id} asChild>
       <Modal.Button variant="success" size="small">
         Medium Size Modal
       </Modal.Button>

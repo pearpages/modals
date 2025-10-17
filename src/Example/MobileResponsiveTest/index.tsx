@@ -3,6 +3,8 @@ import "./index.scss";
 import { AutoSizeModal } from "./AutoSizeModal";
 import { MediumSizeModal } from "./MediumSizeModal";
 import { FullscreenModal } from "./FullscreenModal";
+import { Box } from "../Box";
+import { FlexGroup } from "../FlexGroup";
 
 export function MobileResponsiveTest() {
   return (
@@ -11,11 +13,8 @@ export function MobileResponsiveTest() {
       description="Test modal behavior on mobile vs desktop. Resize your browser window or use dev tools device emulation."
       defaultExpanded={false}
     >
-      <div className="mobile-responsive-test__instructions">
-        <strong className="mobile-responsive-test__instructions-title">
-          📋 Test Instructions:
-        </strong>
-        <ol className="mobile-responsive-test__instructions-list">
+      <Box variant="warning" title="📋 Test Instructions: ">
+        <ol className="instructions__list">
           <li className="mobile-responsive-test__instruction">
             <strong>Desktop</strong> (&gt;768px): Modal should be centered,
             sized normally
@@ -31,13 +30,13 @@ export function MobileResponsiveTest() {
             Test with content that requires scrolling
           </li>
         </ol>
-      </div>
+      </Box>
 
-      <div className="mobile-responsive-test__actions">
+      <FlexGroup>
         <AutoSizeModal.Trigger />
         <MediumSizeModal.Trigger />
         <FullscreenModal.Trigger />
-      </div>
+      </FlexGroup>
 
       <AutoSizeModal />
       <MediumSizeModal />

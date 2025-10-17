@@ -15,7 +15,7 @@ function FormModal() {
   };
 
   return (
-    <Modal id="form-modal" open={open} onOpenChange={setOpen}>
+    <Modal id={FormModal.id} open={open} onOpenChange={setOpen}>
       <Modal.Content size="md">
         <Modal.Header>
           <Modal.Title>Contact Form</Modal.Title>
@@ -55,16 +55,15 @@ function FormModal() {
 
 function FormModalTrigger() {
   return (
-    <Modal.Trigger target="form-modal" asChild>
+    <Modal.Trigger target={FormModal.id} asChild>
       <Modal.Button variant="danger" size="large">
-        <strong>Form with Actions</strong>
-        <small>Full-width buttons</small>
+        Full-width buttons
       </Modal.Button>
     </Modal.Trigger>
   );
 }
 
-// Compound component pattern
+FormModal.id = "form-modal";
 FormModal.Trigger = FormModalTrigger;
 
 export { FormModal };

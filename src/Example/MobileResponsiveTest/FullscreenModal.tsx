@@ -1,12 +1,15 @@
+import { useModalStack } from "@/index";
 import { Modal } from "@/Modal";
+import { Box } from "../Box";
 
 export function FullscreenModal() {
+  const modals = useModalStack();
   const handleClose = () => {
-    console.log("Fullscreen modal: Exit fullscreen");
+    modals.close(FullscreenModal.id);
   };
 
   return (
-    <Modal id="responsive-full">
+    <Modal id={FullscreenModal.id}>
       <Modal.Content size="full">
         <Modal.Header>
           <Modal.Title>📱 Always Fullscreen</Modal.Title>
@@ -20,25 +23,21 @@ export function FullscreenModal() {
             </p>
           </div>
 
-          <div className="mobile-responsive-test__note">
-            <strong>💡 Note:</strong> This is different from the responsive
-            behavior. The <code>size="full"</code> is always fullscreen, while{" "}
+          <Box variant="warning" title="💡 Note: ">
+            This is different from the responsive behavior. The{" "}
+            <code>size="full"</code> is always fullscreen, while{" "}
             <code>size="auto"</code>
             and <code>size="md"</code> are only fullscreen on mobile.
-          </div>
+          </Box>
 
-          <div className="mobile-responsive-test__test-info">
-            <strong>🔍 Testing tip:</strong>
+          <Box variant="warning" title="🔍 Testing tip:">
             <br />
             Notice how this modal fills the entire viewport regardless of screen
             size. Compare this with the auto and medium size modals which only
             go fullscreen on mobile.
-          </div>
+          </Box>
         </Modal.Body>
         <Modal.Footer>
-          <Modal.Button variant="secondary" size="small">
-            Minimize
-          </Modal.Button>
           <Modal.Button variant="danger" onClick={handleClose} size="small">
             Exit Fullscreen
           </Modal.Button>
@@ -48,10 +47,10 @@ export function FullscreenModal() {
   );
 }
 
-// Compound component with trigger
+FullscreenModal.id = "responsive-full";
 FullscreenModal.Trigger = function FullscreenModalTrigger() {
   return (
-    <Modal.Trigger target="responsive-full" asChild>
+    <Modal.Trigger target={FullscreenModal.id} asChild>
       <Modal.Button variant="danger" size="small">
         Always Fullscreen
       </Modal.Button>

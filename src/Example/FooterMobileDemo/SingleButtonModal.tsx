@@ -9,7 +9,7 @@ function SingleButtonModal() {
   };
 
   return (
-    <Modal id="single-button" open={open} onOpenChange={setOpen}>
+    <Modal id={SingleButtonModal.id} open={open} onOpenChange={setOpen}>
       <Modal.Content size="auto">
         <Modal.Header>
           <Modal.Title>Single Action</Modal.Title>
@@ -34,16 +34,15 @@ function SingleButtonModal() {
 
 function SingleButtonModalTrigger() {
   return (
-    <Modal.Trigger target="single-button" asChild>
+    <Modal.Trigger target={SingleButtonModal.id} asChild>
       <Modal.Button variant="primary" size="large">
-        <strong>Single Button</strong>
-        <small>Standard footer layout</small>
+        Standard footer layout
       </Modal.Button>
     </Modal.Trigger>
   );
 }
 
-// Compound component pattern
+SingleButtonModal.id = "single-button";
 SingleButtonModal.Trigger = SingleButtonModalTrigger;
 
 export { SingleButtonModal };

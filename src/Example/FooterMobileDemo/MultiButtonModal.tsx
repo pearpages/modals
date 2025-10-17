@@ -14,7 +14,7 @@ function MultiButtonModal() {
   };
 
   return (
-    <Modal id="multi-button" open={open} onOpenChange={setOpen}>
+    <Modal id={MultiButtonModal.id} open={open} onOpenChange={setOpen}>
       <Modal.Content size="md">
         <Modal.Header>
           <Modal.Title>Multiple Actions</Modal.Title>
@@ -52,16 +52,15 @@ function MultiButtonModal() {
 
 function MultiButtonModalTrigger() {
   return (
-    <Modal.Trigger target="multi-button" asChild>
+    <Modal.Trigger target={MultiButtonModal.id} asChild>
       <Modal.Button variant="success" size="large">
-        <strong>Multiple Buttons</strong>
-        <small>Stacked on mobile</small>
+        Stacked on mobile
       </Modal.Button>
     </Modal.Trigger>
   );
 }
 
-// Compound component pattern
+MultiButtonModal.id = "multi-button";
 MultiButtonModal.Trigger = MultiButtonModalTrigger;
 
 export { MultiButtonModal };
