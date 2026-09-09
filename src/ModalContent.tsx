@@ -39,7 +39,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
   // Get aria IDs from aria context
   const { titleId, descriptionId } = useModalAria();
 
-  const { getModalEntry, closeModal, baseZIndex } = modalContext;
+  const { getModalEntry, baseZIndex } = modalContext;
   const modalEntry = getModalEntry(modalId);
   const isModalOpen = modalEntry?.open ?? false;
   const isTopmost = modalEntry?.isTop ?? false;
@@ -85,21 +85,6 @@ export const ModalContent: React.FC<ModalContentProps> = ({
       }
     }
   }, [isModalOpen, animated, isOpen]);
-
-  // Handle backdrop clicks
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget && closeOnBackdrop && isTopmost) {
-      if (onInteractOutside) {
-        const event = {
-          target: e.target as EventTarget,
-          preventDefault: () => e.preventDefault()
-        };
-        onInteractOutside(event);
-        if (e.defaultPrevented) return;
-      }
-      closeModal(modalId);
-    }
-  };
 
   // Don't render if not open or no portal container
   if (!isOpen || !portalContainer) {

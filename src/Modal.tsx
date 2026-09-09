@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { ModalProps } from './types';
 import { useModalContext } from './ModalProvider';
 import { ModalIdProvider } from './ModalIdContext';
@@ -40,7 +40,8 @@ const Modal: ModalComponent = ({
   open, 
   onOpenChange, 
   children, 
-  className 
+  className,
+  ...rest
 }) => {
   const modalContext = useModalContext();
 
@@ -105,15 +106,6 @@ const Modal: ModalComponent = ({
     }
   }, [isProviderOpen]); // Only depend on isProviderOpen
 
-  // Handle controlled close via onOpenChange
-  const handleClose = useCallback(() => {
-    if (onOpenChange) {
-      onOpenChange(false);
-    } else {
-      closeModal(id);
-    }
-  }, [onOpenChange, closeModal, id]);
-
   // Only render children when modal is open (unmount when closed)
   if (!isProviderOpen) {
     return null;
@@ -121,7 +113,7 @@ const Modal: ModalComponent = ({
   return (
     <ModalIdProvider modalId={id}>
       <ModalAriaProvider>
-        <div className={className} data-modal-id={id}>
+        <div className={className} data-modal-id={id} {...rest}>
           {children}
         </div>
       </ModalAriaProvider>

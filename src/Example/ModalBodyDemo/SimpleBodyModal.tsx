@@ -56,7 +56,7 @@ SimpleBodyModal.Trigger = ({
 }: {
   children: React.ReactNode;
   onClick?: () => void;
-} & React.ComponentProps<"div">) => {
+} & React.ComponentProps<"button">) => {
   const handleClick = () => {
     console.log("Opening simple Modal.Body example...");
     onClick?.();

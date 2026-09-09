@@ -49,7 +49,7 @@ AutoSizeModal.Trigger = ({
 }: {
   children: React.ReactNode;
   onClick?: () => void;
-} & React.ComponentProps<"div">) => {
+} & React.ComponentProps<"button">) => {
   const handleClick = () => {
     console.log("Opening auto size modal...");
     onClick?.();

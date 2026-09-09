@@ -3,26 +3,12 @@ import { ReactNode, HTMLAttributes, ButtonHTMLAttributes } from 'react';
 // Core Modal Types
 export type ModalSize = 'auto' | 'md' | 'full';
 
-export interface ModalEvent {
-  id: string;
-  type: 'open' | 'close';
-  timestamp: number;
-}
-
-export type ModalEventHandler = (event: ModalEvent) => void;
-
-// Modal System Configuration
-export interface ModalSystemConfig {
-  baseZIndex?: number;
-  container?: HTMLElement;
-}
-
 // Core Modal Props
-export interface ModalProps {
+// `id` is omitted from the base type: HTMLAttributes declares it optional, and
+// here it is required and addresses the modal in the stack rather than the DOM.
+export interface ModalProps extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
   /** Unique identifier for the modal within a ModalSystem instance */
   id: string;
-  /** Optional CSS class name */
-  className?: string;
   /** Controlled open state */
   open?: boolean;
   /** Callback fired when open state changes */
@@ -32,17 +18,15 @@ export interface ModalProps {
 }
 
 // Modal Trigger Props
-export interface ModalTriggerProps {
+// Renders a real <button> (or clones one via asChild) and spreads the rest of
+// its props onto it, so it carries the full button attribute surface.
+export interface ModalTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Modal ID to open when triggered */
   target: string;
   /** Child element to render as trigger */
   children: ReactNode;
   /** Whether to render as child element */
   asChild?: boolean;
-  /** Whether the trigger is disabled */
-  disabled?: boolean;
-  /** Optional CSS class name */
-  className?: string;
 }
 
 // Modal Content Props
@@ -51,8 +35,6 @@ export interface ModalContentProps extends HTMLAttributes<HTMLDivElement> {
   size?: ModalSize;
   /** Whether to enable fade animations */
   animated?: boolean;
-  /** Optional CSS class name */
-  className?: string;
   /** Whether clicking backdrop closes topmost modal (default: true) */
   closeOnBackdrop?: boolean;
   /** Whether pressing Esc closes topmost modal (default: true) */
@@ -67,28 +49,28 @@ export interface ModalContentProps extends HTMLAttributes<HTMLDivElement> {
 export interface ModalHeaderProps extends HTMLAttributes<HTMLDivElement> {
   /** Whether to render as child element */
   asChild?: boolean;
-  /** Optional CSS class name */
-  className?: string;
-  /** Children components */
-  children: ReactNode;
+  /** Children components — an empty slot is valid */
+  children?: ReactNode;
 }
 
+/**
+ * `id` is inherited from HTMLAttributes. It is generated automatically when
+ * omitted; setting it is how you take control of the aria-labelledby target.
+ */
 export interface ModalTitleProps extends HTMLAttributes<HTMLHeadingElement> {
   /** Whether to render as child element */
   asChild?: boolean;
-  /** Optional CSS class name */
-  className?: string;
   /** Children components */
   children: ReactNode;
 }
 
+/**
+ * `id` is inherited from HTMLAttributes. It is generated automatically when
+ * omitted; setting it is how you take control of the aria-describedby target.
+ */
 export interface ModalDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
   /** Whether to render as child element */
   asChild?: boolean;
-  /** Optional CSS class name */
-  className?: string;
-  /** Optional custom ID (auto-generated if not provided) */
-  id?: string;
   /** Children components */
   children: ReactNode;
 }
@@ -96,28 +78,22 @@ export interface ModalDescriptionProps extends HTMLAttributes<HTMLParagraphEleme
 export interface ModalCloseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Whether to render as child element */
   asChild?: boolean;
-  /** Optional CSS class name */
-  className?: string;
-  /** Children components */
+  /** Children components — an empty slot is valid */
   children?: ReactNode;
 }
 
 export interface ModalBodyProps extends HTMLAttributes<HTMLDivElement> {
   /** Whether to render as child element */
   asChild?: boolean;
-  /** Optional CSS class name */
-  className?: string;
-  /** Children components */
-  children: ReactNode;
+  /** Children components — an empty slot is valid */
+  children?: ReactNode;
 }
 
 export interface ModalFooterProps extends HTMLAttributes<HTMLDivElement> {
   /** Whether to render as child element */
   asChild?: boolean;
-  /** Optional CSS class name */
-  className?: string;
-  /** Children components */
-  children: ReactNode;
+  /** Children components — an empty slot is valid */
+  children?: ReactNode;
 }
 
 // Modal Stack State
@@ -219,70 +195,6 @@ export interface ModalSystemProps {
   container?: HTMLElement;
   /** Children components */
   children: ReactNode;
-}
-
-// ID Constraints and Rules
-export interface ModalIdConstraints {
-  /** Modal IDs must be unique within a single ModalSystem instance */
-  uniquePerSystem: true;
-  /** Modal IDs must be non-empty strings */
-  nonEmpty: true;
-  /** Modal IDs should be URL-safe (alphanumeric, hyphens, underscores) */
-  urlSafe: true;
-}
-
-// Focus Management Types
-export interface FocusStackEntry {
-  /** Modal ID */
-  modalId: string;
-  /** Last focused element before modal opened */
-  lastFocusedElement: HTMLElement | null;
-}
-
-// Animation State Types
-export type ModalAnimationState = 'closed' | 'opening' | 'open' | 'closing';
-
-export interface AnimationConfig {
-  /** Duration of fade transition in milliseconds */
-  duration: number;
-  /** CSS easing function */
-  easing: string;
-}
-
-// Utility Types
-export type ModalEventType = 'open' | 'close' | 'focus-trap' | 'escape' | 'backdrop-click';
-
-export interface ModalEventDetail {
-  id: string;
-  type: ModalEventType;
-  timestamp: number;
-  metadata?: Record<string, unknown>;
-}
-
-// Error Types
-export class ModalError extends Error {
-  constructor(
-    message: string,
-    public modalId?: string,
-    public errorCode?: string
-  ) {
-    super(message);
-    this.name = 'ModalError';
-  }
-}
-
-export class ModalIdConflictError extends ModalError {
-  constructor(id: string) {
-    super(`Modal with id "${id}" is already registered in this ModalSystem`, id, 'ID_CONFLICT');
-    this.name = 'ModalIdConflictError';
-  }
-}
-
-export class ModalNotFoundError extends ModalError {
-  constructor(id: string) {
-    super(`Modal with id "${id}" is not registered in this ModalSystem`, id, 'NOT_FOUND');
-    this.name = 'ModalNotFoundError';
-  }
 }
 
 // Modal Button Types

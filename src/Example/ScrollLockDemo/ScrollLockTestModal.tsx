@@ -47,7 +47,7 @@ ScrollLockTestModal.id = "scroll-lock-modal" as const;
 ScrollLockTestModal.Trigger = ({
   children,
   ...props
-}: { children: React.ReactNode } & React.ComponentProps<"div">) => {
+}: { children: React.ReactNode } & React.ComponentProps<"button">) => {
   return (
     <Modal.Trigger target={ScrollLockTestModal.id} {...props} asChild>
       {children}

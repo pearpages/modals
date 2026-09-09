@@ -3,7 +3,7 @@ import React, { createContext, useContext, ReactNode, useState, useCallback } fr
 /**
  * Context for managing aria-labelledby and aria-describedby IDs within a Modal
  */
-interface ModalAriaContextValue {
+export interface ModalAriaContextValue {
   /** ID of the modal title for aria-labelledby */
   titleId?: string;
   /** ID of the modal description for aria-describedby */

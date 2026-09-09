@@ -59,7 +59,7 @@ CustomBodyModal.Trigger = ({
 }: {
   children: React.ReactNode;
   onClick?: () => void;
-} & React.ComponentProps<"div">) => {
+} & React.ComponentProps<"button">) => {
   const handleClick = () => {
     console.log("Opening custom styled Modal.Body example...");
     onClick?.();
