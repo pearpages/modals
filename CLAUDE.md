@@ -6,10 +6,12 @@ React modal library with compound component pattern, accessibility features, and
 @specs.md
 
 ## Development Commands
-- `npm test` - Run tests
-- `npm run build` - Build library for distribution
-- `npm run lint` - Run linting (if available)
-- `cd playground && npm run dev` - Start development server on port 5173
+- `npm run test:run` - Library test suite (one-shot)
+- `npm run test:playground` - Renders every docs route against dist/ (build first)
+- `npm run build` - Build library for distribution (tsup)
+- `npm run lint` - eslint over src/ and playground/src/
+- `npm run playground` - Docs site against src/, with HMR
+- `npm run playground:dist` - Docs site against the built package
 
 ## Architecture Notes
 - **CSS**: Direct class targeting (`.modalBackdrop`, `.modal`, etc.) - no namespace wrapper due to portal rendering incompatibility
@@ -18,11 +20,14 @@ React modal library with compound component pattern, accessibility features, and
 - **Portals**: Modals render to `document.body` via React portals
 
 ## Key Files
-- `src/modal.scss` - Main styles (imported once in index.ts)
+- `src/styles/{index,tokens,components}.scss` - Styles (index.scss imported by src/index.ts as a BUILD INPUT, see Session 3 notes)
 - `src/Modal*.tsx` - Component implementations
+- `src/asChild.ts` - Shared asChild/ref-merging helper used by all nine subcomponents
 - `src/types.ts` - Complete TypeScript type definitions and component props
 - `src/index.ts` - Library exports
-- `playground/` - Development environment
+- `playground/` - Dev sandbox AND the deployed docs site (npm workspace)
+- `playground/src/routes.tsx` - Source of truth for the sidebar and the router
+- `playground/src/examples/` - Self-contained example files, shown via ?raw and rendered live
 
 ## Common Issues
 - If modal styles don't load: Check that CSS uses direct selectors, not namespaced
@@ -32,6 +37,86 @@ React modal library with compound component pattern, accessibility features, and
 ## Recent Fixes
 - Removed CSS namespace wrapper that prevented portal-rendered modal styles from applying
 - See `logs/` directory for detailed session notes
+
+## Latest Session Progress (September 2025 - Session 3)
+
+### Session Complete: docs site + 0.2.0 API cleanup
+
+Replicated the `heatmap` project's setup and extended it, then fixed the API it
+documents. Nine commits on `big-refactor`, each green.
+
+#### Workspace
+- `playground/` is now the only app and the deployed site. `gh-pages/` is gone —
+  the two had drifted, and both carried a stale `@pearpages/heatmap` symlink, so
+  the package name had never resolved in `playground/`.
+- Root is an npm workspace. `vite` sits in the ROOT devDependencies on purpose:
+  without it `playground`'s `tsc -b` sees two incompatible vite type trees,
+  since vitest 2 pins its own vite 5.
+- Dual-mode vite: `npm run playground` aliases the package to `../src` (HMR);
+  any other mode resolves through the real `exports` map into `../dist`. CI
+  builds the dist mode, so the deployed site proves the package resolves.
+
+#### Docs site — 26 routes
+- `playground/src/routes.tsx` is the single source of truth for both the sidebar
+  and the router; they cannot drift.
+- Every example is a self-contained file in `playground/src/examples/`, imported
+  **twice**: as a component, and with `?raw` for the code block. An eslint rule
+  restricts those files to `react` + `@pearpages/modals` imports so what a
+  reader copies actually runs.
+- Code first, live demo second.
+- `prism-react-renderer`, themed via CSS custom properties, so light/dark is a
+  token swap with no React state.
+- `playground/src/__smoke.test.tsx` renders all 26 routes against the BUILT
+  package. It runs from `vitest.playground.config.ts`, separate from the library
+  suite, because it needs `dist/` to exist.
+
+#### Bugs found and fixed (all had regression tests added that fail without the fix)
+1. **The focus trap never engaged.** `useFocusTrap` only re-runs when `isActive`
+   changes, but `ModalContent` renders `null` until `useModalPortal` finds the
+   portal — so on the render where `isActive` flipped, the ref was still empty
+   and the effect bailed, forever. No autofocus, no Tab containment, despite
+   both being documented. Fixed by gating `isActive` on `portalContainer`.
+   The two old focus tests only asserted "does not throw", which is why this
+   survived.
+2. **Escape ignored controlled state.** Backdrop clicks routed through
+   `onOpenChange`; Escape called `closeModal` directly. Unified in one
+   `requestClose`. NOTE: the original audit said controlled modals were "never
+   notified" — that was wrong, `Modal`'s divergence effect did notify. The real
+   defect was that the modal closed anyway, overriding a parent that declined.
+3. **`ModalRoot` shadowed the provider's `baseZIndex`** by defaulting its own
+   prop to 1000, putting backdrops in a different layer band from content.
+
+#### API decisions worth remembering
+- **`useModalStack` keeps the flat `open(id)` form**; `specs.md` and `types.ts`
+  were changed to match it, not the other way round. An indexed
+  `modals['id'].open()` cannot be typed honestly (a typo type-checks then
+  throws) and `isOpen` as a value would rebuild the returned object on every
+  stack change.
+- **The SCSS import in `src/index.ts` must stay.** It is a build input: it is
+  what puts the stylesheet into the tsup graph so esbuild emits
+  `dist/index.css`. Removing it (an earlier plan step) would stop emitting the
+  CSS entirely. `dist/index.js` contains no CSS reference, so `sideEffects:
+  false` is accurate and consumers must import `styles.css` themselves.
+- One `renderAsChild` helper now backs all nine subcomponents: named errors,
+  className merged child-first, `on*` composed, refs merged. `Modal.Content`
+  gained `asChild` (the `<form>` case), which is why ref merging was needed.
+- Deleted: `src/Example` + its export, the error classes, nine unused types,
+  `useFocusRestore`, `useScrollbarCompensation`, the `.pearpages-modals`
+  wrapper. `dist/index.css` 60kB → 22.6kB; `dist/index.js` 180kB → 33kB.
+
+#### State: 211 library tests + 28 docs tests, lint clean, tsc clean, publint +
+attw green. Version 0.2.0, unreleased.
+
+### Pending
+- [ ] Merge `big-refactor` into `main` (deploy runs on `main`).
+- [ ] **Manual, yours:** configure npm trusted publishing (OIDC) on npmjs.com
+      for `pearpages/modals` + `publish.yml`, then drop `NODE_AUTH_TOKEN` from
+      the workflow — there is a TODO marking the spot. Cannot be dry-run.
+- [ ] After first deploy, confirm `curl -I https://modals.pearpages.com/guides/stacking`
+      returns 404 + `text/html` and the page renders. That status is expected:
+      GitHub Pages serves the SPA fallback with 404.
+- [ ] The docs site was verified by build, types, lint and a headless render of
+      every route — not visually in a browser.
 
 ## Latest Session Progress (September 2025 - Session 2)
 
@@ -250,10 +335,17 @@ Modal library now features advanced component architecture and enhanced develope
 ## Current Issues & TODOs
 
 ### 🚨 High Priority
-- [ ] **Standardize component naming convention** - Currently mixing separate imports (`ModalContent`, `ModalHeader`, `ModalTitle`) with compound components (`Modal.Body`). Need to choose one pattern consistently. Recommended: Convert all to compound components (`Modal.Content`, `Modal.Header`, `Modal.Title`, `Modal.Footer`, etc.) for better namespace clarity, cleaner imports, and modern React patterns.
+- [x] **Standardize component naming convention** - RESOLVED in Session 3 by
+  documenting the choice rather than removing one form. Both are supported and
+  both are intentional: the compound `Modal.*` form is what the docs site uses
+  throughout, and the individual named exports remain for tree-shaking. See the
+  "Component Import Patterns" section of specs.md.
 
 ### 🔧 Bug Fixes
-- [ ] **Fix forms inside modals overflow** - Forms overflow the modal body content instead of respecting the container boundaries. Need to implement proper form layout and overflow handling within Modal.Body components.
+- [ ] **Fix forms inside modals overflow** - Forms overflow the modal body
+  instead of respecting the container. NOT verified either way in Session 3 —
+  `/guides/forms-and-async` and `/components/modal-content` now have live form
+  examples (`ContentAsForm`), so reproduce it there first before changing CSS.
 
 ### 🎨 Enhancement Features
 - [x] **Create Modal.Button component** - ✅ COMPLETED: Full implementation with 5 variants (primary, secondary, danger, success, warning), 3 sizes, loading states, asChild pattern, and complete TypeScript definitions. Integrated into compound component pattern and hybrid export strategy.
@@ -261,6 +353,12 @@ Modal library now features advanced component architecture and enhanced develope
 ## Development Recipes & Patterns
 
 ### 📋 Recipe: Component Refactoring with Folder Structure
+
+> **Superseded in Session 3.** `src/Example/` no longer exists — demos moved to
+> `playground/src/examples/`, where each file is self-contained, imports only
+> `react` and `@pearpages/modals` (enforced by eslint), and carries NO stylesheet
+> because it is shown verbatim to readers. The structural advice below is kept
+> for ordinary components; ignore the `src/Example/` paths.
 
 **Use Case:** Refactoring large components with inline styles into organized, modular architecture with external CSS files.
 
