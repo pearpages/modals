@@ -58,7 +58,11 @@ describe('Focus Management', () => {
     expect(dialog).toHaveAttribute('role', 'dialog');
   });
 
-  it('should handle basic tab navigation without errors', async () => {
+  it('moves focus into the modal when it opens', async () => {
+    // Regression: useFocusTrap only re-runs when its isActive flag changes, and
+    // ModalContent rendered null until useModalPortal found the portal, so on
+    // the render where the modal "opened" the container ref was still empty and
+    // the trap silently did nothing — no autofocus and no Tab containment.
     const TestComponent = () => {
       const [isOpen, setIsOpen] = React.useState(false);
 
@@ -67,8 +71,8 @@ describe('Focus Management', () => {
           <button data-testid="trigger" onClick={() => setIsOpen(true)}>
             Open Modal
           </button>
-          
-          <Modal id="test-modal" open={isOpen} onOpenChange={setIsOpen}>
+
+          <Modal id="focus-modal" open={isOpen} onOpenChange={setIsOpen}>
             <ModalContent>
               <ModalHeader>
                 <ModalTitle>Test Modal</ModalTitle>
@@ -84,31 +88,70 @@ describe('Focus Management', () => {
 
     render(<TestComponent />);
 
-    const trigger = screen.getByTestId('trigger');
-
-    // Open modal
     await act(async () => {
-      fireEvent.click(trigger);
+      fireEvent.click(screen.getByTestId('trigger'));
     });
 
-    // Wait for modal to open
     await waitFor(() => {
       expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
 
-    // Test basic tab navigation
-    const button1 = screen.getByTestId('button1');
-    const button2 = screen.getByTestId('button2');
-    const closeButton = screen.getByTestId('close-button');
+    await waitFor(() => {
+      expect(screen.getByRole('dialog').contains(document.activeElement)).toBe(true);
+    });
+  });
 
-    // Simulate tab key press - should not throw errors
+  it('wraps focus from the last focusable element back to the first', async () => {
+    const TestComponent = () => (
+      <ModalSystem>
+        <Modal id="wrap-modal" open>
+          <ModalContent>
+            <button data-testid="first">First</button>
+            <button data-testid="last">Last</button>
+          </ModalContent>
+        </Modal>
+      </ModalSystem>
+    );
+
+    render(<TestComponent />);
+
+    await waitFor(() => {
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+    });
+
+    const last = screen.getByTestId('last');
     await act(async () => {
+      last.focus();
       fireEvent.keyDown(document, { key: 'Tab' });
     });
 
-    // Ensure elements are available for focusing
-    expect(button1).toBeInTheDocument();
-    expect(button2).toBeInTheDocument();
-    expect(closeButton).toBeInTheDocument();
+    expect(document.activeElement).toBe(screen.getByTestId('first'));
+  });
+
+  it('wraps focus backwards from the first element to the last', async () => {
+    const TestComponent = () => (
+      <ModalSystem>
+        <Modal id="wrap-back-modal" open>
+          <ModalContent>
+            <button data-testid="first">First</button>
+            <button data-testid="last">Last</button>
+          </ModalContent>
+        </Modal>
+      </ModalSystem>
+    );
+
+    render(<TestComponent />);
+
+    await waitFor(() => {
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+    });
+
+    const first = screen.getByTestId('first');
+    await act(async () => {
+      first.focus();
+      fireEvent.keyDown(document, { key: 'Tab', shiftKey: true });
+    });
+
+    expect(document.activeElement).toBe(screen.getByTestId('last'));
   });
 });

@@ -6,6 +6,7 @@ import { useModalPortal } from './ModalRoot';
 import { useModalId } from './ModalIdContext';
 import { useModalAria } from './ModalAriaContext';
 import { useFocusTrap } from './useFocusTrap';
+import { renderAsChild } from './asChild';
 
 /**
  * Modal.Content component that handles the modal dialog container.
@@ -19,6 +20,7 @@ import { useFocusTrap } from './useFocusTrap';
  * - CSS module styling with BEM classes
  */
 export const ModalContent: React.FC<ModalContentProps> = ({
+  asChild = false,
   size = 'md',
   animated = true,
   className,
@@ -47,11 +49,15 @@ export const ModalContent: React.FC<ModalContentProps> = ({
   // Calculate z-index based on base + stack index
   const zIndex = modalEntry ? baseZIndex + modalEntry.stackIndex : baseZIndex;
 
-  // Focus trap - only active when modal is open and topmost
-  useFocusTrap(contentRef, isModalOpen && isTopmost);
-
   // Get portal container for this modal
   const portalContainer = useModalPortal(modalId);
+
+  // Focus trap - only active when modal is open and topmost.
+  // The portal container is discovered asynchronously, and until it exists this
+  // component renders null, so contentRef is still empty. Gating on it as well
+  // means the trap activates on the render that actually attaches the ref —
+  // useFocusTrap only re-runs when this flag changes, not when the ref fills in.
+  useFocusTrap(contentRef, isModalOpen && isTopmost && !!portalContainer);
 
   // Configure dismiss behavior
   useModalDismissConfig(modalId, {
@@ -101,21 +107,26 @@ export const ModalContent: React.FC<ModalContentProps> = ({
 
   // No data state needed - CSS animation handles everything
 
-  const content = (
-    <div
-      ref={contentRef}
-      className={contentClasses}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby={titleId}
-      aria-describedby={descriptionId}
-      data-state={dataState}
-      style={{
-        zIndex: zIndex,
-        pointerEvents: 'auto'
-      }}
-      {...rest}
-    >
+  const dialogProps = {
+    className: contentClasses,
+    role: 'dialog',
+    'aria-modal': true,
+    'aria-labelledby': titleId,
+    'aria-describedby': descriptionId,
+    'data-state': dataState,
+    style: {
+      zIndex: zIndex,
+      pointerEvents: 'auto' as const,
+    },
+    ...rest,
+  };
+
+  // renderAsChild merges contentRef with any ref already on the child, so the
+  // focus trap keeps working without clobbering the consumer's own ref.
+  const content = asChild ? (
+    renderAsChild('Modal.Content', children, dialogProps, contentRef)
+  ) : (
+    <div ref={contentRef} {...dialogProps}>
       {children}
     </div>
   );

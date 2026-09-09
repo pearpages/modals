@@ -1,5 +1,6 @@
 import React from 'react';
 import { ModalCloseProps } from './types';
+import { renderAsChild } from './asChild';
 import { useModalContext } from './ModalProvider';
 import { useModalId } from './ModalIdContext';
 
@@ -41,26 +42,12 @@ export const ModalClose: React.FC<ModalCloseProps> = ({
   const closeClasses = ['modalClose', className].filter(Boolean).join(' ');
 
   if (asChild) {
-    // If asChild is true, clone the first child and add our props
-    const child = React.Children.only(children) as React.ReactElement<any>;
-    const originalOnClick = child.props.onClick;
-    
-    const composedOnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      // Call the original onClick first if it exists
-      if (originalOnClick) {
-        originalOnClick(e);
-      }
-      
-      // If not prevented, call our handler
-      if (!e.defaultPrevented) {
-        handleClick(e);
-      }
-    };
-    
-    return React.cloneElement(child, {
-      onClick: composedOnClick,
-      className: [child.props.className, closeClasses].filter(Boolean).join(' '),
-      ...rest
+    // renderAsChild composes the child's own onClick with ours, and skips ours
+    // if the child called preventDefault().
+    return renderAsChild('Modal.Close', children, {
+      onClick: handleClick,
+      className: closeClasses,
+      ...rest,
     });
   }
 

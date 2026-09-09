@@ -1,5 +1,6 @@
 import React from 'react';
 import { ModalHeaderProps } from './types';
+import { renderAsChild } from './asChild';
 
 /**
  * Modal.Header component - provides layout for title and close button
@@ -14,12 +15,7 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({
   const headerClasses = ['modalHeader', className].filter(Boolean).join(' ');
 
   if (asChild) {
-    // If asChild is true, clone the first child and add our props
-    const child = React.Children.only(children) as React.ReactElement<any>;
-    return React.cloneElement(child, {
-      className: [child.props.className, headerClasses].filter(Boolean).join(' '),
-      ...rest
-    });
+    return renderAsChild('Modal.Header', children, { className: headerClasses, ...rest });
   }
 
   // Separate close button from other content for proper grid layout

@@ -31,6 +31,12 @@ export interface ModalTriggerProps extends ButtonHTMLAttributes<HTMLButtonElemen
 
 // Modal Content Props
 export interface ModalContentProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * Render the given child in place of the dialog element, keeping the dialog
+   * role, ARIA wiring, sizing and focus trap. Useful for making the dialog
+   * itself a <form>.
+   */
+  asChild?: boolean;
   /** Size variant of the modal */
   size?: ModalSize;
   /** Whether to enable fade animations */

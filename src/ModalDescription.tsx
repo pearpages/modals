@@ -1,5 +1,6 @@
 import React, { useId, useEffect } from 'react';
 import { ModalDescriptionProps } from './types';
+import { renderAsChild } from './asChild';
 import { useModalAria } from './ModalAriaContext';
 
 /**
@@ -27,13 +28,7 @@ export const ModalDescription: React.FC<ModalDescriptionProps> = ({
   }, [descriptionId, registerDescriptionId, unregisterDescriptionId]);
 
   if (asChild) {
-    // If asChild is true, clone the first child and add our props
-    const child = React.Children.only(children) as React.ReactElement<any>;
-    return React.cloneElement(child, {
-      id: descriptionId,
-      className: [child.props.className, descriptionClasses].filter(Boolean).join(' '),
-      ...rest
-    });
+    return renderAsChild('Modal.Description', children, { id: descriptionId, className: descriptionClasses, ...rest });
   }
 
   return (

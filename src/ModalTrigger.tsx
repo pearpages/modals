@@ -1,6 +1,7 @@
-import React, { useCallback, KeyboardEvent, MouseEvent, cloneElement, isValidElement } from 'react';
+import React, { useCallback, KeyboardEvent, MouseEvent, isValidElement } from 'react';
 import { ModalTriggerProps } from './types';
 import { useModalContext } from './ModalProvider';
+import { renderAsChild } from './asChild';
 
 /**
  * Modal.Trigger component for declarative modal opening.
@@ -47,38 +48,21 @@ export const ModalTrigger: React.FC<ModalTriggerProps> = ({
     }
   }, [handleOpenModal]);
 
-  // asChild pattern: clone the child element and add our props
+  // asChild pattern: render the child in place of our button. renderAsChild
+  // composes onClick/onKeyDown with the child's own and merges className.
   if (asChild) {
-    if (!isValidElement(children)) {
-      throw new Error('Modal.Trigger: asChild requires a single valid React element as children');
-    }
+    // `disabled` is the one prop that merges rather than overrides: a child
+    // that is already disabled stays disabled even if the trigger is not.
+    const childDisabled = isValidElement(children)
+      ? (children.props as { disabled?: boolean }).disabled
+      : undefined;
 
-    const childProps = children.props as any;
-    
-    return cloneElement(children as React.ReactElement<any>, {
+    return renderAsChild('Modal.Trigger', children, {
       ...props,
-      onClick: (event: MouseEvent) => {
-        // Call original onClick if it exists
-        if (childProps.onClick) {
-          childProps.onClick(event);
-        }
-        // Don't trigger modal if event was prevented
-        if (!event.defaultPrevented) {
-          handleClick(event);
-        }
-      },
-      onKeyDown: (event: KeyboardEvent) => {
-        // Call original onKeyDown if it exists
-        if (childProps.onKeyDown) {
-          childProps.onKeyDown(event);
-        }
-        // Don't trigger modal if event was prevented
-        if (!event.defaultPrevented) {
-          handleKeyDown(event);
-        }
-      },
-      disabled: disabled || childProps.disabled,
-      className: className ? `${childProps.className || ''} ${className}`.trim() : childProps.className,
+      onClick: handleClick,
+      onKeyDown: handleKeyDown,
+      disabled: disabled || childDisabled,
+      className,
       'aria-haspopup': 'dialog',
       'data-modal-trigger': target,
     });

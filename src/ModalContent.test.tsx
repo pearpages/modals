@@ -517,3 +517,100 @@ describe('Modal Subcomponents', () => {
     expect(footer).toHaveClass('modalFooter');
   });
 });
+describe('Modal.Content asChild', () => {
+  it('renders the child in place of the dialog div, keeping the dialog role', async () => {
+    await renderModal(
+      <TestModalSystem open={true}>
+        <Modal.Content asChild>
+          <form data-testid="dialog-form">
+            <button type="submit">Save</button>
+          </form>
+        </Modal.Content>
+      </TestModalSystem>
+    );
+
+    const form = screen.getByTestId('dialog-form');
+    expect(form.tagName).toBe('FORM');
+    expect(form).toHaveAttribute('role', 'dialog');
+    expect(form).toHaveAttribute('aria-modal', 'true');
+    expect(form).toHaveClass('modal');
+    // The default wrapper is gone, not merely hidden.
+    expect(document.querySelector('div.modal')).toBeNull();
+  });
+
+  it('merges the size class with the child className', async () => {
+    await renderModal(
+      <TestModalSystem open={true}>
+        <Modal.Content asChild size="full" className="from-prop">
+          <form className="from-child" data-testid="dialog-form">
+            content
+          </form>
+        </Modal.Content>
+      </TestModalSystem>
+    );
+
+    const form = screen.getByTestId('dialog-form');
+    expect(form).toHaveClass('from-child', 'modal', 'modal--full', 'from-prop');
+  });
+
+  it('composes the child onSubmit rather than replacing it', async () => {
+    const onSubmit = vi.fn((e: React.FormEvent) => e.preventDefault());
+
+    await renderModal(
+      <TestModalSystem open={true}>
+        <Modal.Content asChild>
+          <form onSubmit={onSubmit} data-testid="dialog-form">
+            <button type="submit">Save</button>
+          </form>
+        </Modal.Content>
+      </TestModalSystem>
+    );
+
+    fireEvent.submit(screen.getByTestId('dialog-form'));
+    expect(onSubmit).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps the focus trap working, so the child still receives focus', async () => {
+    await renderModal(
+      <TestModalSystem open={true}>
+        <Modal.Content asChild>
+          <form data-testid="dialog-form">
+            <button type="button">Focusable</button>
+          </form>
+        </Modal.Content>
+      </TestModalSystem>
+    );
+
+    // The focus trap needs the merged ref to have reached the child element.
+    await waitFor(() => {
+      const form = screen.getByTestId('dialog-form');
+      expect(form.contains(document.activeElement)).toBe(true);
+    });
+  });
+
+  it('preserves a ref the consumer put on the child', async () => {
+    const ref = React.createRef<HTMLFormElement>();
+
+    await renderModal(
+      <TestModalSystem open={true}>
+        <Modal.Content asChild>
+          <form ref={ref} data-testid="dialog-form">
+            content
+          </form>
+        </Modal.Content>
+      </TestModalSystem>
+    );
+
+    expect(ref.current).toBe(screen.getByTestId('dialog-form'));
+  });
+
+  it('throws a named error when the child is not a single element', async () => {
+    await expect(
+      renderModal(
+        <TestModalSystem open={true}>
+          <Modal.Content asChild>{'just text'}</Modal.Content>
+        </TestModalSystem>
+      )
+    ).rejects.toThrow('Modal.Content: asChild requires a single valid React element as children');
+  });
+});

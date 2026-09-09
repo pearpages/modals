@@ -1,5 +1,6 @@
 import React, { useId, useEffect } from 'react';
 import { ModalTitleProps } from './types';
+import { renderAsChild } from './asChild';
 import { useModalAria } from './ModalAriaContext';
 
 /**
@@ -26,13 +27,7 @@ export const ModalTitle: React.FC<ModalTitleProps> = ({
   }, [titleId, registerTitleId, unregisterTitleId]);
 
   if (asChild) {
-    // If asChild is true, clone the first child and add our props
-    const child = React.Children.only(children) as React.ReactElement<any>;
-    return React.cloneElement(child, {
-      id: titleId,
-      className: [child.props.className, titleClasses].filter(Boolean).join(' '),
-      ...rest
-    });
+    return renderAsChild('Modal.Title', children, { id: titleId, className: titleClasses, ...rest });
   }
 
   return (

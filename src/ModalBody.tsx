@@ -1,5 +1,6 @@
 import React from 'react';
 import { ModalBodyProps } from './types';
+import { renderAsChild } from './asChild';
 
 /**
  * Modal.Body component - provides main content area with overflow handling
@@ -18,12 +19,7 @@ export const ModalBody: React.FC<ModalBodyProps> = ({
   const bodyClasses = ['modalBody', className].filter(Boolean).join(' ');
 
   if (asChild) {
-    // If asChild is true, clone the first child and add our props
-    const child = React.Children.only(children) as React.ReactElement<any>;
-    return React.cloneElement(child, {
-      className: [child.props.className, bodyClasses].filter(Boolean).join(' '),
-      ...rest
-    });
+    return renderAsChild('Modal.Body', children, { className: bodyClasses, ...rest });
   }
 
   return (

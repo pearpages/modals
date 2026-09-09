@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import { ModalButtonProps } from './types';
+import { renderAsChild } from './asChild';
 
 /**
  * Modal.Button component for consistent button styling in modal footers.
@@ -38,20 +39,15 @@ export const ModalButton = forwardRef<HTMLButtonElement, ModalButtonProps>(({
 
   const isDisabled = disabled || loading;
 
-  // asChild pattern: clone the child element and add our props
+  // asChild pattern: render the child in place of our button.
   if (asChild) {
-    if (!React.isValidElement(children)) {
-      throw new Error('Modal.Button: asChild requires a single valid React element as children');
-    }
-
-    return React.cloneElement(children as React.ReactElement<any>, {
+    return renderAsChild('Modal.Button', children, {
       ...props,
-      ref,
       disabled: isDisabled,
       className: combinedClassName,
       'aria-disabled': isDisabled,
-      'data-loading': loading
-    });
+      'data-loading': loading,
+    }, ref);
   }
 
   return (
