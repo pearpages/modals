@@ -51,6 +51,11 @@ jobs:
 
       - name: Build playground
         run: npm run build -w playground
+
+      # Renders every documentation route against the built package, so a
+      # broken exports map or a page that throws fails here, not after deploy.
+      - name: Test the playground against the built package
+        run: npm run test:playground
       
       - name: Setup Pages
         uses: actions/configure-pages@v5

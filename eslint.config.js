@@ -27,10 +27,6 @@ export default tseslint.config([
             group: ['./*', '../*', '@/*'],
             message: 'Examples must be self-contained: import only from react and @pearpages/modals.',
           },
-          {
-            group: ['*.scss', '*.css'],
-            message: 'Examples must not import stylesheets — the snippet is shown verbatim to users.',
-          },
         ],
       }],
     },

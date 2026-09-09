@@ -1,0 +1,621 @@
+// Docs site styling. The library ships its own stylesheet; everything here is
+// the site around it, and deliberately does not reach into the library's SCSS —
+// the site is a consumer of the package like any other.
+
+$font-stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$mono-stack: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+// The dark palette is emitted twice on purpose — see :root below.
+@mixin page-dark-tokens {
+  --page-bg: #0d1117;
+  --page-fg: #e6edf3;
+  --page-muted: #8b949e;
+  --page-border: #30363d;
+  --page-surface: #161b22;
+  --page-surface-alt: #1c2128;
+  --page-accent: #4493f8;
+  --page-accent-contrast: #ffffff;
+  --page-shadow: 0 8px 24px rgba(1, 4, 9, 0.6);
+
+  --code-fg: #e6edf3;
+  --code-comment: #8b949e;
+  --code-keyword: #ff7b72;
+  --code-string: #a5d6ff;
+  --code-function: #d2a8ff;
+  --code-attr: #79c0ff;
+  --code-number: #79c0ff;
+  --code-punct: #8b949e;
+  --code-builtin: #ffa657;
+
+  --callout-info-bg: #0c2d6b33;
+  --callout-info-border: #1f6feb;
+  --callout-success-bg: #0f532333;
+  --callout-success-border: #238636;
+  --callout-warning-bg: #341a0033;
+  --callout-warning-border: #9e6a03;
+  --callout-danger-bg: #67060c33;
+  --callout-danger-border: #da3633;
+}
+
+:root {
+  color-scheme: light dark;
+
+  --page-bg: #ffffff;
+  --page-fg: #1f2328;
+  --page-muted: #59636e;
+  --page-border: #d1d9e0;
+  --page-surface: #f6f8fa;
+  --page-surface-alt: #eef1f4;
+  --page-accent: #0969da;
+  --page-accent-contrast: #ffffff;
+  --page-shadow: 0 8px 24px rgba(31, 35, 40, 0.12);
+
+  --code-fg: #1f2328;
+  --code-comment: #6e7781;
+  --code-keyword: #cf222e;
+  --code-string: #0a3069;
+  --code-function: #8250df;
+  --code-attr: #0550ae;
+  --code-number: #0550ae;
+  --code-punct: #6e7781;
+  --code-builtin: #953800;
+
+  --callout-info-bg: #ddf4ff;
+  --callout-info-border: #54aeff;
+  --callout-success-bg: #dafbe1;
+  --callout-success-border: #4ac26b;
+  --callout-warning-bg: #fff8c5;
+  --callout-warning-border: #d4a72c;
+  --callout-danger-bg: #ffebe9;
+  --callout-danger-border: #ff8182;
+
+  // Emitted twice, and both copies are load-bearing. The media query handles
+  // "follow the OS", guarded so an explicit light choice still wins under a
+  // dark OS; the attribute selector handles "force dark" under a light OS.
+  // Collapsing them into one selector list breaks one direction silently.
+  @media (prefers-color-scheme: dark) {
+    &:not([data-theme='light']) {
+      @include page-dark-tokens;
+    }
+  }
+
+  &[data-theme='dark'] {
+    @include page-dark-tokens;
+    color-scheme: dark;
+  }
+
+  &[data-theme='light'] {
+    color-scheme: light;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: $font-stack;
+  background: var(--page-bg);
+  color: var(--page-fg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--page-accent);
+}
+
+// ---------------------------------------------------------------- app shell
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  &__body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    gap: 32px;
+    padding: 0 24px;
+
+    @media (max-width: 900px) {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 0 16px;
+    }
+  }
+
+  &__main {
+    min-width: 0;
+    padding: 32px 0 80px;
+  }
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--page-bg) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--page-border);
+
+  &__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    @media (max-width: 900px) {
+      padding: 12px 16px;
+    }
+  }
+
+  &__brand {
+    font-family: $mono-stack;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--page-fg);
+    text-decoration: none;
+  }
+
+  &__version {
+    font-family: $mono-stack;
+    font-size: 0.75rem;
+    color: var(--page-muted);
+    border: 1px solid var(--page-border);
+    border-radius: 999px;
+    padding: 1px 8px;
+  }
+
+  &__spacer {
+    flex: 1;
+  }
+
+  &__links {
+    display: flex;
+    gap: 12px;
+
+    @media (max-width: 620px) {
+      display: none;
+    }
+  }
+
+  &__link {
+    font-size: 0.875rem;
+    color: var(--page-muted);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--page-fg);
+    }
+  }
+
+  &__menu {
+    display: none;
+    background: none;
+    border: 1px solid var(--page-border);
+    border-radius: 6px;
+    color: var(--page-fg);
+    padding: 4px 10px;
+    font-size: 0.875rem;
+    cursor: pointer;
+
+    @media (max-width: 900px) {
+      display: block;
+    }
+  }
+}
+
+.choice {
+  display: inline-flex;
+  border: 1px solid var(--page-border);
+  border-radius: 999px;
+  padding: 2px;
+  gap: 2px;
+
+  &__option {
+    border: none;
+    background: none;
+    font: inherit;
+    font-size: 0.75rem;
+    color: var(--page-muted);
+    padding: 3px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+
+    &--active {
+      background: var(--page-accent);
+      color: var(--page-accent-contrast);
+    }
+  }
+}
+
+// ------------------------------------------------------------------- sidebar
+
+.nav {
+  padding: 32px 0 80px;
+  position: sticky;
+  top: 57px;
+  align-self: start;
+  max-height: calc(100vh - 57px);
+  overflow-y: auto;
+
+  @media (max-width: 900px) {
+    display: none;
+    position: static;
+    max-height: none;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--page-border);
+
+    &--open {
+      display: block;
+    }
+  }
+
+  &__section {
+    margin-bottom: 24px;
+  }
+
+  &__heading {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--page-muted);
+    font-weight: 600;
+    margin: 0 0 8px;
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__link {
+    display: block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: var(--page-fg);
+    text-decoration: none;
+
+    &:hover {
+      background: var(--page-surface);
+    }
+
+    &[aria-current='page'] {
+      background: var(--page-surface);
+      color: var(--page-accent);
+      font-weight: 600;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------- page
+
+.page {
+  max-width: 820px;
+
+  &__title {
+    font-size: 2rem;
+    line-height: 1.2;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+
+  &__lead {
+    font-size: 1.0625rem;
+    color: var(--page-muted);
+    margin: 0 0 32px;
+  }
+
+  h2 {
+    font-size: 1.375rem;
+    margin: 48px 0 12px;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-size: 1.0625rem;
+    margin: 32px 0 8px;
+  }
+
+  p {
+    margin: 0 0 16px;
+  }
+
+  ul,
+  ol {
+    margin: 0 0 16px;
+    padding-left: 22px;
+  }
+
+  li {
+    margin-bottom: 6px;
+  }
+
+  code {
+    font-family: $mono-stack;
+    font-size: 0.875em;
+    background: var(--page-surface);
+    border: 1px solid var(--page-border);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+}
+
+// ----------------------------------------------------------------- code block
+
+.code {
+  border: 1px solid var(--page-border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--page-surface);
+  margin: 0;
+
+  &__bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-bottom: 1px solid var(--page-border);
+    background: var(--page-surface-alt);
+  }
+
+  &__name {
+    font-family: $mono-stack;
+    font-size: 0.75rem;
+    color: var(--page-muted);
+    flex: 1;
+  }
+
+  &__copy {
+    font: inherit;
+    font-size: 0.75rem;
+    border: 1px solid var(--page-border);
+    background: var(--page-bg);
+    color: var(--page-muted);
+    border-radius: 6px;
+    padding: 2px 10px;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--page-fg);
+    }
+  }
+
+  &__pre {
+    margin: 0;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-family: $mono-stack;
+    font-size: 0.8125rem;
+    line-height: 1.65;
+    tab-size: 2;
+  }
+
+  &__line-number {
+    display: inline-block;
+    width: 2em;
+    user-select: none;
+    opacity: 0.35;
+    text-align: right;
+    margin-right: 1em;
+  }
+}
+
+// ------------------------------------------------------------------ showcase
+
+.showcase {
+  margin: 0 0 40px;
+
+  &__title {
+    font-size: 1.0625rem;
+    margin: 32px 0 6px;
+  }
+
+  &__description {
+    color: var(--page-muted);
+    margin: 0 0 12px;
+    font-size: 0.9375rem;
+  }
+
+  // The live demo sits below the code: read what it does, then press it.
+  &__demo {
+    margin-top: -1px;
+    border: 1px solid var(--page-border);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    background: var(--page-bg);
+  }
+
+  &__demo--grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  &__demo--column {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  // Square off the code block where the demo panel joins it.
+  .code {
+    border-radius: 10px 10px 0 0;
+  }
+}
+
+// --------------------------------------------------------------- props table
+
+.props {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 24px;
+  font-size: 0.875rem;
+
+  caption {
+    text-align: left;
+    color: var(--page-muted);
+    font-size: 0.8125rem;
+    margin-bottom: 8px;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--page-border);
+    vertical-align: top;
+  }
+
+  th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--page-muted);
+    font-weight: 600;
+  }
+
+  &__name {
+    font-family: $mono-stack;
+    white-space: nowrap;
+  }
+
+  &__required {
+    color: var(--callout-danger-border);
+    margin-left: 2px;
+  }
+
+  &__type {
+    font-family: $mono-stack;
+    font-size: 0.75rem;
+    color: var(--page-accent);
+    word-break: break-word;
+  }
+
+  &__default {
+    font-family: $mono-stack;
+    font-size: 0.75rem;
+    color: var(--page-muted);
+    white-space: nowrap;
+  }
+
+  // Tables do not survive phones; fall back to stacked definitions.
+  @media (max-width: 640px) {
+    &,
+    & tbody,
+    & tr,
+    & td {
+      display: block;
+      width: 100%;
+    }
+
+    thead {
+      display: none;
+    }
+
+    tr {
+      border-bottom: 1px solid var(--page-border);
+      padding: 10px 0;
+    }
+
+    td {
+      border: none;
+      padding: 2px 0;
+
+      &::before {
+        content: attr(data-label) ': ';
+        color: var(--page-muted);
+        font-size: 0.75rem;
+      }
+    }
+
+    &__name::before {
+      content: none !important;
+    }
+  }
+}
+
+// ------------------------------------------------------------------ callout
+
+.callout {
+  border: 1px solid var(--page-border);
+  border-left-width: 3px;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 0 0 20px;
+  font-size: 0.9375rem;
+
+  &__title {
+    font-weight: 600;
+    margin: 0 0 4px;
+    font-size: 0.9375rem;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  &--info {
+    background: var(--callout-info-bg);
+    border-left-color: var(--callout-info-border);
+  }
+
+  &--success {
+    background: var(--callout-success-bg);
+    border-left-color: var(--callout-success-border);
+  }
+
+  &--warning {
+    background: var(--callout-warning-bg);
+    border-left-color: var(--callout-warning-border);
+  }
+
+  &--danger {
+    background: var(--callout-danger-bg);
+    border-left-color: var(--callout-danger-border);
+  }
+}
+
+// ------------------------------------------------------------------- footer
+
+.footer {
+  border-top: 1px solid var(--page-border);
+  padding: 24px;
+  text-align: center;
+  color: var(--page-muted);
+  font-size: 0.875rem;
+
+  &__links {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+}
+
+.sk-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--page-muted);
+  text-decoration: none;
+  font-size: 0.8125rem;
+
+  img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+  }
+}
