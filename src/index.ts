@@ -1,4 +1,7 @@
-// Import styles to ensure they're bundled
+// Build input, not a runtime side effect: this import is what pulls the SCSS
+// into the tsup graph so esbuild extracts it to dist/index.css. The bundled
+// dist/index.js carries no reference to the stylesheet, so consumers must
+// import '@pearpages/modals/styles.css' themselves.
 import './styles/index.scss';
 
 export * from './types';

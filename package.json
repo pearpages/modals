@@ -1,19 +1,23 @@
 {
   "name": "@pearpages/modals",
   "version": "0.1.1",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pearpages/modals"
+    "url": "git+https://github.com/pearpages/modals.git"
   },
   "bugs": {
     "url": "https://github.com/pearpages/modals/issues"
   },
-  "homepage": "https://github.com/pearpages/modals#readme",
+  "homepage": "https://modals.pearpages.com",
   "type": "module",
+  "workspaces": [
+    "playground"
+  ],
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
     "./styles.css": "./dist/index.css"
   },
@@ -26,23 +30,37 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "test": "vitest"
+    "playground": "npm run dev -w playground",
+    "playground:dist": "npm run build && npm run dev:dist -w playground",
+    "lint": "eslint .",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "check:package": "publint && attw --pack . --profile esm-only --exclude-entrypoints styles.css",
+    "prepublishOnly": "npm run build && npm run test:run && npm run check:package"
   },
   "peerDependencies": {
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.2",
+    "@eslint/js": "^9.33.0",
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16",
     "@types/node": "^24.4.0",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
     "esbuild-sass-plugin": "^3.3.1",
+    "eslint": "^9.33.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "globals": "^16.3.0",
     "jsdom": "^27.0.0",
+    "publint": "^0.3.12",
     "sass": "^1.92.1",
     "tsup": "^8",
     "typescript": "^5",
+    "typescript-eslint": "^8.39.1",
+    "vite": "^7.1.2",
     "vitest": "^2"
   }
 }

@@ -1,0 +1,8 @@
+/* Intentionally empty.
+ *
+ * In dist mode the playground imports '@pearpages/modals/styles.css', because
+ * tsup extracts the SCSS into a standalone stylesheet. In source mode the
+ * library's index.ts imports its own .scss and Vite compiles it, so the same
+ * import would duplicate every rule. vite.config.ts aliases the stylesheet here
+ * in source mode, which keeps main.tsx identical in both modes.
+ */

@@ -1,9 +1,7 @@
-import { Example } from '@/Example/index';
+import { Example } from '@pearpages/modals'
 
 function App() {
-  return (
-   <Example />
-  )
+  return <Example />
 }
 
 export default App
