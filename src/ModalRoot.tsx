@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ModalRootProps } from './types';
 import { useModalContext } from './ModalProvider';
@@ -17,17 +17,31 @@ const useIsClient = (): boolean => {
 
 export const ModalRoot: React.FC<ModalRootProps> = ({
   container,
-  baseZIndex = 1000
+  baseZIndex
 }) => {
   const isClient = useIsClient();
   const { stack, registry, baseZIndex: contextBaseZIndex, closeModal } = useModalContext();
 
-  // Use the effective base z-index (prop takes precedence over context)
-  const effectiveBaseZIndex = baseZIndex || contextBaseZIndex;
+  // The prop overrides context when given. `??` rather than `||` so that
+  // baseZIndex={0} is honoured, and no default here: ModalProvider already
+  // defaults to 1000 and ModalContent reads that same context value, so
+  // defaulting again would put the backdrop in a different layer band.
+  const effectiveBaseZIndex = baseZIndex ?? contextBaseZIndex;
 
   // Lock body scroll when any modal is open
   const hasOpenModals = stack.length > 0;
   useBodyScrollLock(hasOpenModals);
+
+  // Single dismissal path for both Escape and backdrop clicks. A controlled
+  // modal owns its own state, so we ask it to close rather than closing it.
+  const requestClose = useCallback((modalId: string) => {
+    const entry = registry[modalId];
+    if (entry?.onOpenChange) {
+      entry.onOpenChange(false);
+    } else {
+      closeModal(modalId);
+    }
+  }, [registry, closeModal]);
 
   // Handle escape key events
   useEffect(() => {
@@ -55,10 +69,10 @@ export const ModalRoot: React.FC<ModalRootProps> = ({
             
             // Only close if preventDefault wasn't called
             if (!preventClose.prevented) {
-              closeModal(topmostModalId);
+              requestClose(topmostModalId);
             }
           } else {
-            closeModal(topmostModalId);
+            requestClose(topmostModalId);
           }
         }
       }
@@ -66,7 +80,7 @@ export const ModalRoot: React.FC<ModalRootProps> = ({
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isClient, stack, registry, closeModal]);
+  }, [isClient, stack, registry, requestClose]);
 
   // SSR safety: return null on server
   if (!isClient) {
@@ -108,20 +122,10 @@ export const ModalRoot: React.FC<ModalRootProps> = ({
           
           // Only close if preventDefault wasn't called
           if (!preventClose.prevented) {
-            // Use onOpenChange if available (controlled mode), otherwise closeModal
-            if (topmostModal.onOpenChange) {
-              topmostModal.onOpenChange(false);
-            } else {
-              closeModal(topmostModalId);
-            }
+            requestClose(topmostModalId);
           }
         } else {
-          // Use onOpenChange if available (controlled mode), otherwise closeModal
-          if (topmostModal.onOpenChange) {
-            topmostModal.onOpenChange(false);
-          } else {
-            closeModal(topmostModalId);
-          }
+          requestClose(topmostModalId);
         }
       }
     }

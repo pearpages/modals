@@ -29,11 +29,9 @@ export const ModalSystem: React.FC<ModalSystemProps> = ({
   children,
 }) => {
   return (
-    <div className="pearpages-modals">
-      <ModalProvider baseZIndex={baseZIndex}>
-        {children}
-        <ModalRoot container={container} baseZIndex={baseZIndex} />
-      </ModalProvider>
-    </div>
+    <ModalProvider baseZIndex={baseZIndex}>
+      {children}
+      <ModalRoot container={container} />
+    </ModalProvider>
   );
 };
