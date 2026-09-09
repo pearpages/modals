@@ -2,7 +2,7 @@ name: Publish to npm
 on:
   push:
     tags:
-      - "v*"              # e.g. v0.1.0
+      - "v*"              # e.g. v0.2.0
 
 permissions:
   contents: read
@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Fetch all history to check branch info
-      
+
       - name: Check if tag is from main branch
         id: check_branch
         run: |
@@ -24,6 +24,7 @@ jobs:
             echo "is_main_branch=true" >> $GITHUB_OUTPUT
           else
             echo "is_main_branch=false" >> $GITHUB_OUTPUT
+            echo "::warning::Tag ${{ github.ref_name }} (${{ github.sha }}) is not an ancestor of origin/main - skipping publish. Tag a commit on main instead."
           fi
 
       - uses: actions/setup-node@v4
@@ -35,15 +36,35 @@ jobs:
 
       - run: npm ci
         if: steps.check_branch.outputs.is_main_branch == 'true'
-      - run: npm run build
-        if: steps.check_branch.outputs.is_main_branch == 'true'
 
-      # optional sanity check
-      - run: npx npm@^10 whoami
+      # Gates, as separate steps so the Actions UI says which one failed.
+      # prepublishOnly repeats them, so a local `npm publish` cannot skip them.
+      - name: Lint
         if: steps.check_branch.outputs.is_main_branch == 'true'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm run lint
 
+      - name: Test
+        if: steps.check_branch.outputs.is_main_branch == 'true'
+        run: npm run test:run
+
+      - name: Build
+        if: steps.check_branch.outputs.is_main_branch == 'true'
+        run: npm run build
+
+      - name: Validate the package that will be published
+        if: steps.check_branch.outputs.is_main_branch == 'true'
+        run: npm run check:package
+
+      # Renders every documentation route against the freshly built package —
+      # the closest thing to installing it and using it.
+      - name: Smoke-test the built package
+        if: steps.check_branch.outputs.is_main_branch == 'true'
+        run: npm run test:playground
+
+      # TODO: move to npm trusted publishing (OIDC), which drops the token
+      # entirely and emits provenance by itself. It needs a trusted publisher
+      # configured on npmjs.com for this repo and workflow first, plus Node >=
+      # 22.14 and npm >= 11.5.1, and it cannot be dry-run.
       - name: Publish
         if: steps.check_branch.outputs.is_main_branch == 'true'
         run: npx npm@^10 publish --access public --provenance

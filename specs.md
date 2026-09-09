@@ -165,6 +165,7 @@ import { ModalContent, ModalHeader, ModalTitle, ModalButton } from '@/Modal';
 - Sugar component for declarative usage; equivalent to calling `useModalStack().open('id')`
 
 #### Modal.Content
+- `asChild?: boolean` — render the given child as the dialog (e.g. a `<form>`)
 - `size?: 'auto' | 'md' | 'full'`  
   `auto`: fit content, `md`: standard (e.g. 480px), `full`: 100vw/h
 - `animated?: boolean` — default: `true`, enables fade transitions
@@ -186,6 +187,13 @@ import { ModalContent, ModalHeader, ModalTitle, ModalButton } from '@/Modal';
 - Centered modal on desktop
 
 ### Styling
+
+#### The stylesheet is a separate import
+- `dist/index.js` carries no reference to the CSS: tsup extracts it to a
+  standalone `dist/index.css`, exposed as the `./styles.css` subpath export.
+- Consumers must `import '@pearpages/modals/styles.css'` themselves. The SCSS
+  import in `src/index.ts` is a build input that produces that file, not a
+  runtime side effect — which is why `sideEffects: false` is accurate.
 
 #### CSS Architecture (Direct Classes + CSS Variables)
 
