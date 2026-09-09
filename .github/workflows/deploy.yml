@@ -37,19 +37,20 @@ jobs:
           node-version: 20
           cache: "npm"
 
-      - name: Install dependencies (root)
+      # One install covers the workspace: the playground is installed too.
+      - name: Install dependencies
         run: npm ci
 
-      - name: Build library (root)
+      - name: Test
+        run: npm run test:run
+
+      # Must precede the playground build: the playground resolves the package
+      # through its exports map into dist/, which a fresh checkout has not built.
+      - name: Build library
         run: npm run build
 
-      - name: Install dependencies (gh-pages)
-        working-directory: ./gh-pages
-        run: npm install
-
-      - name: Build gh-pages
-        working-directory: ./gh-pages
-        run: npm run build
+      - name: Build playground
+        run: npm run build -w playground
       
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -57,7 +58,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './gh-pages/dist'
+          path: './playground/dist'
       
       - name: Deploy to GitHub Pages
         id: deployment
