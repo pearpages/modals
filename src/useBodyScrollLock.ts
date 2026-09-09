@@ -14,7 +14,8 @@ const getScrollbarWidth = (): number => {
   const outer = document.createElement('div');
   outer.style.visibility = 'hidden';
   outer.style.overflow = 'scroll';
-  (outer.style as any).msOverflowStyle = 'scrollbar'; // IE legacy support
+  (outer.style as CSSStyleDeclaration & { msOverflowStyle?: string }).msOverflowStyle =
+    'scrollbar'; // IE legacy support
   document.body.appendChild(outer);
 
   const inner = document.createElement('div');
@@ -143,13 +144,4 @@ export const useBodyScrollLock = (isLocked: boolean): void => {
       }
     };
   }, [isLocked]);
-};
-
-/**
- * Utility hook for components that need scrollbar compensation
- * Returns the current scrollbar width as a CSS custom property value
- */
-export const useScrollbarCompensation = (): string => {
-  const scrollbarWidth = getScrollbarWidth();
-  return `${scrollbarWidth}px`;
 };

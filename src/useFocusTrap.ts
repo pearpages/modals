@@ -89,31 +89,3 @@ export function useFocusTrap(
     };
   }, [containerRef, isActive]);
 }
-
-/**
- * Focus restoration hook that stores and restores focus
- */
-export function useFocusRestore(
-  isModalOpen: boolean,
-  modalId: string
-) {
-  const previousFocusRef = React.useRef<HTMLElement | null>(null);
-
-  React.useEffect(() => {
-    if (isModalOpen) {
-      // Store the currently focused element when modal opens
-      previousFocusRef.current = document.activeElement as HTMLElement;
-    } else {
-      // Restore focus when modal closes
-      if (previousFocusRef.current && typeof previousFocusRef.current.focus === 'function') {
-        // Use setTimeout to ensure the modal has been removed from DOM
-        setTimeout(() => {
-          previousFocusRef.current?.focus();
-          previousFocusRef.current = null;
-        }, 0);
-      }
-    }
-  }, [isModalOpen, modalId]);
-
-  return previousFocusRef.current;
-}

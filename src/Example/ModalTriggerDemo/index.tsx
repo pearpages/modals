@@ -1,4 +1,3 @@
-import { ModalSystem } from "@/ModalSystem";
 import { Demo } from "@/Example/Demo";
 import { BasicTriggerModal } from "./BasicTriggerModal";
 import { CustomStyledModal } from "./CustomStyledModal";

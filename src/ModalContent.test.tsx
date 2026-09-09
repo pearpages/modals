@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act, type RenderResult } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import React from 'react';
 import { Modal } from './Modal';
@@ -24,7 +24,7 @@ const TestModalSystem: React.FC<{
 
 // Helper function to render with proper act handling and timer control
 const renderModal = async (ui: React.ReactElement) => {
-  let result: any;
+  let result!: RenderResult;
   await act(async () => {
     result = render(ui);
     // Fast-forward any timers to complete state transitions immediately
@@ -37,7 +37,7 @@ const renderModal = async (ui: React.ReactElement) => {
 
 // Helper for snapshot tests
 const renderModalSnapshot = async (ui: React.ReactElement) => {
-  let result: any;
+  let result!: RenderResult;
   await act(async () => {
     result = render(ui);
     // Fast-forward timers for consistent snapshots

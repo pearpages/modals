@@ -7,7 +7,7 @@ import "./index.scss";
 
 const ModalExamples: React.FC = () => {
   const { registry, stack } = useModalContext();
-  const [demoData, setDemoData] = useState({
+  const [demoData] = useState({
     userCount: 42,
     lastAction: "None",
   });

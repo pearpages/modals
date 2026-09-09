@@ -26,7 +26,7 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({
   // Separate Modal.Close buttons from other content
   childrenArray.forEach(child => {
     if (React.isValidElement(child)) {
-      const displayName = (child.type as any)?.displayName;
+      const displayName = (child.type as { displayName?: string })?.displayName;
       if (displayName === 'Modal.Close') {
         closeButtons.push(child);
       } else {

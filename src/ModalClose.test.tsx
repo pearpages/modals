@@ -10,7 +10,7 @@ const TestWrapper: React.FC<{
   children: React.ReactNode;
   modalId?: string;
   onOpenChange?: (open: boolean) => void;
-}> = ({ children, modalId = 'test-modal', onOpenChange }) => {
+}> = ({ children, modalId = 'test-modal' }) => {
   return (
     <ModalProvider>
       <ModalIdProvider modalId={modalId}>

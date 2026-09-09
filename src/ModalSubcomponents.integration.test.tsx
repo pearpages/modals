@@ -1,4 +1,4 @@
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act, type RenderResult } from '@testing-library/react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import React from 'react';
 import { Modal } from './Modal';
@@ -24,7 +24,7 @@ const TestModalSystem: React.FC<{
 
 // Helper function to render with proper act handling
 const renderModal = async (ui: React.ReactElement) => {
-  let result: any;
+  let result!: RenderResult;
   await act(async () => {
     result = render(ui);
     vi.runAllTimers();

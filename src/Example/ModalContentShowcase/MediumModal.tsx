@@ -100,15 +100,15 @@ export const MediumModal = () => {
 
 MediumModal.ID = "md-modal" as const;
 
-// Create compound component with Trigger
-MediumModal.Trigger = ({
+// Named function so the hooks lint can see this is a component.
+function MediumModalTrigger({
   children,
   onClick,
   ...props
 }: {
   children: React.ReactNode;
   onClick?: () => void;
-} & React.ComponentProps<"button">) => {
+} & React.ComponentProps<"button">) {
   const modals = useModalStack();
 
   const handleClick = () => {
@@ -122,4 +122,6 @@ MediumModal.Trigger = ({
       {children}
     </Modal.Button>
   );
-};
+}
+
+MediumModal.Trigger = MediumModalTrigger;

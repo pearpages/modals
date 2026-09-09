@@ -22,6 +22,6 @@ export { useModalId } from './ModalIdContext';
 export type { ModalIdContextValue } from './ModalIdContext';
 export { ModalAriaProvider, useModalAria } from './ModalAriaContext';
 export type { ModalAriaContextValue } from './ModalAriaContext';
-export { useFocusTrap, useFocusRestore } from './useFocusTrap';
-export { useBodyScrollLock, useScrollbarCompensation } from './useBodyScrollLock';
+export { useFocusTrap } from './useFocusTrap';
+export { useBodyScrollLock } from './useBodyScrollLock';
 export { Example } from './Example';

@@ -51,7 +51,7 @@ describe('ModalSystem', () => {
     const TestChild = () => {
       try {
         return <div data-testid="test-child">Test Content</div>;
-      } catch (error) {
+      } catch {
         return <div data-testid="test-error">Context Error</div>;
       }
     };

@@ -88,7 +88,11 @@ const Modal: ModalComponent = ({
         closeModal(id);
       }
     }
-  }, [open, id]); // Removed isProviderOpen, openModal, closeModal to break loops
+    // Deliberately depends on the controlled prop only. Including
+    // isProviderOpen (or the provider actions, which are recreated per render)
+    // makes this effect respond to its own writes and loop.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, id]);
 
   // Notify parent of provider state changes
   const prevProviderOpenRef = React.useRef(isProviderOpen);
