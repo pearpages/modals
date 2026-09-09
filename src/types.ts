@@ -127,17 +127,23 @@ export interface ModalStackRegistry {
 }
 
 // Modal Stack Actions
-export interface ModalStackActions {
+/**
+ * Return value of useModalStack().
+ *
+ * The functions take the modal id rather than the hook returning one object per
+ * registered modal: an index signature would make `modals['tpyo'].open()`
+ * type-check and then throw, and exposing `isOpen` as a value would force the
+ * returned object to be rebuilt whenever any modal in the stack changes state.
+ */
+export interface ModalStackApi {
   /** Open a modal by ID */
-  open: () => void;
+  open: (id: string) => void;
   /** Close a modal by ID */
-  close: () => void;
-  /** Current open state */
-  isOpen: boolean;
-}
-
-export interface ModalStackAPI {
-  [id: string]: ModalStackActions;
+  close: (id: string) => void;
+  /** Whether the given modal is currently open */
+  isOpen: (id: string) => boolean;
+  /** Full stack entry for the given modal, or undefined if not registered */
+  getModal: (id: string) => ModalStackEntry | undefined;
 }
 
 // Provider Context Types

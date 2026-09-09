@@ -50,7 +50,7 @@ describe('useModalStack', () => {
     expect(modalStackResult.current.isOpen('test-modal')).toBe(false);
   });
 
-  it('should match the specs API signature', () => {
+  it('exposes id-taking open, close, isOpen and getModal', () => {
     const { result } = renderHook(() => useModalStack(), { wrapper });
     const modalStack = result.current;
 

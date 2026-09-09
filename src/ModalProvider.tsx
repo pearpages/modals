@@ -4,7 +4,8 @@ import {
   ModalProviderProps, 
   ModalStackRegistry, 
   ModalStackEntry,
-  ModalDismissConfig
+  ModalDismissConfig,
+  ModalStackApi
 } from './types';
 
 interface ModalProviderState {
@@ -263,7 +264,7 @@ export const useModalContext = (): ModalContextValue => {
  * Public hook for programmatic modal control
  * Provides the API defined in specs for opening/closing modals and checking state
  */
-export const useModalStack = () => {
+export const useModalStack = (): ModalStackApi => {
   const { registry, openModal, closeModal } = useModalContext();
 
   return {

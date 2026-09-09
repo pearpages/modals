@@ -162,7 +162,7 @@ import { ModalContent, ModalHeader, ModalTitle, ModalButton } from '@/Modal';
 
 #### ModalTrigger
 - `target: string` (modal ID to open)
-- Sugar component for declarative usage; equivalent to calling `useModalStack()['id'].open()`
+- Sugar component for declarative usage; equivalent to calling `useModalStack().open('id')`
 
 #### Modal.Content
 - `size?: 'auto' | 'md' | 'full'`  
@@ -309,9 +309,10 @@ We plan to migrate the core library to BEM kebab-case naming in a future major v
 ### Hook API: `useModalStack()`
 ```ts
 const modals = useModalStack();
-modals['confirmModal'].open();
-modals['confirmModal'].close();
-modals['anyModal'].isOpen // => boolean
+modals.open('confirmModal');
+modals.close('confirmModal');
+modals.isOpen('anyModal');            // => boolean
+modals.getModal('anyModal');          // => ModalStackEntry | undefined
 ```
 
 ### Stacking
@@ -388,7 +389,7 @@ modals['anyModal'].isOpen // => boolean
 
 #### 2. Programmatically Controlled Modal
 ```tsx
-const { open, close, isOpen } = useModalStack()["info"];
+const { open, close, isOpen } = useModalStack();
 
 return (
   <>
@@ -553,11 +554,11 @@ return (
 ```tsx
 // ❌ Will fail - modal doesn't exist
 const modals = useModalStack();
-modals['nonExistentModal'].open(); // Logs warning, no-op
+modals.open('nonExistentModal'); // Logs warning, no-op
 
 // ✅ Check existence first
-if (modals['myModal']) {
-  modals['myModal'].open();
+if (modals.getModal('myModal')) {
+  modals.open('myModal');
 }
 ```
 
@@ -571,7 +572,7 @@ const modals = useModalStack();
 
 // Both trying to control the same modal
 <Modal id="mixed" open={open} onOpenChange={setOpen}>
-modals['mixed'].open(); // May conflict with controlled state
+modals.open('mixed'); // May conflict with controlled state
 ```
 
 **Behavior**: Controlled props (`open`/`onOpenChange`) take precedence over programmatic control.
@@ -611,13 +612,13 @@ function App() {
 ```tsx
 // ❌ Potential race condition
 const modals = useModalStack();
-modals['test'].open();
-modals['test'].close(); // Called immediately
-modals['test'].open();  // Called before close animation completes
+modals.open('test');
+modals.close('test'); // Called immediately
+modals.open('test');  // Called before close animation completes
 
 // ✅ Better approach - check state
-if (!modals['test'].isOpen) {
-  modals['test'].open();
+if (!modals.isOpen('test')) {
+  modals.open('test');
 }
 ```
 
@@ -690,7 +691,7 @@ Use browser dev tools:
 // Useful for testing
 const modals = useModalStack();
 console.log(Object.keys(modals)); // List all registered modals
-console.log(modals['myModal']?.isOpen); // Check state
+console.log(modals.isOpen('myModal')); // Check state
 ```
 
 ## Testing Strategy
@@ -861,11 +862,11 @@ describe('useModalStack', () => {
 
       return (
         <div>
-          <button onClick={() => modals['test-modal']?.open()}>
+          <button onClick={() => modals.open('test-modal')}>
             Open
           </button>
           <span data-testid="is-open">
-            {modals['test-modal']?.isOpen ? 'open' : 'closed'}
+            {modals.isOpen('test-modal') ? 'open' : 'closed'}
           </span>
         </div>
       );
@@ -1059,7 +1060,7 @@ const DeleteConfirmationModal = ({ itemId, onDeleted }: {
     try {
       await deleteItem(itemId);
       onDeleted();
-      modals['deleteConfirm'].close();
+      modals.close('deleteConfirm');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Delete failed');
     } finally {
@@ -1086,7 +1087,7 @@ const DeleteConfirmationModal = ({ itemId, onDeleted }: {
 
         <Modal.Footer>
           <button
-            onClick={() => modals['deleteConfirm'].close()}
+            onClick={() => modals.close('deleteConfirm')}
             disabled={isLoading}
           >
             Cancel
@@ -1123,7 +1124,7 @@ const CreateUserModal = ({ onUserCreated }: {
     try {
       const user = await createUser(formData);
       onUserCreated(user);
-      modals['createUser'].close();
+      modals.close('createUser');
 
       // Reset form for next use
       setFormData({ name: '', email: '' });
@@ -1194,7 +1195,7 @@ const CreateUserModal = ({ onUserCreated }: {
 
         <Modal.Footer>
           <button
-            onClick={() => modals['createUser'].close()}
+            onClick={() => modals.close('createUser')}
             disabled={isSubmitting}
           >
             Cancel
@@ -1247,7 +1248,7 @@ const DataImportModal = ({ onImportComplete }: {
       // Auto-close after success (optional)
       setTimeout(() => {
         onImportComplete(result);
-        modals['dataImport'].close();
+        modals.close('dataImport');
       }, 2000);
 
     } catch (err) {
@@ -1313,7 +1314,7 @@ const DataImportModal = ({ onImportComplete }: {
 
         <Modal.Footer>
           {step === 'upload' && (
-            <button onClick={() => modals['dataImport'].close()}>
+            <button onClick={() => modals.close('dataImport')}>
               Cancel
             </button>
           )}
@@ -1326,7 +1327,7 @@ const DataImportModal = ({ onImportComplete }: {
             <button
               onClick={() => {
                 onImportComplete(result!);
-                modals['dataImport'].close();
+                modals.close('dataImport');
               }}
               className="primary"
             >
@@ -1367,7 +1368,7 @@ const SessionTimeoutModal = ({ onExtendSession, onLogout }: {
     setIsExtending(true);
     try {
       await onExtendSession();
-      modals['sessionTimeout'].close();
+      modals.close('sessionTimeout');
     } catch (err) {
       // Handle error - could show inline error or keep modal open
       console.error('Failed to extend session:', err);
@@ -1635,7 +1636,7 @@ const ContactFormModal = ({ onSubmit }: {
 
     try {
       await onSubmit(formData);
-      modals['contactForm'].close();
+      modals.close('contactForm');
 
       // Reset form for next use
       setFormData({ name: '', email: '', message: '' });
@@ -1734,7 +1735,7 @@ const ContactFormModal = ({ onSubmit }: {
         <Modal.Footer>
           <button
             type="button"
-            onClick={() => modals['contactForm'].close()}
+            onClick={() => modals.close('contactForm')}
             disabled={isSubmitting}
           >
             Cancel
@@ -1837,7 +1838,7 @@ const RegistrationWizardModal = ({ onRegister }: {
     setIsSubmitting(true);
     try {
       await onRegister(formData);
-      modals['registration'].close();
+      modals.close('registration');
     } catch (err) {
       setErrors({ submit: 'Registration failed. Please try again.' });
     } finally {
@@ -2038,7 +2039,7 @@ const RegistrationWizardModal = ({ onRegister }: {
         <Modal.Footer>
           <button
             type="button"
-            onClick={() => modals['registration'].close()}
+            onClick={() => modals.close('registration')}
             disabled={isSubmitting}
           >
             Cancel
@@ -2162,7 +2163,7 @@ const EventFormModal = ({ onSave, initialData }: {
     setIsSubmitting(true);
     try {
       await onSave(formData);
-      modals['eventForm'].close();
+      modals.close('eventForm');
     } catch (err) {
       setErrors({ submit: 'Failed to save event. Please try again.' });
     } finally {
@@ -2366,7 +2367,7 @@ const EventFormModal = ({ onSave, initialData }: {
         <Modal.Footer>
           <button
             type="button"
-            onClick={() => modals['eventForm'].close()}
+            onClick={() => modals.close('eventForm')}
             disabled={isSubmitting}
           >
             Cancel
@@ -2461,11 +2462,11 @@ const resetForm = () => {
 // Reset on modal close
 useEffect(() => {
   return () => {
-    if (!modals['form'].isOpen) {
+    if (!modals.isOpen('form')) {
       resetForm();
     }
   };
-}, [modals['form'].isOpen]);
+}, [modals.isOpen('form')]);
 ```
 
 ### CSS for Forms
@@ -2676,7 +2677,7 @@ const ExpensiveModalContent = memo(({ data }) => {
 // ✅ Use callback refs to avoid recreation
 const handleSubmit = useCallback(async (formData) => {
   await saveData(formData);
-  modals['form'].close();
+  modals.close('form');
 }, [modals]);
 
 // ✅ Stable modal IDs (avoid dynamic IDs)
@@ -2798,7 +2799,7 @@ const ANIMATION_DURATION = 200; // matches CSS transition
 
 const handleClose = () => {
   // Modal starts closing animation immediately
-  modals['example'].close();
+  modals.close('example');
 
   // Optional: delay navigation until animation completes
   setTimeout(() => {
@@ -2817,13 +2818,13 @@ const UserDetailsModal = ({ userId }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (modals['userDetails'].isOpen && !userData) {
+    if (modals.isOpen('userDetails') && !userData) {
       setLoading(true);
       fetchUserData(userId)
         .then(setUserData)
         .finally(() => setLoading(false));
     }
-  }, [modals['userDetails'].isOpen, userId, userData]);
+  }, [modals.isOpen('userDetails'), userId, userData]);
 
   return (
     <Modal id="userDetails">
