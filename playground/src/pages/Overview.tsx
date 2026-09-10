@@ -12,6 +12,42 @@ export function Overview() {
       title="@pearpages/modals"
       lead="Accessible, composable modals for React — portal rendered, focus trapped, stackable, and styled entirely through CSS variables."
     >
+      <Callout variant="warning" title="Should you use this?">
+        <p>
+          For most React apps, no: reach for Radix Dialog (or shadcn/ui, which is Radix
+          underneath). It has the larger ecosystem, more years of edge-case fixes, full
+          control of markup and CSS, and a non-modal mode. This library is worth it when
+          several of these are true:
+        </p>
+        <ol>
+          <li>
+            You open the same modal from several unrelated places and want to address it
+            by id instead of lifting state to a common ancestor.
+          </li>
+          <li>
+            You want a modal that looks finished without Tailwind and without a UI kit,
+            restyled through CSS variables.
+          </li>
+          <li>
+            You run several sites that should share one modal look — set the variables
+            once.
+          </li>
+          <li>
+            You stack modals (a confirmation over a form) and want z-index, Escape and
+            scroll lock handled by the provider.
+          </li>
+          <li>
+            You are on React 19, want a dependency-free package, and modal dialogs are all
+            you need — no popovers, drawers or non-modal dialogs.
+          </li>
+        </ol>
+        <p>
+          If you need headless control, non-modal dialogs, <code>keepMounted</code>, or a
+          promise-style <code>openConfirm()</code>, this is the wrong library.{' '}
+          The full comparison is on <Link to="/why">Why this library</Link>.
+        </p>
+      </Callout>
+
       <h2>What that means</h2>
       <ul>
         <li>

@@ -87,6 +87,14 @@ regression tests; the rest were documentation claims the code contradicted.
 - **The table exists twice** — `Why.tsx` and `README.md` — and must be edited together.
   Its last column, "Pick it when", says when the *other* library is the better choice;
   the concessions (including the one in our own row) are deliberate — keep them.
+- **The "Should you use this?" disclaimer exists three times** — README top, Overview
+  callout, Why callout — recommending Radix by default and listing the five cases where
+  this library is worth it. Edit all three together.
+- `useInertOutside` (`src/useInertOutside.ts`, called by `ModalRoot`) marks everything
+  outside `#modal-root` `inert` + `aria-hidden="true"` while the stack is non-empty and
+  restores the attributes it touched. Both attributes on purpose: `inert` for tab order
+  and the a11y tree in current browsers, `aria-hidden` for older assistive tech. This
+  was the concrete accessibility gap the comparison with Radix turned up.
   Facts were checked against each library's docs and bundlephobia in September 2026;
   our size is `gzip -c dist/index.js | wc -c` (7.1 kB) and `dist/index.css` (4.0 kB).
   Refresh the numbers and the dating sentence together when they change.

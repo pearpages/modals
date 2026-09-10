@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ModalRootProps } from './types';
 import { useModalContext } from './ModalProvider';
 import { useBodyScrollLock } from './useBodyScrollLock';
+import { useInertOutside } from './useInertOutside';
 
 // SSR-safe check for client environment
 const useIsClient = (): boolean => {
@@ -24,6 +25,12 @@ export const ModalRoot: React.FC<ModalRootProps> = ({ container }) => {
   // Lock body scroll when any modal is open
   const hasOpenModals = stack.length > 0;
   useBodyScrollLock(hasOpenModals);
+
+  // Hide everything outside the modal root from assistive technology and the
+  // tab order. The root div mounts on the same commit that makes the stack
+  // non-empty, so the ref is populated by the time this effect runs.
+  const rootRef = useRef<HTMLDivElement>(null);
+  useInertOutside(rootRef, hasOpenModals);
 
   // Handle escape key events
   useEffect(() => {
@@ -116,6 +123,7 @@ export const ModalRoot: React.FC<ModalRootProps> = ({ container }) => {
   return createPortal(
     <div 
       id="modal-root"
+      ref={rootRef}
       style={{
         position: 'fixed',
         top: 0,

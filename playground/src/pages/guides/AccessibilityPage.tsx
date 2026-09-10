@@ -28,6 +28,12 @@ export function AccessibilityPage() {
         <li>Focus returns to whatever had it when the modal closes.</li>
         <li>Escape closes the topmost modal.</li>
         <li>Background scroll is locked while any modal is open.</li>
+        <li>
+          Everything outside the modal is marked <code>inert</code> and{' '}
+          <code>aria-hidden</code> while it is open, and restored on close.{' '}
+          <code>aria-modal</code> is supposed to imply this; screen readers honour it
+          unevenly.
+        </li>
       </ul>
 
       <Showcase

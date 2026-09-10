@@ -9,6 +9,16 @@ Accessible, composable modals for React — portal rendered, focus trapped, stac
 
 **[Documentation and live examples →](https://modals.pearpages.com)**
 
+> **Should you use this?** For most React apps, no: reach for [Radix Dialog](https://www.radix-ui.com/primitives/docs/components/dialog) (or shadcn/ui, which is Radix underneath). It has the larger ecosystem, more years of edge-case fixes, full control of markup and CSS, and a non-modal mode. This library is worth it when several of these are true:
+>
+> 1. You open the same modal from several unrelated places and want to address it by id instead of lifting state to a common ancestor.
+> 2. You want a modal that looks finished without Tailwind and without a UI kit, restyled through CSS variables.
+> 3. You run several sites that should share one modal look — set the variables once.
+> 4. You stack modals (a confirmation over a form) and want z-index, Escape and scroll lock handled by the provider.
+> 5. You are on React 19, want a dependency-free package, and modal dialogs are all you need — no popovers, drawers or non-modal dialogs.
+>
+> If you need headless control, non-modal dialogs, `keepMounted`, or a promise-style `openConfirm()`, this is the wrong library. The [comparison table](#compared-with) below says which one is right.
+
 ## Install
 
 ```bash
@@ -60,7 +70,7 @@ The stylesheet is a separate entry point and is **not** pulled in by the JavaScr
 
 - **Composable** — a dialog is assembled from parts you arrange (`Modal.Content`, `Modal.Header`, `Modal.Title`, `Modal.Body`, `Modal.Footer`) rather than configured through props on one component. Every part takes [`asChild`](https://modals.pearpages.com/guides/as-child), so any of them can become an element of yours.
 - **Portal rendered** — in the DOM the dialog is moved to `document.body`, wherever you wrote it in your JSX. That is what stops it being clipped by an ancestor's `overflow: hidden`, or buried under other content by an ancestor's `transform` or `z-index`. It stays where you wrote it in the *React* tree, so context, state and event bubbling are unaffected. [More](https://modals.pearpages.com/guides/portal-container)
-- **Focus trapped** — while a modal is open the keyboard cannot leave it: focus moves in on open, Tab and Shift+Tab cycle within it instead of reaching the page behind, and focus returns to whatever had it when the modal closes. Together with `role="dialog"` and ARIA wiring generated from `Modal.Title` and `Modal.Description`, that is most of what makes it [accessible](https://modals.pearpages.com/guides/accessibility).
+- **Focus trapped** — while a modal is open the keyboard cannot leave it: focus moves in on open, Tab and Shift+Tab cycle within it instead of reaching the page behind, and focus returns to whatever had it when the modal closes. Everything outside the modal is `inert` and `aria-hidden` until it closes. Together with `role="dialog"` and ARIA wiring generated from `Modal.Title` and `Modal.Description`, that is most of what makes it [accessible](https://modals.pearpages.com/guides/accessibility).
 - **Stackable** — several modals can be open at once, forming an ordered stack. Only the topmost has an interactive backdrop and answers Escape, and page scroll stays locked until the last one closes — so a confirmation on top of a form needs no `z-index` bookkeeping. [More](https://modals.pearpages.com/guides/stacking)
 - **Styled through CSS variables** — every visual choice is a custom property, 166 of them. Restyling means setting a variable, not writing more specific selectors or reaching for `!important`. No CSS-in-JS runtime, no theme provider. [More](https://modals.pearpages.com/guides/theming)
 - **Responsive** — fullscreen on phones, with safe-area handling in the footer.
@@ -68,7 +78,7 @@ The stylesheet is a separate entry point and is **not** pulled in by the JavaScr
 
 ## Philosophy
 
-Headless primitives hand you correct behaviour and no appearance, so every project writes the same hundred lines of CSS. UI kits hand you appearance plus a theme runtime, a provider and a design language. This library sits between them, and changes one thing about how modals are addressed. The long version is at [modals.pearpages.com/why](https://modals.pearpages.com/why).
+Headless primitives hand you correct behaviour and no appearance, so every project writes the same hundred lines of CSS. UI kits hand you appearance plus a theme runtime, a provider and a design language. This library sits between them, and changes one thing about how modals are addressed. The long version is at [modals.pearpages.com/why](https://modals.pearpages.com/why); the honest short version is the note at the top of this file.
 
 1. **A modal is addressed by id, not by where it sits in the tree.** `Modal` registers with the provider under its `id`; any `Modal.Trigger target` or `useModalStack().open(id)` inside the provider opens it, with no shared subtree and no lifted state. Because one provider owns one registry, stacking is not bolted on: z-index, which modal answers Escape, whose backdrop is live, and when scroll unlocks all fall out of it.
 2. **Parts you arrange, under one contract.** Nine `Modal.*` parts, every one takes `asChild`, and one prop rule everywhere: attributes are yours, `on*` handlers compose, `preventDefault()` cancels ours.

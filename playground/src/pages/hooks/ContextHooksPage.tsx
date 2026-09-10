@@ -64,6 +64,12 @@ export function ContextHooksPage() {
             description:
               'Locks body scroll, compensating for the scrollbar width, with an iOS-specific path.',
           },
+          {
+            name: 'useInertOutside',
+            type: '(ref, isActive) => void',
+            description:
+              'Marks everything outside the referenced element inert and aria-hidden while active, restoring the attributes it touched. ModalRoot calls this for you.',
+          },
         ]}
       />
 
