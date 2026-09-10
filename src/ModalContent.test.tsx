@@ -64,6 +64,22 @@ describe('Modal.Content - Layout and Sizes', () => {
     vi.useRealTimers();
   });
 
+  it('merges a consumer style with its own z-index instead of replacing it', async () => {
+    // Regression: `...rest` after `style: {zIndex}` let a consumer style —
+    // typically inline CSS variables for theming — drop the z-index entirely.
+    await renderModal(
+      <TestModalSystem open={true}>
+        <Modal.Content style={{ '--modal-bg': 'red' } as React.CSSProperties}>
+          <div data-testid="content">Content</div>
+        </Modal.Content>
+      </TestModalSystem>
+    );
+
+    const dialog = screen.getByTestId('content').closest('[role="dialog"]') as HTMLElement;
+    expect(dialog.style.zIndex).toBe('1000');
+    expect(dialog.style.getPropertyValue('--modal-bg')).toBe('red');
+  });
+
   it('should render with default size (md)', async () => {
     await renderModal(
       <TestModalSystem open={true}>

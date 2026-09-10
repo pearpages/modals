@@ -36,9 +36,51 @@ React modal library with compound component pattern, accessibility features, and
 
 ## Recent Fixes
 - Removed CSS namespace wrapper that prevented portal-rendered modal styles from applying
-- See `logs/` directory for detailed session notes
+- Session notes are the dated sections below (newest first)
 
-## Latest Session Progress (September 2026 - Session 4)
+## Latest Session Progress (September 2026 - Session 5)
+
+### API consistency audit
+Compared `specs.md`, `src/types.ts`, `src/index.ts` and the docs site against the
+implementation. Three behaviours were wrong in the code and are fixed with
+regression tests; the rest were documentation claims the code contradicted.
+
+#### Rules the code now follows (and the docs state)
+- **Controlled = the `open` prop is present.** Recorded in the registry entry as
+  `controlled`. Every library path that opens or closes a modal goes through the
+  provider's `requestOpen(id)` / `requestClose(id)`: on a controlled modal they
+  call `onOpenChange` and nothing else; on an uncontrolled modal they act directly
+  and `onOpenChange` (if given) is notified afterwards by `Modal`. `Modal.Trigger`,
+  `useModalStack().open/close`, `Modal.Close`, Escape and backdrop all use them.
+  Before this, the dismiss paths keyed on `onOpenChange` being present, so an
+  uncontrolled modal with a listener could never close, while `useModalStack` and
+  `Modal.Trigger` wrote straight to the provider on controlled modals.
+  Consequence worth knowing: `<Modal open>` with no `onOpenChange` is locked open,
+  like `<input value>` with no `onChange`. Tests that want a dismissible modal must
+  open it uncontrolled (see `ModalRoot.test.tsx` "Dismissal in uncontrolled mode").
+- **Spread order: attributes are the consumer's, `on*` handlers compose** (theirs
+  first, `preventDefault()` cancels ours) — in both the plain and `asChild` paths.
+  `Modal.Trigger` used to spread `{...props}` after its own `onClick`, so a consumer
+  `onClick` silently replaced it; the docs example "Your onClick still runs" was
+  demonstrating a modal that never opened.
+- **`Modal.Content` merges `style`** with its inline z-index instead of replacing it
+  (the themed example passes CSS variables inline).
+- **`ModalRoot` has no `baseZIndex` prop.** It overrode the provider value for
+  backdrops only, while `Modal.Content` read the provider — the split-band bug from
+  Session 3, re-enabled through the prop. `baseZIndex` is set on `ModalSystem` or
+  `ModalProvider`.
+- **Docs follow tokens.** `src/styles/tokens.scss` is the source of truth for CSS
+  variable defaults (520px, 16px, rgba(0,0,0,.6), #1a1a1a); specs, Theming and
+  Sizes pages were corrected to it. The unused `--modal-z-index-base` token is gone;
+  z-index comes only from the prop.
+- `ModalAriaProvider` is no longer exported; `Modal` renders it and consumers only
+  need `useModalAria`.
+- Warnings are unconditional (no `NODE_ENV` gate); docs no longer say "development".
+
+#### State: 219 library tests, lint clean, tsc clean, docs smoke test green.
+Version 0.2.0, still unreleased; the README migration notes cover all of the above.
+
+## Session 4 Progress (September 2026)
 
 ### Docs footer uses `@pearpages/credit`
 - The hand-rolled "built by pearpages" link, its local `.sk-author` rule and
@@ -258,10 +300,10 @@ Modal library now features advanced component architecture and enhanced develope
   - Layout shift prevention via `--scrollbar-compensation` CSS variable
   - Automatic activation when any modal opens
 - **Tests**: 8 comprehensive test cases covering all scenarios
-- **Demo**: Interactive example in `/src/Example/ScrollLockDemo.tsx`
+- **Demo**: now `playground/src/examples/guides/ScrollLockDemo.tsx`
 
 ### ✅ Completed: Modal.Body Component Implementation
-- **Files**: `/src/ModalBody.tsx`, `/src/types.ts`, `/src/modal.scss`, `/src/Modal.tsx`
+- **Files**: `/src/ModalBody.tsx`, `/src/types.ts`, `/src/styles/components.scss`, `/src/Modal.tsx`
 - **Features**:
   - Semantic structure with Header/Body/Footer pattern
   - Automatic overflow scrolling when content exceeds viewport height
@@ -269,7 +311,7 @@ Modal library now features advanced component architecture and enhanced develope
   - asChild support for custom elements
   - Beautiful custom scrollbars (including dark mode)
 - **Tests**: 7 comprehensive test cases covering all functionality
-- **Demo**: Interactive examples in `/src/Example/ModalBodyDemo.tsx`
+- **Demo**: now `playground/src/examples/components/modal-body/BodyScrolling.tsx`
 
 ### ✅ Verified: Mobile Fullscreen & Accessibility Already Complete
 - **Mobile Responsive**: CSS rules already implement fullscreen on ≤768px devices

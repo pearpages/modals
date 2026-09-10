@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { ModalRoot, useModalPortal } from './ModalRoot';
-import { ModalProvider } from './ModalProvider';
+import { ModalProvider, useModalStack } from './ModalProvider';
 import { Modal } from './Modal';
 
 // Mock createPortal for testing
@@ -87,19 +87,6 @@ describe('ModalRoot', () => {
       expect(backdrop()).toHaveStyle({ zIndex: '1000' });
     });
 
-    it('uses custom baseZIndex when provided', () => {
-      render(
-        <ModalProvider>
-          <ModalRoot baseZIndex={3000} />
-          <Modal id="z-prop" open>
-            <div>content</div>
-          </Modal>
-        </ModalProvider>
-      );
-
-      expect(backdrop()).toHaveStyle({ zIndex: '3000' });
-    });
-
     it('inherits baseZIndex from the provider when the prop is omitted', () => {
       // Regression: ModalRoot defaulted its own prop to 1000, so the provider's
       // value could never be reached and the backdrop landed in a different
@@ -116,18 +103,6 @@ describe('ModalRoot', () => {
       expect(backdrop()).toHaveStyle({ zIndex: '5000' });
     });
 
-    it('honours an explicit baseZIndex of 0', () => {
-      render(
-        <ModalProvider baseZIndex={5000}>
-          <ModalRoot baseZIndex={0} />
-          <Modal id="z-zero" open>
-            <div>content</div>
-          </Modal>
-        </ModalProvider>
-      );
-
-      expect(backdrop()).toHaveStyle({ zIndex: '0' });
-    });
   });
 
   describe('Dismissal in controlled mode', () => {
@@ -157,21 +132,77 @@ describe('ModalRoot', () => {
       expect(screen.getByTestId('controlled-content')).toBeInTheDocument();
     });
 
-    it('closes directly when the modal is uncontrolled', () => {
+    it('keeps a controlled modal open when it has no onOpenChange', () => {
+      // `open` without onOpenChange is a modal nobody can close, like a React
+      // input with a value and no onChange. It stays put.
       render(
         <ModalProvider>
           <ModalRoot />
-          <Modal id="esc-uncontrolled" open>
+          <Modal id="locked-open" open>
+            <div data-testid="locked-content">content</div>
+          </Modal>
+        </ModalProvider>
+      );
+
+      fireEvent.keyDown(document, { key: 'Escape' });
+
+      expect(screen.getByTestId('locked-content')).toBeInTheDocument();
+    });
+  });
+
+  describe('Dismissal in uncontrolled mode', () => {
+    // An uncontrolled modal is opened through the provider, not an `open` prop.
+    const Opener = ({ id }: { id: string }) => {
+      const modals = useModalStack();
+      return <button onClick={() => modals.open(id)}>open</button>;
+    };
+
+    it('closes directly', () => {
+      render(
+        <ModalProvider>
+          <ModalRoot />
+          <Opener id="esc-uncontrolled" />
+          <Modal id="esc-uncontrolled">
             <div data-testid="uncontrolled-content">content</div>
           </Modal>
         </ModalProvider>
       );
 
+      fireEvent.click(screen.getByText('open'));
       expect(screen.getByTestId('uncontrolled-content')).toBeInTheDocument();
 
       fireEvent.keyDown(document, { key: 'Escape' });
 
       expect(screen.queryByTestId('uncontrolled-content')).not.toBeInTheDocument();
+    });
+
+    it.each([
+      ['Escape', () => fireEvent.keyDown(document, { key: 'Escape' })],
+      ['a backdrop click', () => fireEvent.click(backdrop()!)],
+    ])('still closes on %s when onOpenChange is passed, and notifies it', (_label, dismiss) => {
+      // Regression: the dismiss paths used to treat any modal with an
+      // onOpenChange as controlled, so an uncontrolled modal that merely
+      // listened for changes could never be closed.
+      const onOpenChange = vi.fn();
+
+      render(
+        <ModalProvider>
+          <ModalRoot />
+          <Opener id="listened" />
+          <Modal id="listened" onOpenChange={onOpenChange}>
+            <div data-testid="listened-content">content</div>
+          </Modal>
+        </ModalProvider>
+      );
+
+      fireEvent.click(screen.getByText('open'));
+      expect(onOpenChange).toHaveBeenLastCalledWith(true);
+
+      dismiss();
+
+      expect(screen.queryByTestId('listened-content')).not.toBeInTheDocument();
+      expect(onOpenChange).toHaveBeenLastCalledWith(false);
+      expect(onOpenChange).toHaveBeenCalledTimes(2);
     });
   });
 

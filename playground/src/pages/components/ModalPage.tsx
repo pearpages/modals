@@ -81,7 +81,7 @@ export function ModalPage() {
       <h2>Three ways to open one</h2>
       <ul>
         <li>
-          <code>Modal.Trigger</code> — declarative, and handles focus return for you.
+          <code>Modal.Trigger</code> — declarative.
         </li>
         <li>
           <Link to="/hooks/use-modal-stack">
@@ -94,9 +94,11 @@ export function ModalPage() {
         </li>
       </ul>
       <p>
-        Pick one per modal. The first two both write to the provider&apos;s registry and
-        work together; combining either with <code>open</code> means two owners of one
-        piece of state, and they will fight.
+        They do not fight. Passing <code>open</code> makes the modal controlled, and from
+        then on <code>Modal.Trigger</code> and <code>useModalStack</code> stop writing to
+        the provider: they call your <code>onOpenChange</code> and let you decide. Focus
+        returns on close to whatever had it when the modal opened, whichever way it was
+        opened.
       </p>
     </Page>
   )

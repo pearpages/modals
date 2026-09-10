@@ -20,7 +20,7 @@ export function SizesPage() {
           },
           {
             name: "'md'",
-            type: 'var(--modal-width-md), 480px',
+            type: 'var(--modal-width-md), 520px',
             description: 'The default. A fixed, comfortable reading width.',
           },
           {

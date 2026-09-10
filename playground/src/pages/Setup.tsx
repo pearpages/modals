@@ -57,12 +57,12 @@ export function Setup() {
       </p>
       <CodeBlock code={manualProviderSource} title="App.tsx" />
 
-      <Callout variant="warning" title="Set baseZIndex on the provider">
+      <Callout variant="info" title="baseZIndex lives on the provider">
         <p>
           <code>ModalRoot</code> and <code>Modal.Content</code> both read{' '}
-          <code>baseZIndex</code> from context. Setting it on the provider keeps them
-          in the same layer band; passing a different value to{' '}
-          <code>ModalRoot</code> puts the backdrop somewhere the content is not.
+          <code>baseZIndex</code> from context, which is what keeps a backdrop and its
+          dialog in the same layer band. <code>ModalRoot</code> deliberately has no{' '}
+          <code>baseZIndex</code> prop of its own.
         </p>
       </Callout>
 
@@ -87,12 +87,6 @@ export function Setup() {
             type: 'HTMLElement',
             default: 'document.body',
             description: 'Element the portal renders into.',
-          },
-          {
-            name: 'baseZIndex',
-            type: 'number',
-            default: 'from context',
-            description: 'Overrides the provider value. Prefer setting it on the provider.',
           },
         ]}
       />

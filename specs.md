@@ -92,9 +92,11 @@ import { ModalContent, ModalHeader, ModalTitle, ModalButton } from '@/Modal';
 
 ### SSR Behavior
 - `<ModalSystem>` is **safe by default in server-side rendering environments**.
-- On the server, it renders nothing (`null`) to avoid access to `window` or `document`.
+- On the server, your app renders normally; only the portal part (`ModalRoot`) renders
+  nothing (`null`), so `window` and `document` are never touched. Modal content is
+  never server-rendered because a modal is closed on first render.
 - This avoids hydration errors and runtime crashes in frameworks like Next.js or Remix.
-- On the client, hydration occurs normally and all portals/mounts function as expected.
+- On the client, hydration occurs normally and the portal mounts after the first effect.
 
 **Advanced Usage:**
 - If SSR modal rendering is needed (e.g. for modals that open on first load), you can:
@@ -120,9 +122,7 @@ import { ModalContent, ModalHeader, ModalTitle, ModalButton } from '@/Modal';
 ### API Sketch
 ```tsx
 <ModalSystem>
-  <ModalTrigger target="confirmModal">
-    <button>Open Modal</button>
-  </ModalTrigger>
+  <Modal.Trigger target="confirmModal">Open Modal</Modal.Trigger>
 
   <App />
 
@@ -157,22 +157,38 @@ import { ModalContent, ModalHeader, ModalTitle, ModalButton } from '@/Modal';
 #### Modal
 - `id: string` (required, must be unique per ModalSystem instance)
 - `className?: string` — optional styling class
-- `open?: boolean` (controlled)
-- `onOpenChange?: (open: boolean) => void`
+- `open?: boolean` — passing it makes the modal **controlled**
+- `onOpenChange?: (open: boolean) => void` — called whenever the modal is asked to
+  open or close (uncontrolled modals call it after the fact; controlled ones call it
+  *instead* of changing)
 
-#### ModalTrigger
+**Controlled vs uncontrolled.** A modal is controlled exactly when it has an `open`
+prop. A controlled modal owns its state: every library path that would open or
+close it — `Modal.Trigger`, `useModalStack().open/close`, `Modal.Close`, Escape and
+backdrop clicks — only calls `onOpenChange`, and the provider follows the `open`
+prop. `open` without `onOpenChange` is therefore a modal nothing can close, like
+an `<input value>` without `onChange`. An uncontrolled modal is opened and closed by
+the provider directly, and `onOpenChange` (if given) is a notification.
+
+#### Modal.Trigger
 - `target: string` (modal ID to open)
+- `asChild?: boolean` — pass the behaviour to your own element instead of rendering a `<button>`
+- `disabled?: boolean`
+- Every other button attribute is forwarded. `onClick`/`onKeyDown` compose with the
+  trigger's own handlers (yours runs first; `preventDefault()` cancels the open).
 - Sugar component for declarative usage; equivalent to calling `useModalStack().open('id')`
 
 #### Modal.Content
 - `asChild?: boolean` — render the given child as the dialog (e.g. a `<form>`)
 - `size?: 'auto' | 'md' | 'full'`  
-  `auto`: fit content, `md`: standard (e.g. 480px), `full`: 100vw/h
+  `auto`: fit content, `md`: standard (default, `--modal-width-md`, 520px), `full`: 100vw/h
 - `animated?: boolean` — default: `true`, enables fade transitions
 - `className?: string`
 - `closeOnBackdrop?: boolean`
 - `closeOnEscape?: boolean`
 - `onInteractOutside?: (e: { target: EventTarget; preventDefault(): void }) => void`
+- Every other `div` attribute is forwarded; `style` is merged with the inline
+  z-index rather than replacing it.
 
 ### Accessibility
 - `role="dialog"` on `Modal.Content`
@@ -180,7 +196,7 @@ import { ModalContent, ModalHeader, ModalTitle, ModalButton } from '@/Modal';
 - `aria-labelledby` linked to `Modal.Title` (if present)
 - `aria-describedby` linked to `Modal.Description` (if present)
 - Focus is trapped inside modal when open
-- Focus is returned to `ModalTrigger` on close
+- Focus is returned on close to whatever element had it when the modal opened (usually the trigger)
 
 ### Responsive
 - Fullscreen on mobile
@@ -280,35 +296,37 @@ We plan to migrate the core library to BEM kebab-case naming in a future major v
     height: 100vh;
   }
 
-  &__header,
-  &__footer {
-    padding: 1rem;
-  }
+}
 
-  &__backdrop {
-    position: fixed;
-    inset: 0;
-    background: var(--modal-backdrop-bg);
-    transition: opacity 0.2s ease;
-  }
+.modalHeader,
+.modalFooter {
+  padding: 1rem;
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--modal-backdrop-bg);
+  transition: opacity 0.2s ease;
 }
 ```
 
-#### Recommended CSS Variables
+#### Main CSS Variables (defaults as shipped in `src/styles/tokens.scss`)
 
 ```css
 :root {
-  --modal-bg: #fff;
-  --modal-color: #111;
-  --modal-radius: 12px;
-  --modal-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  --modal-width-md: 480px;
+  --modal-bg: #ffffff;
+  --modal-color: #1a1a1a;
+  --modal-radius: 16px;
+  --modal-shadow: /* layered soft drop shadow */;
+  --modal-width-md: 520px;
   --modal-width-full: 100vw;
-  --modal-backdrop-bg: rgba(0, 0, 0, 0.5);
-  --modal-z-index-base: 1000;
+  --modal-min-width: 300px;
+  --modal-backdrop-bg: rgba(0, 0, 0, 0.6);
 }
 ```
-- Default size tokens: `--modal-width-md: 480px`, `--modal-width-full: 100vw`, etc.
+- Default size tokens: `--modal-width-md: 520px`, `--modal-width-full: 100vw`, etc.
+- There is no z-index variable: the stacking base is the `baseZIndex` prop.
 - Body scroll is locked when any modal is open
 - Backdrop uses same fade transition as modal content
 - Direct class-based styling with CSS variables
@@ -331,7 +349,7 @@ modals.getModal('anyModal');          // => ModalStackEntry | undefined
 ```
 
 ### Stacking
-- `baseZIndex?: number` — configurable via `ModalProvider` or `ModalRoot` (default: 1000)
+- `baseZIndex?: number` — set on `ModalSystem` or `ModalProvider` (default: 1000). `ModalRoot` and `Modal.Content` both read it from context, which is what keeps a backdrop and its dialog in the same layer band.
 - ModalProvider internally tracks a stack of open modals
 - Each modal is registered on open and unregistered on close
 - Only the topmost modal:
@@ -377,14 +395,20 @@ modals.getModal('anyModal');          // => ModalStackEntry | undefined
 - `asChild?: boolean`
 - `className?: string`
 
+#### Modal.Button
+- Optional styled button for footers; your own buttons work everywhere it does
+- `variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning'` — default `'secondary'`
+- `size?: 'small' | 'medium' | 'large'` — default `'medium'`
+- `loading?: boolean` — shows a spinner and implies `disabled`
+- `asChild?: boolean`
+- Forwards its ref; every other button attribute is forwarded
+
 ### Usage Examples
 
 #### 1. Basic Confirmation Modal
 ```tsx
 <ModalSystem>
-  <ModalTrigger target="confirm">
-    <button>Delete</button>
-  </ModalTrigger>
+  <Modal.Trigger target="confirm">Delete</Modal.Trigger>
 
   <Modal id="confirm">
     <Modal.Content>
@@ -404,11 +428,11 @@ modals.getModal('anyModal');          // => ModalStackEntry | undefined
 
 #### 2. Programmatically Controlled Modal
 ```tsx
-const { open, close, isOpen } = useModalStack();
+const { open } = useModalStack();
 
 return (
   <>
-    <button onClick={open}>Show Info</button>
+    <button onClick={() => open('info')}>Show Info</button>
 
     <Modal id="info">
       <Modal.Content>
@@ -455,9 +479,7 @@ return (
       <Modal.Close />
     </Modal.Header>
     <Modal.Body>
-      <ModalTrigger target="child">
-        <button>Open Nested Modal</button>
-      </ModalTrigger>
+      <Modal.Trigger target="child">Open Nested Modal</Modal.Trigger>
     </Modal.Body>
   </Modal.Content>
 </Modal>
@@ -563,7 +585,7 @@ return (
 <Modal id="infoDialog">...</Modal>
 ```
 
-**Behavior**: Only the first modal with duplicate ID will be accessible via `useModalStack()`. The library logs warnings in development mode.
+**Behavior**: Only the first modal with duplicate ID will be accessible via `useModalStack()`. The library logs a warning.
 
 #### 2. Modal Not Registered
 ```tsx
@@ -579,18 +601,20 @@ if (modals.getModal('myModal')) {
 
 **Behavior**: Attempting to control non-existent modals logs warnings and performs no action.
 
-#### 3. Controlled State Conflicts
+#### 3. Programmatic Control of a Controlled Modal
 ```tsx
-// ❌ Problematic - mixing controlled and uncontrolled
-const [open, setOpen] = useState(true);
+const [open, setOpen] = useState(false);
 const modals = useModalStack();
 
-// Both trying to control the same modal
 <Modal id="mixed" open={open} onOpenChange={setOpen}>
-modals.open('mixed'); // May conflict with controlled state
+modals.open('mixed');  // calls setOpen(true) — the modal opens because the prop changes
+modals.close('mixed'); // calls setOpen(false)
 ```
 
-**Behavior**: Controlled props (`open`/`onOpenChange`) take precedence over programmatic control.
+**Behavior**: A controlled modal is never written to directly. `useModalStack`,
+`Modal.Trigger`, `Modal.Close`, Escape and backdrop clicks all become requests to
+`onOpenChange`; the owner of `open` decides. If `onOpenChange` ignores a request,
+nothing happens.
 
 #### 4. Missing ModalSystem Provider
 ```tsx
@@ -687,12 +711,14 @@ If focus target elements are unmounted:
 
 ### Debugging Tips
 
-#### 1. Development Warnings
-Enable detailed logging in development:
-```tsx
-// Automatic in NODE_ENV=development
-console.warn('Modal "xyz" not found in stack');
-console.warn('Duplicate modal ID "abc" detected');
+#### 1. Warnings
+The provider warns (in every environment — there is no development-only gate) when
+an id is registered twice, or when an unregistered id is opened, closed or targeted
+by a `Modal.Trigger`:
+```
+Modal with id "abc" is already registered
+Cannot open modal "xyz" - not registered
+Modal.Trigger: target modal "xyz" is not registered. Make sure a Modal with id="xyz" exists.
 ```
 
 #### 2. Inspector Integration
@@ -704,9 +730,10 @@ Use browser dev tools:
 #### 3. Testing Edge Cases
 ```tsx
 // Useful for testing
-const modals = useModalStack();
-console.log(Object.keys(modals)); // List all registered modals
+const modals = useModalStack();       // { open, close, isOpen, getModal }
 console.log(modals.isOpen('myModal')); // Check state
+console.log(modals.getModal('myModal')); // Full entry, or undefined if not registered
+// To list every registered id, read the provider: useModalContext().registry
 ```
 
 ## Testing Strategy
@@ -812,7 +839,7 @@ describe('ModalTitle', () => {
 
     const title = screen.getByText('Title');
     expect(title).toHaveAttribute('id');
-    expect(title.id).toMatch(/^modal-title-/);
+    expect(title.id).toMatch(/^modalTitle-/);
   });
 });
 ```
@@ -978,7 +1005,7 @@ it('should render modal in portal', () => {
 
 ### Test Coverage Goals
 
-**Current coverage: 173 tests across 16 test files**
+Run `npm run test:run` for the current count; every regression fix adds a test that fails without it.
 
 #### Component Coverage
 - ✅ All modal subcomponents (Header, Body, Footer, Title, etc.)
@@ -2620,12 +2647,8 @@ These patterns provide comprehensive form handling solutions for modals with pro
 
 The modal library is designed to be lightweight and tree-shakable:
 
-```bash
-# Current bundle sizes (after build)
-ESM dist/index.js      176.68 KB  # Full library
-ESM dist/index.css     13.87 KB   # Complete styles
-DTS dist/index.d.ts    15.05 KB   # TypeScript definitions
-```
+`npm run build` prints the current sizes; the library has no runtime dependencies
+and ships as a single ESM entry plus a standalone stylesheet.
 
 #### Tree Shaking
 ```tsx
@@ -2635,8 +2658,8 @@ import { Modal, ModalSystem } from '@pearpages/modals';
 // ❌ Avoid importing everything
 import * as Modals from '@pearpages/modals';
 
-// ✅ CSS is automatically included when you import any component
-// No need to manually import CSS in most bundlers
+// ✅ The stylesheet is a separate entry point — import it once, yourself
+import '@pearpages/modals/styles.css';
 ```
 
 #### Code Splitting

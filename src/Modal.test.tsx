@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import React from 'react';
 import { Modal } from './Modal';
@@ -106,6 +106,23 @@ describe('Modal - Controlled Behavior', () => {
     // When open is undefined, modal should be closed by default
     render(<TestModalWrapper />);
     
+    expect(screen.queryByTestId('modal-content')).toBe(null);
+  });
+
+  it('Modal.Trigger asks a controlled modal to open instead of opening it', () => {
+    const onOpenChange = vi.fn();
+    render(
+      <ModalProvider>
+        <Modal.Trigger target="ctrl">open</Modal.Trigger>
+        <Modal id="ctrl" open={false} onOpenChange={onOpenChange}>
+          <div data-testid="modal-content">Modal Content</div>
+        </Modal>
+      </ModalProvider>
+    );
+
+    fireEvent.click(screen.getByText('open'));
+
+    expect(onOpenChange).toHaveBeenCalledWith(true);
     expect(screen.queryByTestId('modal-content')).toBe(null);
   });
 });

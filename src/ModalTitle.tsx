@@ -9,11 +9,12 @@ import { useModalAria } from './ModalAriaContext';
 export const ModalTitle: React.FC<ModalTitleProps> = ({
   asChild = false,
   className,
+  id,
   children,
   ...rest
 }) => {
   const autoId = useId();
-  const titleId = rest.id || `modalTitle-${autoId}`;
+  const titleId = id || `modalTitle-${autoId}`;
   const { registerTitleId, unregisterTitleId } = useModalAria();
   
   const titleClasses = ['modalTitle', className].filter(Boolean).join(' ');

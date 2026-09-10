@@ -30,12 +30,12 @@ export function ProgrammaticPage() {
         <ProgrammaticControl />
       </Showcase>
 
-      <Callout variant="danger" title="Do not add the open prop">
+      <Callout variant="info" title="With the open prop, these become requests">
         <p>
-          A modal driven this way must not also receive <code>open</code>. The two
-          fight over the same registry entry. See{' '}
-          <Link to="/guides/controlled">Controlled modals</Link> for when to use that
-          instead.
+          Add <code>open</code> and the modal is controlled: <code>modals.open(id)</code>{' '}
+          and <code>modals.close(id)</code> then call your <code>onOpenChange</code>{' '}
+          instead of changing anything, and the modal follows your state. See{' '}
+          <Link to="/guides/controlled">Controlled modals</Link>.
         </p>
       </Callout>
 

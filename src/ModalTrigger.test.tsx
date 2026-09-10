@@ -8,12 +8,14 @@ import { ModalContextValue } from './types';
 const MockModalContext = createContext<ModalContextValue | null>(null);
 
 // Mock the ModalProvider context
-const mockOpenModal = vi.fn();
+const mockRequestOpen = vi.fn();
 const mockIsRegistered = vi.fn();
 
 const MockModalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const mockContext: ModalContextValue = {
-    openModal: mockOpenModal,
+    openModal: vi.fn(),
+    requestOpen: mockRequestOpen,
+    requestClose: vi.fn(),
     closeModal: vi.fn(),
     isRegistered: mockIsRegistered,
     register: vi.fn(),
@@ -23,7 +25,7 @@ const MockModalProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     stack: [],
     baseZIndex: 1000,
     updateDismissConfig: vi.fn(),
-    updateOnOpenChange: vi.fn(),
+    updateControl: vi.fn(),
   };
 
   return (
@@ -83,7 +85,7 @@ describe('ModalTrigger', () => {
       const button = screen.getByRole('button');
       fireEvent.click(button);
 
-      expect(mockOpenModal).toHaveBeenCalledWith('test-modal');
+      expect(mockRequestOpen).toHaveBeenCalledWith('test-modal');
     });
 
     it('applies custom className', () => {
@@ -109,7 +111,7 @@ describe('ModalTrigger', () => {
       const button = screen.getByRole('button');
       fireEvent.keyDown(button, { key: 'Enter', code: 'Enter' });
 
-      expect(mockOpenModal).toHaveBeenCalledWith('test-modal');
+      expect(mockRequestOpen).toHaveBeenCalledWith('test-modal');
     });
 
     it('opens modal on Space key', () => {
@@ -122,7 +124,7 @@ describe('ModalTrigger', () => {
       const button = screen.getByRole('button');
       fireEvent.keyDown(button, { key: ' ', code: 'Space' });
 
-      expect(mockOpenModal).toHaveBeenCalledWith('test-modal');
+      expect(mockRequestOpen).toHaveBeenCalledWith('test-modal');
     });
 
     it('does not open modal on other keys', () => {
@@ -136,7 +138,7 @@ describe('ModalTrigger', () => {
       fireEvent.keyDown(button, { key: 'Tab', code: 'Tab' });
       fireEvent.keyDown(button, { key: 'Escape', code: 'Escape' });
 
-      expect(mockOpenModal).not.toHaveBeenCalled();
+      expect(mockRequestOpen).not.toHaveBeenCalled();
     });
   });
 
@@ -152,7 +154,7 @@ describe('ModalTrigger', () => {
       expect(button.disabled).toBe(true);
       
       fireEvent.click(button);
-      expect(mockOpenModal).not.toHaveBeenCalled();
+      expect(mockRequestOpen).not.toHaveBeenCalled();
     });
 
     it('does not open modal when disabled and Enter is pressed', () => {
@@ -165,7 +167,7 @@ describe('ModalTrigger', () => {
       const button = screen.getByRole('button');
       fireEvent.keyDown(button, { key: 'Enter', code: 'Enter' });
 
-      expect(mockOpenModal).not.toHaveBeenCalled();
+      expect(mockRequestOpen).not.toHaveBeenCalled();
     });
   });
 
@@ -197,7 +199,7 @@ describe('ModalTrigger', () => {
       const customTrigger = screen.getByTestId('custom-trigger');
       fireEvent.click(customTrigger);
 
-      expect(mockOpenModal).toHaveBeenCalledWith('test-modal');
+      expect(mockRequestOpen).toHaveBeenCalledWith('test-modal');
     });
 
     it('preserves existing props when asChild is true', () => {
@@ -217,7 +219,7 @@ describe('ModalTrigger', () => {
       fireEvent.click(button);
 
       expect(originalClick).toHaveBeenCalled();
-      expect(mockOpenModal).toHaveBeenCalledWith('test-modal');
+      expect(mockRequestOpen).toHaveBeenCalledWith('test-modal');
     });
 
     it('merges classNames when asChild is true', () => {
@@ -243,7 +245,7 @@ describe('ModalTrigger', () => {
       expect(button.disabled).toBe(true);
       
       fireEvent.click(button);
-      expect(mockOpenModal).not.toHaveBeenCalled();
+      expect(mockRequestOpen).not.toHaveBeenCalled();
     });
 
     it('throws error when asChild is true but children is not a valid element', () => {
@@ -280,7 +282,7 @@ describe('ModalTrigger', () => {
       expect(consoleSpy).toHaveBeenCalledWith(
         'Modal.Trigger: target modal "unregistered-modal" is not registered. Make sure a Modal with id="unregistered-modal" exists.'
       );
-      expect(mockOpenModal).not.toHaveBeenCalled();
+      expect(mockRequestOpen).not.toHaveBeenCalled();
 
       consoleSpy.mockRestore();
     });
@@ -300,7 +302,39 @@ describe('ModalTrigger', () => {
       fireEvent.click(button);
 
       expect(preventDefault).toHaveBeenCalled();
-      expect(mockOpenModal).not.toHaveBeenCalled();
+      expect(mockRequestOpen).not.toHaveBeenCalled();
+    });
+
+    it('composes a consumer onClick on the plain button and still opens', () => {
+      // Regression: {...props} was spread after onClick={handleClick}, so a
+      // consumer onClick replaced the trigger's own and nothing opened.
+      const onClick = vi.fn();
+
+      renderWithProvider(
+        <ModalTrigger target="test-modal" onClick={onClick}>
+          Open
+        </ModalTrigger>
+      );
+
+      fireEvent.click(screen.getByRole('button'));
+
+      expect(onClick).toHaveBeenCalledTimes(1);
+      expect(mockRequestOpen).toHaveBeenCalledWith('test-modal');
+    });
+
+    it('does not open if the consumer onClick on the plain button prevents default', () => {
+      const onClick = vi.fn((e: React.MouseEvent) => e.preventDefault());
+
+      renderWithProvider(
+        <ModalTrigger target="test-modal" onClick={onClick}>
+          Open
+        </ModalTrigger>
+      );
+
+      fireEvent.click(screen.getByRole('button'));
+
+      expect(onClick).toHaveBeenCalled();
+      expect(mockRequestOpen).not.toHaveBeenCalled();
     });
 
     it('does not open modal if keydown event is prevented in asChild', () => {
@@ -316,7 +350,7 @@ describe('ModalTrigger', () => {
       fireEvent.keyDown(button, { key: 'Enter', code: 'Enter' });
 
       expect(preventDefault).toHaveBeenCalled();
-      expect(mockOpenModal).not.toHaveBeenCalled();
+      expect(mockRequestOpen).not.toHaveBeenCalled();
     });
   });
 });

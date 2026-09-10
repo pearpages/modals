@@ -87,7 +87,8 @@ describe('ModalProvider', () => {
       expect(contextRef.current!.registry['modal-1']).toEqual({
         open: false,
         isTop: false,
-        stackIndex: -1
+        stackIndex: -1,
+        controlled: false
       });
     });
 

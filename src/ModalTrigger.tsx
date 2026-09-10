@@ -7,11 +7,15 @@ import { renderAsChild } from './asChild';
  * Modal.Trigger component for declarative modal opening.
  * 
  * Features:
- * - Opens target modal on click
+ * - Asks the target modal to open on click (a controlled target is only
+ *   notified through its onOpenChange)
  * - Keyboard accessibility (Enter/Space)
  * - Respects disabled state
  * - Support for asChild pattern to compose with existing elements
- * - Stores reference for focus return on modal close
+ *
+ * Props follow the same rule in both render paths: attributes belong to the
+ * consumer, `on*` handlers compose — yours runs first, and calling
+ * preventDefault() in it stops the modal from opening.
  */
 export const ModalTrigger: React.FC<ModalTriggerProps> = ({
   target,
@@ -19,9 +23,11 @@ export const ModalTrigger: React.FC<ModalTriggerProps> = ({
   asChild = false,
   disabled = false,
   className,
+  onClick,
+  onKeyDown,
   ...props
 }) => {
-  const { openModal, isRegistered } = useModalContext();
+  const { requestOpen, isRegistered } = useModalContext();
 
   const handleOpenModal = useCallback(() => {
     if (disabled) return;
@@ -32,24 +38,28 @@ export const ModalTrigger: React.FC<ModalTriggerProps> = ({
       return;
     }
     
-    openModal(target);
-  }, [target, disabled, openModal, isRegistered]);
+    requestOpen(target);
+  }, [target, disabled, requestOpen, isRegistered]);
 
-  const handleClick = useCallback((event: MouseEvent) => {
+  const handleClick = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+    onClick?.(event);
+    if (event.defaultPrevented) return;
     event.preventDefault();
     handleOpenModal();
-  }, [handleOpenModal]);
+  }, [onClick, handleOpenModal]);
 
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+  const handleKeyDown = useCallback((event: KeyboardEvent<HTMLButtonElement>) => {
+    onKeyDown?.(event);
+    if (event.defaultPrevented) return;
     // Handle Enter and Space keys for accessibility
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       handleOpenModal();
     }
-  }, [handleOpenModal]);
+  }, [onKeyDown, handleOpenModal]);
 
   // asChild pattern: render the child in place of our button. renderAsChild
-  // composes onClick/onKeyDown with the child's own and merges className.
+  // composes the child's own onClick/onKeyDown with ours and merges className.
   if (asChild) {
     // `disabled` is the one prop that merges rather than overrides: a child
     // that is already disabled stays disabled even if the trigger is not.
@@ -68,17 +78,19 @@ export const ModalTrigger: React.FC<ModalTriggerProps> = ({
     });
   }
 
-  // Default rendering: create a button element
+  // Default rendering: a real button. The consumer's onClick/onKeyDown were
+  // pulled out above and composed into the handlers, so the spread cannot
+  // replace them; every other attribute is theirs to set.
   return (
     <button
       type="button"
       disabled={disabled}
       className={className}
-      onClick={handleClick}
-      onKeyDown={handleKeyDown}
       aria-haspopup="dialog"
       data-modal-trigger={target}
       {...props}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
     >
       {children}
     </button>

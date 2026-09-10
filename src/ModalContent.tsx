@@ -27,6 +27,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
   closeOnBackdrop = true,
   closeOnEscape = true,
   onInteractOutside,
+  style,
   children,
   ...rest
 }) => {
@@ -114,9 +115,12 @@ export const ModalContent: React.FC<ModalContentProps> = ({
     'aria-labelledby': titleId,
     'aria-describedby': descriptionId,
     'data-state': dataState,
+    // The consumer's style is merged, not substituted: a themed modal that sets
+    // CSS variables inline must not lose its z-index.
     style: {
       zIndex: zIndex,
       pointerEvents: 'auto' as const,
+      ...style,
     },
     ...rest,
   };

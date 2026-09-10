@@ -30,7 +30,9 @@ interface ModalComponent extends React.FC<ModalProps> {
  * Modal component that supports controlled state management.
  * 
  * Features:
- * - Controlled via `open` prop and `onOpenChange` callback
+ * - Uncontrolled by default; passing `open` makes it controlled, after which
+ *   every library path (Trigger, useModalStack, Close, Escape, backdrop) only
+ *   calls `onOpenChange` and the provider follows the prop
  * - Automatically registers/unregisters with ModalProvider
  * - Unmounts children when closed (modal content is not rendered when closed)
  * - Integrates with modal stack for proper z-index and focus management
@@ -50,7 +52,7 @@ const Modal: ModalComponent = ({
     unregister, 
     openModal, 
     closeModal, 
-    updateOnOpenChange,
+    updateControl,
     getModalEntry 
   } = modalContext;
 
@@ -62,21 +64,24 @@ const Modal: ModalComponent = ({
     };
   }, [id, register, unregister]);
 
-  // Update onOpenChange callback in registry
+  // A modal is controlled when it has an `open` prop. The provider needs to
+  // know, because every open/close request on a controlled modal must go to
+  // onOpenChange instead of touching provider state.
+  const isControlled = open !== undefined;
   useEffect(() => {
-    updateOnOpenChange(id, onOpenChange);
-  }, [id, onOpenChange, updateOnOpenChange]);
+    updateControl(id, isControlled, onOpenChange);
+  }, [id, isControlled, onOpenChange, updateControl]);
 
   // Get current modal state from provider
   const modalEntry = getModalEntry(id);
   const isProviderOpen = modalEntry?.open ?? false;
 
   // Use refs to avoid dependency loops
-  const openRef = React.useRef(open);
+  const isControlledRef = React.useRef(isControlled);
   const onOpenChangeRef = React.useRef(onOpenChange);
 
   // Update refs on each render
-  openRef.current = open;
+  isControlledRef.current = isControlled;
   onOpenChangeRef.current = onOpenChange;
 
   // Sync controlled prop with provider state (only when controlled prop changes)
@@ -94,19 +99,16 @@ const Modal: ModalComponent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, id]);
 
-  // Notify parent of provider state changes
+  // Notify an uncontrolled modal's onOpenChange of provider state changes. A
+  // controlled modal never needs this: provider state only ever follows its
+  // `open` prop, so the parent already knows.
   const prevProviderOpenRef = React.useRef(isProviderOpen);
   useEffect(() => {
     const prevProviderOpen = prevProviderOpenRef.current;
     prevProviderOpenRef.current = isProviderOpen;
 
-    // Only notify if provider state actually changed
-    if (isProviderOpen !== prevProviderOpen && onOpenChangeRef.current) {
-      // In uncontrolled mode (open === undefined), always notify
-      // In controlled mode, only notify if provider differs from controlled prop (external changes)
-      if (openRef.current === undefined || isProviderOpen !== openRef.current) {
-        onOpenChangeRef.current(isProviderOpen);
-      }
+    if (isProviderOpen !== prevProviderOpen && !isControlledRef.current) {
+      onOpenChangeRef.current?.(isProviderOpen);
     }
   }, [isProviderOpen]); // Only depend on isProviderOpen
 

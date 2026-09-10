@@ -46,9 +46,11 @@ export function TriggerPage() {
         ]}
       />
       <p>
-        Everything else is a normal button attribute and is forwarded, including{' '}
-        <code>onClick</code>, <code>type</code>, <code>aria-*</code> and{' '}
-        <code>data-*</code>.
+        Everything else is a normal button attribute and is forwarded — <code>type</code>,{' '}
+        <code>aria-*</code>, <code>data-*</code> — with one rule that holds with and
+        without <code>asChild</code>: attributes are yours to set, and <code>on*</code>{' '}
+        handlers compose. Your <code>onClick</code> runs first; call{' '}
+        <code>preventDefault()</code> in it and the modal does not open.
       </p>
 
       <Showcase
@@ -84,7 +86,7 @@ export function TriggerPage() {
         title="Your onClick still runs"
         code={composedOnClickSource}
         fileName="ComposedOnClick.tsx"
-        description="Handlers compose rather than replace. Call preventDefault() to stop the modal opening."
+        description="Handlers compose rather than replace, on the plain button as well as with asChild. Call preventDefault() to stop the modal opening."
       >
         <ComposedOnClick />
       </Showcase>

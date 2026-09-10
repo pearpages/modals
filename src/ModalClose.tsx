@@ -14,8 +14,7 @@ export const ModalClose: React.FC<ModalCloseProps> = ({
   onClick,
   ...rest
 }) => {
-  const modalContext = useModalContext();
-  const { closeModal, getModalEntry } = modalContext;
+  const { requestClose } = useModalContext();
   
   // Get modal ID from context
   const modalId = useModalId();
@@ -26,16 +25,10 @@ export const ModalClose: React.FC<ModalCloseProps> = ({
       onClick(e);
     }
     
-    // If not prevented, close the modal
+    // If not prevented, ask the modal to close. A controlled modal gets
+    // onOpenChange(false) and decides for itself; an uncontrolled one closes.
     if (!e.defaultPrevented) {
-      const modalEntry = getModalEntry(modalId);
-      
-      // Use onOpenChange if available (controlled mode), otherwise closeModal
-      if (modalEntry?.onOpenChange) {
-        modalEntry.onOpenChange(false);
-      } else {
-        closeModal(modalId);
-      }
+      requestClose(modalId);
     }
   };
   

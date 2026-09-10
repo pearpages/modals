@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ModalRootProps } from './types';
 import { useModalContext } from './ModalProvider';
@@ -15,33 +15,15 @@ const useIsClient = (): boolean => {
   return isClient;
 };
 
-export const ModalRoot: React.FC<ModalRootProps> = ({
-  container,
-  baseZIndex
-}) => {
+export const ModalRoot: React.FC<ModalRootProps> = ({ container }) => {
   const isClient = useIsClient();
-  const { stack, registry, baseZIndex: contextBaseZIndex, closeModal } = useModalContext();
-
-  // The prop overrides context when given. `??` rather than `||` so that
-  // baseZIndex={0} is honoured, and no default here: ModalProvider already
-  // defaults to 1000 and ModalContent reads that same context value, so
-  // defaulting again would put the backdrop in a different layer band.
-  const effectiveBaseZIndex = baseZIndex ?? contextBaseZIndex;
+  // baseZIndex comes from the provider only. ModalContent reads the same value,
+  // which is what keeps a backdrop and its dialog in the same layer band.
+  const { stack, registry, baseZIndex, requestClose } = useModalContext();
 
   // Lock body scroll when any modal is open
   const hasOpenModals = stack.length > 0;
   useBodyScrollLock(hasOpenModals);
-
-  // Single dismissal path for both Escape and backdrop clicks. A controlled
-  // modal owns its own state, so we ask it to close rather than closing it.
-  const requestClose = useCallback((modalId: string) => {
-    const entry = registry[modalId];
-    if (entry?.onOpenChange) {
-      entry.onOpenChange(false);
-    } else {
-      closeModal(modalId);
-    }
-  }, [registry, closeModal]);
 
   // Handle escape key events
   useEffect(() => {
@@ -141,7 +123,7 @@ export const ModalRoot: React.FC<ModalRootProps> = ({
         right: 0,
         bottom: 0,
         pointerEvents: 'none', // Container doesn't interfere with events
-        zIndex: effectiveBaseZIndex
+        zIndex: baseZIndex
       }}
     >
       {/* Render portal containers for each open modal with proper z-index per specs */}
@@ -151,20 +133,12 @@ export const ModalRoot: React.FC<ModalRootProps> = ({
 
         const isTopmost = entry.isTop;
 
-        // Apply the enhanced backdrop styling
-        const backdropClasses = [
-          'modalBackdrop',
-          // Add animation class if the modal supports animations
-          // Animation state will be handled by data-state attribute
-        ].filter(Boolean).join(' ');
-
         return (
           <div
             key={modalId}
-            className={backdropClasses}
+            className="modalBackdrop"
             style={{
-              zIndex: effectiveBaseZIndex + entry.stackIndex, // Specs: z-index = baseZIndex + stackIndex
-              // CSS module will handle positioning, backdrop blur, etc.
+              zIndex: baseZIndex + entry.stackIndex, // Specs: z-index = baseZIndex + stackIndex
               pointerEvents: isTopmost ? 'auto' : 'none'
             }}
             onClick={isTopmost ? handleBackdropClick : undefined}

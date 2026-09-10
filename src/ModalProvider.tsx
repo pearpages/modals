@@ -2,17 +2,11 @@ import React, { createContext, useContext, useReducer, useCallback, useEffect, u
 import { 
   ModalContextValue, 
   ModalProviderProps, 
-  ModalStackRegistry, 
+  ModalProviderState,
   ModalStackEntry,
   ModalDismissConfig,
   ModalStackApi
 } from './types';
-
-interface ModalProviderState {
-  registry: ModalStackRegistry;
-  stack: string[];
-  baseZIndex: number;
-}
 
 type ModalAction = 
   | { type: 'REGISTER'; id: string }
@@ -20,7 +14,7 @@ type ModalAction =
   | { type: 'OPEN'; id: string }
   | { type: 'CLOSE'; id: string }
   | { type: 'UPDATE_DISMISS_CONFIG'; id: string; config: ModalDismissConfig }
-  | { type: 'UPDATE_ON_OPEN_CHANGE'; id: string; onOpenChange?: (open: boolean) => void };
+  | { type: 'UPDATE_CONTROL'; id: string; controlled: boolean; onOpenChange?: (open: boolean) => void };
 
 const modalReducer = (state: ModalProviderState, action: ModalAction): ModalProviderState => {
   switch (action.type) {
@@ -34,7 +28,7 @@ const modalReducer = (state: ModalProviderState, action: ModalAction): ModalProv
         ...state,
         registry: {
           ...state.registry,
-          [id]: { open: false, isTop: false, stackIndex: -1 }
+          [id]: { open: false, isTop: false, stackIndex: -1, controlled: false }
         }
       };
     }
@@ -165,10 +159,10 @@ const modalReducer = (state: ModalProviderState, action: ModalAction): ModalProv
       };
     }
 
-    case 'UPDATE_ON_OPEN_CHANGE': {
-      const { id, onOpenChange } = action;
+    case 'UPDATE_CONTROL': {
+      const { id, controlled, onOpenChange } = action;
       if (!state.registry[id]) {
-        console.warn(`Cannot update onOpenChange for modal "${id}" - not registered`);
+        console.warn(`Cannot update control for modal "${id}" - not registered`);
         return state;
       }
 
@@ -178,6 +172,7 @@ const modalReducer = (state: ModalProviderState, action: ModalAction): ModalProv
           ...state.registry,
           [id]: {
             ...state.registry[id],
+            controlled,
             onOpenChange
           }
         }
@@ -221,8 +216,8 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({
     dispatch({ type: 'UPDATE_DISMISS_CONFIG', id, config });
   }, []);
 
-  const updateOnOpenChange = useCallback((id: string, onOpenChange?: (open: boolean) => void) => {
-    dispatch({ type: 'UPDATE_ON_OPEN_CHANGE', id, onOpenChange });
+  const updateControl = useCallback((id: string, controlled: boolean, onOpenChange?: (open: boolean) => void) => {
+    dispatch({ type: 'UPDATE_CONTROL', id, controlled, onOpenChange });
   }, []);
 
   const isRegistered = useCallback((id: string) => {
@@ -233,6 +228,39 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({
     return state.registry[id];
   }, [state.registry]);
 
+  // The one rule every open/close path follows. A controlled modal owns its
+  // state, so it is asked through onOpenChange and the provider waits for the
+  // `open` prop to change; an uncontrolled modal is acted on directly. Reading
+  // the registry through a ref keeps both functions stable across renders.
+  const registryRef = useRef(state.registry);
+  registryRef.current = state.registry;
+
+  const requestOpen = useCallback((id: string) => {
+    const entry = registryRef.current[id];
+    if (!entry) {
+      console.warn(`Cannot open modal "${id}" - not registered`);
+      return;
+    }
+    if (entry.controlled) {
+      entry.onOpenChange?.(true);
+    } else {
+      dispatch({ type: 'OPEN', id });
+    }
+  }, []);
+
+  const requestClose = useCallback((id: string) => {
+    const entry = registryRef.current[id];
+    if (!entry) {
+      console.warn(`Cannot close modal "${id}" - not registered`);
+      return;
+    }
+    if (entry.controlled) {
+      entry.onOpenChange?.(false);
+    } else {
+      dispatch({ type: 'CLOSE', id });
+    }
+  }, []);
+
   const contextValue: ModalContextValue = {
     ...state,
     register,
@@ -240,7 +268,9 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({
     openModal,
     closeModal,
     updateDismissConfig,
-    updateOnOpenChange,
+    updateControl,
+    requestOpen,
+    requestClose,
     isRegistered,
     getModalEntry
   };
@@ -261,31 +291,18 @@ export const useModalContext = (): ModalContextValue => {
 };
 
 /**
- * Public hook for programmatic modal control
- * Provides the API defined in specs for opening/closing modals and checking state
+ * Public hook for programmatic modal control.
+ *
+ * `open` and `close` are requests: on a controlled modal they call its
+ * onOpenChange and leave the decision to the owner of the `open` prop.
  */
 export const useModalStack = (): ModalStackApi => {
-  const { registry, openModal, closeModal } = useModalContext();
+  const { registry, requestOpen, requestClose } = useModalContext();
 
   return {
-    /**
-     * Open a modal by ID
-     */
-    open: openModal,
-
-    /**
-     * Close a modal by ID
-     */
-    close: closeModal,
-
-    /**
-     * Check if a modal is currently open
-     */
+    open: requestOpen,
+    close: requestClose,
     isOpen: (modalId: string) => registry[modalId]?.open ?? false,
-
-    /**
-     * Get complete modal state for a given ID
-     */
     getModal: (modalId: string) => registry[modalId]
   };
 };
@@ -294,14 +311,7 @@ export const useModalStack = (): ModalStackApi => {
  * Hook to register dismiss configuration for a modal content component
  * This should be called by Modal.Content components to configure their dismiss behavior
  */
-export const useModalDismissConfig = (
-  modalId: string, 
-  config: {
-    closeOnBackdrop?: boolean;
-    closeOnEscape?: boolean;
-    onInteractOutside?: (e: { target: EventTarget; preventDefault(): void }) => void;
-  }
-) => {
+export const useModalDismissConfig = (modalId: string, config: ModalDismissConfig) => {
   const { updateDismissConfig } = useModalContext();
   const onInteractOutsideRef = useRef(config.onInteractOutside);
   
@@ -311,10 +321,10 @@ export const useModalDismissConfig = (
   });
   
   useEffect(() => {
-    const dismissConfig = {
+    const dismissConfig: ModalDismissConfig = {
       closeOnBackdrop: config.closeOnBackdrop ?? true, // Default to true
       closeOnEscape: config.closeOnEscape ?? true,     // Default to true
-      onInteractOutside: onInteractOutsideRef.current ? (e: { target: EventTarget; preventDefault(): void }) => {
+      onInteractOutside: onInteractOutsideRef.current ? (e) => {
         onInteractOutsideRef.current?.(e);
       } : undefined
     };

@@ -4,6 +4,7 @@ import React from 'react';
 import { ModalClose } from './ModalClose';
 import { ModalProvider } from './ModalProvider';
 import { ModalIdProvider } from './ModalIdContext';
+import { Modal } from './Modal';
 
 // Test wrapper that provides modal context
 const TestWrapper: React.FC<{ 
@@ -165,5 +166,23 @@ describe('ModalClose', () => {
     const button = screen.getByRole('button');
     expect(button).toHaveAttribute('aria-label', 'Close modal');
     expect(button).toHaveAttribute('type', 'button');
+  });
+
+  it('asks a controlled modal to close and leaves it mounted', () => {
+    const onOpenChange = vi.fn();
+    render(
+      <ModalProvider>
+        <Modal id="ctrl" open onOpenChange={onOpenChange}>
+          <div data-testid="ctrl-content">
+            <ModalClose>Close</ModalClose>
+          </div>
+        </Modal>
+      </ModalProvider>
+    );
+
+    fireEvent.click(screen.getByRole('button'));
+
+    expect(onOpenChange).toHaveBeenCalledWith(false);
+    expect(screen.getByTestId('ctrl-content')).toBeInTheDocument();
   });
 });

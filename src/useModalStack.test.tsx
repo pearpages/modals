@@ -1,6 +1,7 @@
-import { renderHook, act } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { renderHook, act, render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
 import { ModalProvider, useModalStack } from './ModalProvider';
+import { Modal } from './Modal';
 import { ReactNode } from 'react';
 
 const wrapper = ({ children }: { children: ReactNode }) => (
@@ -61,5 +62,56 @@ describe('useModalStack', () => {
 
     // Additional helper method
     expect(modalStack.getModal).toBeDefined();
+  });
+
+  describe('on a controlled modal', () => {
+    // A controlled modal owns its state. open/close are requests that go to
+    // onOpenChange; the provider only follows the `open` prop.
+    const Controls = ({ id }: { id: string }) => {
+      const modals = useModalStack();
+      return (
+        <>
+          <button onClick={() => modals.open(id)}>open</button>
+          <button onClick={() => modals.close(id)}>close</button>
+          <span data-testid="is-open">{String(modals.isOpen(id))}</span>
+        </>
+      );
+    };
+
+    it('close(id) asks via onOpenChange(false) and leaves the modal mounted', () => {
+      const onOpenChange = vi.fn();
+      render(
+        <ModalProvider>
+          <Controls id="ctrl" />
+          <Modal id="ctrl" open onOpenChange={onOpenChange}>
+            <div data-testid="ctrl-content">content</div>
+          </Modal>
+        </ModalProvider>
+      );
+
+      fireEvent.click(screen.getByText('close'));
+
+      expect(onOpenChange).toHaveBeenCalledWith(false);
+      expect(screen.getByTestId('ctrl-content')).toBeInTheDocument();
+      expect(screen.getByTestId('is-open')).toHaveTextContent('true');
+    });
+
+    it('open(id) asks via onOpenChange(true) and does not mount the modal', () => {
+      const onOpenChange = vi.fn();
+      render(
+        <ModalProvider>
+          <Controls id="ctrl" />
+          <Modal id="ctrl" open={false} onOpenChange={onOpenChange}>
+            <div data-testid="ctrl-content">content</div>
+          </Modal>
+        </ModalProvider>
+      );
+
+      fireEvent.click(screen.getByText('open'));
+
+      expect(onOpenChange).toHaveBeenCalledWith(true);
+      expect(screen.queryByTestId('ctrl-content')).not.toBeInTheDocument();
+      expect(screen.getByTestId('is-open')).toHaveTextContent('false');
+    });
   });
 });

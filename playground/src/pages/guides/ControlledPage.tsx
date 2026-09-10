@@ -32,27 +32,25 @@ export function ControlledPage() {
         <ControlledModal />
       </Showcase>
 
-      <Callout variant="danger" title="Do not mix this with useModalStack">
+      <Callout variant="info" title="One rule for every path">
         <p>
-          Controlled state and{' '}
+          The same goes for opening. <code>Modal.Trigger</code> and{' '}
           <Link to="/hooks/use-modal-stack">
             <code>useModalStack</code>
           </Link>{' '}
-          are two owners of one piece of state, and they will disagree. Calling{' '}
-          <code>modals.open(id)</code> on a controlled modal writes to the provider
-          behind your state&apos;s back.
-        </p>
-        <p>
-          Pick one per modal: your own state, or the provider&apos;s. See{' '}
-          <Link to="/guides/programmatic">Programmatic control</Link> for the other
-          half of this pair.
+          never write to a controlled modal: <code>modals.open(id)</code> calls{' '}
+          <code>onOpenChange(true)</code>, <code>modals.close(id)</code> calls{' '}
+          <code>onOpenChange(false)</code>, and the modal follows your state. That also
+          means <code>open</code> without <code>onOpenChange</code> is a modal nothing
+          can close — the same contract as an <code>&lt;input value&gt;</code> without{' '}
+          <code>onChange</code>.
         </p>
       </Callout>
 
       <h2>Opening it</h2>
       <p>
-        A controlled modal has no use for <code>Modal.Trigger</code> — set your state
-        instead:
+        Set your state. A <code>Modal.Trigger</code> works too — it asks through{' '}
+        <code>onOpenChange(true)</code> — but a plain button is more direct:
       </p>
       <CodeBlock
         code={`const [open, setOpen] = useState(false)
@@ -64,9 +62,9 @@ export function ControlledPage() {
 </Modal>`}
       />
       <p>
-        One thing you give up: focus return. <code>Modal.Trigger</code> restores focus
-        to itself on close, and a plain button does not, so move focus back yourself if
-        it matters.
+        Focus still returns on close: the provider remembers whichever element had
+        focus when the modal opened, so a plain button gets it back just as a{' '}
+        <code>Modal.Trigger</code> would.
       </p>
     </Page>
   )

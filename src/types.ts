@@ -112,7 +112,13 @@ export interface ModalStackEntry {
   stackIndex: number;
   /** Dismiss behavior configuration */
   dismissConfig?: ModalDismissConfig;
-  /** Callback for controlled mode - if present, use this instead of direct closeModal */
+  /**
+   * True when the Modal has an `open` prop. A controlled modal owns its state:
+   * every library path that would open or close it calls `onOpenChange`
+   * instead, and the provider only follows the prop.
+   */
+  controlled: boolean;
+  /** The Modal's onOpenChange callback, if any */
   onOpenChange?: (open: boolean) => void;
   /** Previously focused element before modal opened (for focus restoration) */
   previouslyFocusedElement?: HTMLElement | null;
@@ -173,8 +179,20 @@ export interface ModalProviderActions {
   closeModal: (id: string) => void;
   /** Update dismiss configuration for a modal */
   updateDismissConfig: (id: string, config: ModalDismissConfig) => void;
-  /** Update onOpenChange callback for controlled mode */
-  updateOnOpenChange: (id: string, onOpenChange?: (open: boolean) => void) => void;
+  /** Record whether a modal is controlled, and its onOpenChange callback */
+  updateControl: (id: string, controlled: boolean, onOpenChange?: (open: boolean) => void) => void;
+  /**
+   * Ask a modal to open. Controlled modals get `onOpenChange(true)` and nothing
+   * else; uncontrolled modals open directly. Every library path that opens a
+   * modal — Modal.Trigger, useModalStack().open — goes through here.
+   */
+  requestOpen: (id: string) => void;
+  /**
+   * Ask a modal to close. Controlled modals get `onOpenChange(false)` and
+   * nothing else; uncontrolled modals close directly. Escape, backdrop clicks,
+   * Modal.Close and useModalStack().close all go through here.
+   */
+  requestClose: (id: string) => void;
   /** Check if a modal is registered */
   isRegistered: (id: string) => boolean;
   /** Get modal stack entry */
@@ -184,11 +202,12 @@ export interface ModalProviderActions {
 export interface ModalContextValue extends ModalProviderState, ModalProviderActions {}
 
 // Modal Root Props
+// baseZIndex is deliberately not a prop here: ModalRoot and ModalContent both
+// read it from the provider, so a value set on only one of them would put
+// backdrops and dialogs in different layer bands.
 export interface ModalRootProps {
   /** Custom container element for portal rendering */
   container?: HTMLElement;
-  /** Base z-index for modal layering */
-  baseZIndex?: number;
 }
 
 // Modal Provider Props
@@ -213,19 +232,15 @@ export interface ModalSystemProps {
 export type ModalButtonVariant = 'primary' | 'secondary' | 'danger' | 'success' | 'warning';
 export type ModalButtonSize = 'small' | 'medium' | 'large';
 
-export interface ModalButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className'> {
+export interface ModalButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Visual variant of the button */
   variant?: ModalButtonVariant;
   /** Size of the button */
   size?: ModalButtonSize;
-  /** Show loading state with spinner */
+  /** Show loading state with spinner; implies disabled */
   loading?: boolean;
-  /** Disable the button */
-  disabled?: boolean;
-  /** Custom CSS class */
-  className?: string;
   /** Use asChild pattern to compose with existing elements */
   asChild?: boolean;
   /** Button content */
-  children: React.ReactNode;
+  children: ReactNode;
 }

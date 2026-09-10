@@ -63,8 +63,8 @@ modals.getModal('confirm')   // => ModalStackEntry | undefined`}
 
       <h2>Unknown ids are not errors</h2>
       <p>
-        Opening or closing an id that is not registered logs a development warning and
-        does nothing. <code>isOpen</code> returns <code>false</code> and{' '}
+        Opening or closing an id that is not registered logs a warning and does
+        nothing. <code>isOpen</code> returns <code>false</code> and{' '}
         <code>getModal</code> returns <code>undefined</code>, so you can call them
         before a modal has mounted.
       </p>

@@ -20,7 +20,7 @@ export { ModalFooter } from './ModalFooter';
 export { ModalButton } from './ModalButton';
 export { useModalId } from './ModalIdContext';
 export type { ModalIdContextValue } from './ModalIdContext';
-export { ModalAriaProvider, useModalAria } from './ModalAriaContext';
+export { useModalAria } from './ModalAriaContext';
 export type { ModalAriaContextValue } from './ModalAriaContext';
 export { useFocusTrap } from './useFocusTrap';
 export { useBodyScrollLock } from './useBodyScrollLock';

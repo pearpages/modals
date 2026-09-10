@@ -83,7 +83,10 @@ Everything is at **[modals.pearpages.com](https://modals.pearpages.com)**, where
 
 - **The focus trap now actually engages.** It never did before: it activated on the render where the modal opened, but the dialog element is created once the portal is found, so it silently did nothing. Neither autofocus nor Tab containment worked. If you added your own focus handling to compensate, you can remove it.
 - **Escape respects controlled state.** Backdrop clicks already called `onOpenChange`; Escape closed the modal directly regardless of what the parent decided. Both paths now ask. A controlled modal that does not flip `open` stays open on Escape.
-- **`baseZIndex` on `ModalProvider` is now reachable.** `ModalRoot` defaulted its own prop to `1000`, so the provider value was unreachable and backdrops could render in a different layer band from their content. Set it on the provider; passing it to `ModalRoot` as well is no longer necessary.
+- **`baseZIndex` on `ModalProvider` is now reachable, and `ModalRoot` no longer takes one.** `ModalRoot` defaulted its own prop to `1000`, so the provider value was unreachable and backdrops could render in a different layer band from their content. The prop is gone from `ModalRoot`; set it on `ModalProvider` or `ModalSystem`.
+- **Controlled means `open` is present, and every path respects it.** Previously `useModalStack().open/close` and `Modal.Trigger` wrote to the provider even on a controlled modal, while a modal that passed `onOpenChange` without `open` was treated as controlled by Escape and could never close. Now a modal with an `open` prop is only ever asked through `onOpenChange` — by `Modal.Trigger`, `useModalStack`, `Modal.Close`, Escape and backdrop clicks alike — and a modal without one closes directly and is notified.
+- **`Modal.Trigger` composes `onClick` on its own button too.** Passing `onClick` to a plain `Modal.Trigger` used to replace the trigger's handler, so the modal never opened. Handlers now compose in both render paths, and `preventDefault()` cancels the open.
+- **`Modal.Content` merges `style`.** An inline `style` used to replace the dialog's own inline z-index.
 
 **Removed**
 

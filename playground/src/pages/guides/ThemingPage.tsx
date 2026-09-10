@@ -14,14 +14,14 @@ export function ThemingPage() {
       <PropsTable
         caption="The main variables"
         rows={[
-          { name: '--modal-bg', type: 'color', default: '#fff', description: 'Dialog background.' },
-          { name: '--modal-color', type: 'color', default: '#111', description: 'Dialog text.' },
-          { name: '--modal-radius', type: 'length', default: '12px', description: 'Corner radius.' },
+          { name: '--modal-bg', type: 'color', default: '#ffffff', description: 'Dialog background.' },
+          { name: '--modal-color', type: 'color', default: '#1a1a1a', description: 'Dialog text.' },
+          { name: '--modal-radius', type: 'length', default: '16px', description: 'Corner radius.' },
           { name: '--modal-shadow', type: 'shadow', default: 'soft drop shadow', description: 'Dialog shadow.' },
           {
             name: '--modal-width-md',
             type: 'length',
-            default: '480px',
+            default: '520px',
             description: (
               <>
                 Width of <code>size="md"</code>. Set it on a class of your own to give
@@ -44,6 +44,7 @@ export function ThemingPage() {
           {
             name: '--modal-min-width',
             type: 'length',
+            default: '300px',
             description: (
               <>
                 Floor for <code>size="auto"</code>, which otherwise fits its content.
@@ -53,7 +54,7 @@ export function ThemingPage() {
           {
             name: '--modal-backdrop-bg',
             type: 'color',
-            default: 'rgba(0,0,0,.5)',
+            default: 'rgba(0,0,0,.6)',
             description: 'Backdrop fill.',
           },
           {
