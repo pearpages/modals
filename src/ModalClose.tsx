@@ -32,14 +32,21 @@ export const ModalClose: React.FC<ModalCloseProps> = ({
     }
   };
   
-  const closeClasses = ['modalClose', className].filter(Boolean).join(' ');
+  // With no children we render the × glyph, which is what the fixed 32px
+  // icon look is for. A text label gets an ordinary button; a child of yours
+  // (asChild) keeps its own look entirely — a Modal.Button in a footer must not
+  // inherit the icon's size and be clipped to "ance" and "ublis".
+  const isIcon = children === undefined || children === null || children === false || children === '';
+  const closeClasses = ['modalClose', isIcon && 'modalClose--icon', className]
+    .filter(Boolean)
+    .join(' ');
 
   if (asChild) {
     // renderAsChild composes the child's own onClick with ours, and skips ours
     // if the child called preventDefault().
     return renderAsChild('Modal.Close', children, {
       onClick: handleClick,
-      className: closeClasses,
+      className,
       ...rest,
     });
   }
@@ -52,7 +59,7 @@ export const ModalClose: React.FC<ModalCloseProps> = ({
       aria-label="Close modal"
       {...rest}
     >
-      {children || '×'}
+      {isIcon ? '×' : children}
     </button>
   );
 };

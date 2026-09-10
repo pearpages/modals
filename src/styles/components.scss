@@ -240,7 +240,10 @@
   min-width: 0; /* Allow text to wrap properly */
 }
 
-.modalTitle {
+/* Scoped under .modal on purpose: with a custom container the modal renders
+   inside the host page, and a host rule like `.page h2 { margin: 48px 0 }`
+   would beat a single class. */
+.modal .modalTitle {
   margin: 0;
   font-size: var(--modal-font-size-title);
   font-weight: var(--modal-font-weight-title);
@@ -257,7 +260,7 @@
   }
 }
 
-.modalDescription {
+.modal .modalDescription {
   margin: 0;
   color: var(--modal-text-secondary);
   font-size: var(--modal-font-size-description);
@@ -438,38 +441,46 @@
   }
 }
 
+/* A close button with a text label: an ordinary, quiet button. */
 .modalClose {
   background: var(--modal-close-bg);
   border: none;
   cursor: pointer;
-  padding: var(--modal-spacing-sm);
+  padding: var(--modal-spacing-xs) var(--modal-spacing-sm);
   border-radius: var(--modal-radius-md);
   color: var(--modal-close-text);
+  font: inherit;
   transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  width: var(--modal-close-size);
-  height: var(--modal-close-size);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--modal-font-size-close);
-  line-height: 1;
+  white-space: nowrap;
   flex-shrink: 0;
 
-  /* Improved positioning in header */
-  .modalHeader & {
-    margin-top: -2px; /* Optical alignment with title */
-    margin-right: -4px; /* Account for visual weight */
-  }
+  /* The × glyph: a fixed square. Only Modal.Close with no children gets this. */
+  &--icon {
+    padding: var(--modal-spacing-sm);
+    width: var(--modal-close-size);
+    height: var(--modal-close-size);
+    font-size: var(--modal-font-size-close);
+    line-height: 1;
 
-  /* Mobile optimizations */
-  @media (max-width: #{tokens.$modal-breakpoint-mobile}) {
-    width: var(--modal-close-size-mobile);
-    height: var(--modal-close-size-mobile);
-    font-size: var(--modal-font-size-close-mobile);
-
+    /* Improved positioning in header */
     .modalHeader & {
-      margin-top: -1px;
-      margin-right: -2px;
+      margin-top: -2px; /* Optical alignment with title */
+      margin-right: -4px; /* Account for visual weight */
+    }
+
+    /* Mobile optimizations */
+    @media (max-width: #{tokens.$modal-breakpoint-mobile}) {
+      width: var(--modal-close-size-mobile);
+      height: var(--modal-close-size-mobile);
+      font-size: var(--modal-font-size-close-mobile);
+
+      .modalHeader & {
+        margin-top: -1px;
+        margin-right: -2px;
+      }
     }
   }
 

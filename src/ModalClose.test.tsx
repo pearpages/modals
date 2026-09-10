@@ -114,7 +114,8 @@ describe('ModalClose', () => {
 
     const closeElement = screen.getByTestId('custom-close');
     expect(closeElement.tagName).toBe('A');
-    expect(closeElement).toHaveClass('modalClose');
+    // asChild leaves the child's look alone; only the behaviour is attached.
+    expect(closeElement).not.toHaveClass('modalClose');
   });
 
   it('should merge className when using asChild', () => {
@@ -129,7 +130,9 @@ describe('ModalClose', () => {
     );
 
     const button = screen.getByTestId('close');
-    expect(button).toHaveClass('original-class', 'modalClose', 'extra-class');
+    // The child keeps its own look: no library class is added under asChild.
+    expect(button).toHaveClass('original-class', 'extra-class');
+    expect(button).not.toHaveClass('modalClose');
   });
 
   it('should attach click handler when using asChild', () => {
