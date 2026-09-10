@@ -272,6 +272,11 @@
 }
 
 .modalBody {
+  /* Only a tab stop while it scrolls (ModalBody sets tabindex then). */
+  &:focus-visible {
+    outline: var(--modal-outline-width) solid var(--modal-border-focus-color);
+    outline-offset: calc(-1 * var(--modal-outline-width));
+  }
   padding: var(--modal-spacing-lg) var(--modal-spacing-xl);
   overflow-y: auto;
   overflow-x: hidden; /* Prevent horizontal scroll */
