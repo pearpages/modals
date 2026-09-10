@@ -26,7 +26,7 @@ export type ComparisonTableProps = {
 export function ComparisonTable({ columns, rows, caption }: ComparisonTableProps) {
   const [first, ...rest] = columns
   return (
-    <div className="compare-wrap">
+    <div className="compare-wrap" tabIndex={0} role="region" aria-label={caption ?? 'Comparison'}>
       <table className="compare">
         {caption && <caption>{caption}</caption>}
         <thead>

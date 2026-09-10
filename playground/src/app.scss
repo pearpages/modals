@@ -51,7 +51,7 @@ $mono-stack: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberati
   --page-shadow: 0 8px 24px rgba(31, 35, 40, 0.12);
 
   --code-fg: #1f2328;
-  --code-comment: #6e7781;
+  --code-comment: #59636e; // 5.7:1 on the code surface; #6e7781 was 4.27
   --code-keyword: #cf222e;
   --code-string: #0a3069;
   --code-function: #8250df;
@@ -350,6 +350,15 @@ a {
   }
 }
 
+// ----------------------------------------------------------------- showcase
+
+// An h2 for heading order, sized like the page's h3 so a titled showcase
+// reads as a sub-section of the page rather than a peer of its chapters.
+.page .showcase__title {
+  font-size: 1.0625rem;
+  margin: 32px 0 8px;
+}
+
 // ----------------------------------------------------------------- code block
 
 .code {
@@ -559,7 +568,7 @@ a {
   width: 100%;
   // Six columns do not fit the 820px column; scroll inside .compare-wrap
   // rather than squeeze every cell to a word per line.
-  min-width: 960px;
+  min-width: 1100px;
   border-collapse: collapse;
   font-size: 0.8125rem;
   line-height: 1.45;

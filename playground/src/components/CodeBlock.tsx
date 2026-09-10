@@ -38,7 +38,8 @@ export function CodeBlock({ code, language = 'tsx', title, showCopy = true }: Co
       )}
       <Highlight theme={docsPrismTheme} code={source} language={language}>
         {({ tokens, getLineProps, getTokenProps }) => (
-          <pre className="code__pre">
+          // Wide code scrolls sideways; tabindex lets a keyboard reach it.
+          <pre className="code__pre" tabIndex={0}>
             {tokens.map((line, i) => (
               <div key={i} {...getLineProps({ line })}>
                 {line.map((token, key) => (

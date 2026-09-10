@@ -24,7 +24,9 @@ export function Showcase({ code, title, description, fileName, layout = 'row', c
 
   return (
     <section className="showcase">
-      {title && <h3 className="showcase__title">{title}</h3>}
+      {/* h2: pages open with h1 and a titled showcase is a section of its own,
+          so h3 here skipped a level (axe heading-order). */}
+      {title && <h2 className="showcase__title">{title}</h2>}
       {description && <p className="showcase__description">{description}</p>}
       <CodeBlock code={code} title={fileName} />
       <div className={demoClass}>{children}</div>

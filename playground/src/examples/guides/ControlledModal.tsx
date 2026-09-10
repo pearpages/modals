@@ -13,10 +13,17 @@ export default function ControlledModal() {
       <span>{open ? 'state: open' : 'state: closed'}</span>
       {confirmed && <span>confirmed</span>}
 
-      {/* You own the state. Escape and backdrop clicks call onOpenChange and
-          nothing else — until you flip `open`, the modal stays put. That is
-          what lets you refuse to close, here while the checkbox is unticked. */}
-      <Modal id="controlled" open={open} onOpenChange={setOpen}>
+      {/* You own the state. Escape, backdrop clicks and Modal.Close call
+          onOpenChange and nothing else — until you flip `open`, the modal
+          stays put. That is what lets you refuse: here, closing is declined
+          while the checkbox is unticked. */}
+      <Modal
+        id="controlled"
+        open={open}
+        onOpenChange={(next) => {
+          if (next || confirmed) setOpen(next)
+        }}
+      >
         <Modal.Content>
           <Modal.Header>
             <Modal.Title>Controlled modal</Modal.Title>
