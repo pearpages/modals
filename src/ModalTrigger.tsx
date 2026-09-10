@@ -45,6 +45,9 @@ export const ModalTrigger: React.FC<ModalTriggerProps> = ({
     onClick?.(event);
     if (event.defaultPrevented) return;
     event.preventDefault();
+    // Safari does not focus a button on click, so without this the provider
+    // would record <body> as the element to return focus to on close.
+    (event.currentTarget as HTMLElement | null)?.focus?.();
     handleOpenModal();
   }, [onClick, handleOpenModal]);
 

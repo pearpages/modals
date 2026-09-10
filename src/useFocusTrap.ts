@@ -49,30 +49,23 @@ export function useFocusTrap(
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key !== 'Tab') return;
 
+      // Always move focus ourselves rather than only at the ends of the list.
+      // Letting the browser handle the middle steps leaks in Safari, whose
+      // default Tab order skips buttons and links: from the last element it
+      // considers tabbable, focus left the dialog for <body>.
+      event.preventDefault();
+
       const focusableElements = getFocusableElements(container);
-      
-      if (focusableElements.length === 0) {
-        event.preventDefault();
-        return;
-      }
+      if (focusableElements.length === 0) return;
 
-      const firstFocusable = focusableElements[0];
-      const lastFocusable = focusableElements[focusableElements.length - 1];
       const activeElement = document.activeElement as HTMLElement;
-
-      if (event.shiftKey) {
-        // Shift + Tab: going backwards
-        if (activeElement === firstFocusable || !container.contains(activeElement)) {
-          event.preventDefault();
-          lastFocusable.focus();
-        }
-      } else {
-        // Tab: going forwards
-        if (activeElement === lastFocusable || !container.contains(activeElement)) {
-          event.preventDefault();
-          firstFocusable.focus();
-        }
-      }
+      const index = focusableElements.indexOf(activeElement);
+      const step = event.shiftKey ? -1 : 1;
+      const next =
+        index === -1
+          ? (event.shiftKey ? focusableElements.length - 1 : 0)
+          : (index + step + focusableElements.length) % focusableElements.length;
+      focusableElements[next].focus();
     };
 
     // Add event listener to document to catch all tab events
