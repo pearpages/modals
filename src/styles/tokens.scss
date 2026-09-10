@@ -94,9 +94,9 @@ $modal-breakpoint-small: 480px;
   --modal-button-focus-color: #007bff;
 
   /* Button Variants */
-  --modal-button-primary-bg: #007bff;
+  --modal-button-primary-bg: #0066cc;        /* 5.6:1 on white; #007bff was 3.97 */
   --modal-button-primary-color: #ffffff;
-  --modal-button-primary-border: #007bff;
+  --modal-button-primary-border: #0066cc;
   --modal-button-primary-hover-bg: #0056b3;
   --modal-button-primary-hover-border: #0056b3;
   --modal-button-primary-active-bg: #004085;
@@ -118,13 +118,13 @@ $modal-breakpoint-small: 480px;
   --modal-button-danger-active-bg: #a71e2a;
   --modal-button-danger-active-border: #a71e2a;
 
-  --modal-button-success-bg: #28a745;
+  --modal-button-success-bg: #1e7e34;        /* 5.1:1 on white; #28a745 was 3.1 */
   --modal-button-success-color: #ffffff;
-  --modal-button-success-border: #28a745;
-  --modal-button-success-hover-bg: #218838;
-  --modal-button-success-hover-border: #218838;
-  --modal-button-success-active-bg: #1e7e34;
-  --modal-button-success-active-border: #1e7e34;
+  --modal-button-success-border: #1e7e34;
+  --modal-button-success-hover-bg: #196c2d;
+  --modal-button-success-hover-border: #196c2d;
+  --modal-button-success-active-bg: #155724;
+  --modal-button-success-active-border: #155724;
 
   --modal-button-warning-bg: #ffc107;
   --modal-button-warning-color: #000000;
@@ -221,12 +221,12 @@ $modal-breakpoint-small: 480px;
     --modal-button-focus-color: #60a5fa;
 
     /* Dark mode button variants - adjusted for better contrast */
-    --modal-button-primary-bg: #3b82f6;
-    --modal-button-primary-hover-bg: #2563eb;
-    --modal-button-primary-active-bg: #1d4ed8;
-    --modal-button-primary-border: #3b82f6;
-    --modal-button-primary-hover-border: #2563eb;
-    --modal-button-primary-active-border: #1d4ed8;
+    --modal-button-primary-bg: #2563eb;      /* 4.9:1 on white; #3b82f6 was 3.7 */
+    --modal-button-primary-hover-bg: #1d4ed8;
+    --modal-button-primary-active-bg: #1e40af;
+    --modal-button-primary-border: #2563eb;
+    --modal-button-primary-hover-border: #1d4ed8;
+    --modal-button-primary-active-border: #1e40af;
 
     --modal-button-secondary-bg: #6b7280;
     --modal-button-secondary-hover-bg: #4b5563;
@@ -235,19 +235,19 @@ $modal-breakpoint-small: 480px;
     --modal-button-secondary-hover-border: #4b5563;
     --modal-button-secondary-active-border: #374151;
 
-    --modal-button-danger-bg: #ef4444;
-    --modal-button-danger-hover-bg: #dc2626;
-    --modal-button-danger-active-bg: #b91c1c;
-    --modal-button-danger-border: #ef4444;
-    --modal-button-danger-hover-border: #dc2626;
-    --modal-button-danger-active-border: #b91c1c;
+    --modal-button-danger-bg: #dc2626;       /* 4.8:1 on white; #ef4444 was 3.8 */
+    --modal-button-danger-hover-bg: #b91c1c;
+    --modal-button-danger-active-bg: #991b1b;
+    --modal-button-danger-border: #dc2626;
+    --modal-button-danger-hover-border: #b91c1c;
+    --modal-button-danger-active-border: #991b1b;
 
-    --modal-button-success-bg: #22c55e;
-    --modal-button-success-hover-bg: #16a34a;
-    --modal-button-success-active-bg: #15803d;
-    --modal-button-success-border: #22c55e;
-    --modal-button-success-hover-border: #16a34a;
-    --modal-button-success-active-border: #15803d;
+    --modal-button-success-bg: #15803d;      /* 5.0:1 on white; #22c55e was 2.3 */
+    --modal-button-success-hover-bg: #166534;
+    --modal-button-success-active-bg: #14532d;
+    --modal-button-success-border: #15803d;
+    --modal-button-success-hover-border: #166534;
+    --modal-button-success-active-border: #14532d;
 
     --modal-button-warning-bg: #eab308;
     --modal-button-warning-color: #000000;
