@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react'
 
 import { Overview } from './pages/Overview'
+import { Why } from './pages/Why'
 import { Setup } from './pages/Setup'
 import { QuickStart } from './pages/QuickStart'
 
@@ -50,6 +51,7 @@ export const SECTIONS: DocSection[] = [
     label: 'Getting started',
     routes: [
       { path: '/', title: 'Overview', element: <Overview /> },
+      { path: '/why', title: 'Why this library', element: <Why /> },
       { path: '/setup', title: 'Setup', element: <Setup /> },
       { path: '/quick-start', title: 'Your first modal', element: <QuickStart /> },
     ],

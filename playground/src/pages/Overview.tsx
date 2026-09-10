@@ -60,6 +60,10 @@ export function Overview() {
           <code>react-dom</code> are peers.
         </li>
       </ul>
+      <p>
+        The reasoning behind these choices, and how they compare with other modal libraries,
+        is on <Link to="/why">Why this library</Link>.
+      </p>
 
       <h2>Install</h2>
       <CodeBlock language="bash" code="npm install @pearpages/modals" title="terminal" />
@@ -109,6 +113,9 @@ createRoot(document.getElementById('root')!).render(
         </li>
         <li>
           <Link to="/components/modal">Components</Link> — every prop of every part.
+        </li>
+        <li>
+          <Link to="/why">Why this library</Link> — the ideas behind it, and a comparison.
         </li>
       </ul>
     </Page>

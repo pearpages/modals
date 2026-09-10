@@ -77,6 +77,23 @@ regression tests; the rest were documentation claims the code contradicted.
   need `useModalAria`.
 - Warnings are unconditional (no `NODE_ENV` gate); docs no longer say "development".
 
+### Philosophy page and library comparison
+- New route `/why` ("Why this library", `playground/src/pages/Why.tsx`) under Getting
+  started: five ideas (id-addressed, parts under one contract, styled-by-default with
+  variables, controlled-when-you-say-so, accessible and small), a "What it is not" list,
+  and a comparison table against Radix, Headless UI, React Aria Components, Ariakit,
+  react-modal, MUI, Chakra and Mantine. Overview links to it; README carries a condensed
+  `## Philosophy` and the same table under `## Compared with`.
+- **The table exists twice** — `Why.tsx` and `README.md` — and must be edited together.
+  Its last column, "Pick it when", says when the *other* library is the better choice;
+  the concessions (including the one in our own row) are deliberate — keep them.
+  Facts were checked against each library's docs and bundlephobia in September 2026;
+  our size is `gzip -c dist/index.js | wc -c` (7.1 kB) and `dist/index.css` (4.0 kB).
+  Refresh the numbers and the dating sentence together when they change.
+- `playground/src/components/ComparisonTable.tsx` is a generic columns-as-data table
+  (`PropsTable` has fixed columns). Styles are `.compare` / `.compare-wrap` in
+  `app.scss`, copying `.props`'s ≤640px stacked fallback driven by `data-label`.
+
 #### State: 219 library tests, lint clean, tsc clean, docs smoke test green.
 Version 0.2.0, still unreleased; the README migration notes cover all of the above.
 

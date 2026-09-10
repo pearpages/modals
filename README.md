@@ -66,11 +66,39 @@ The stylesheet is a separate entry point and is **not** pulled in by the JavaScr
 - **Responsive** — fullscreen on phones, with safe-area handling in the footer.
 - **Small** — no runtime dependencies; `react` and `react-dom` are peers.
 
+## Philosophy
+
+Headless primitives hand you correct behaviour and no appearance, so every project writes the same hundred lines of CSS. UI kits hand you appearance plus a theme runtime, a provider and a design language. This library sits between them, and changes one thing about how modals are addressed. The long version is at [modals.pearpages.com/why](https://modals.pearpages.com/why).
+
+1. **A modal is addressed by id, not by where it sits in the tree.** `Modal` registers with the provider under its `id`; any `Modal.Trigger target` or `useModalStack().open(id)` inside the provider opens it, with no shared subtree and no lifted state. Because one provider owns one registry, stacking is not bolted on: z-index, which modal answers Escape, whose backdrop is live, and when scroll unlocks all fall out of it.
+2. **Parts you arrange, under one contract.** Nine `Modal.*` parts, every one takes `asChild`, and one prop rule everywhere: attributes are yours, `on*` handlers compose, `preventDefault()` cancels ours.
+3. **Styled by default, restyled through variables.** A real design with 166 custom properties and a `prefers-color-scheme` dark mode. No theme provider, no CSS-in-JS; plain class names because the dialog is portalled out of your tree and scoped styles do not follow it.
+4. **Controlled when you say so.** `open` makes the modal controlled, and from then on every path — trigger, hook, close button, Escape, backdrop — asks through `onOpenChange`. Without it the provider owns the state and still notifies you. Same rule as a React input, applied to every path.
+5. **Accessible by construction, and small.** `role="dialog"`, ARIA wiring from `Modal.Title` and `Modal.Description`, focus trap and return, Escape to the topmost only, with no props. 7.1 kB gzipped plus 4 kB of CSS.
+
+What it is not: a design system (there is `Modal.Button`, nothing more), headless, a promise-style `openConfirm()` manager, or a home for non-modal dialogs, popovers and drawers. Content unmounts on close; there is no `keepMounted`.
+
+## Compared with
+
+| Library | Styling | Open state | Opening from elsewhere, stacking | Ships as | Pick it when |
+|---|---|---|---|---|---|
+| **@pearpages/modals** | Styled by a stylesheet, restyled through CSS variables. No provider, no runtime. | Uncontrolled by default; `open` makes it controlled and every path then asks through `onOpenChange`. | Any `Modal.Trigger` or `useModalStack().open(id)` under the provider, by id. The provider owns the stack. | Standalone. No runtime dependencies. 7.1 kB gzipped, plus 4 kB of CSS. | You want a modal that looks finished out of the box, restyled with variables, opened by id from anywhere, and nothing else from a kit. Not the pick if you need headless control, non-modal dialogs, or a promise-style manager. |
+| Radix Dialog | Unstyled. `data-state` for animation. | `defaultOpen`, or `open` + `onOpenChange`. | The trigger lives inside its `Root`, or you lift state. Nesting supported. | Primitive package with 15 dependencies (focus scope, scroll removal, …). 12.6 kB gzipped. | You write every style yourself anyway (Tailwind, your own design system), or you use shadcn/ui. The most battle-tested primitive with the largest ecosystem; better than this library for full control of markup and CSS. |
+| Headless UI Dialog | Unstyled. `data-closed` / `data-enter` / `data-leave` with the `transition` prop. | Controlled only: `open` and `onClose` are required. | You own the state. Nesting is not documented. | Part of `@headlessui/react` (react-aria, floating-ui, tanstack-virtual). 63 kB gzipped for the whole package. | You are on Tailwind and want dialogs, menus and listboxes from one package maintained by Tailwind Labs. Better when the project needs more than modals; controlled-only is a feature there, not a gap. |
+| React Aria Components | Unstyled. `className` and `style` take render functions; `data-entering` / `data-exiting` for animation. | `defaultOpen`, or `isOpen` + `onOpenChange`. | `DialogTrigger` wraps the trigger and the overlay, or you lift state. Backdrop dismissal is off unless `isDismissable`. | Part of `react-aria-components`. | Accessibility rigour beyond the basics: internationalization, screen-reader and touch edge cases, and a full component set built the same way. Better when that depth matters more than bundle size. |
+| Ariakit Dialog | Unstyled. `data-enter` / `data-leave`, a `backdrop` prop. | `open` + `onClose`, or a `useDialogStore` you can share. | `DialogDisclosure`, or pass the store around. Nesting supported. | Part of `@ariakit/react`. 63.5 kB gzipped for the whole package. | You want a store you can share across the tree, non-modal dialogs, or the rest of Ariakit's headless set. Better than this library for non-modal use and for state you own outside React props. |
+| react-modal | Inline default styles, or your own classes via `className`, `overlayClassName` and `style`. | Controlled only: `isOpen` + `onRequestClose`. | You own the state. Stacking is not documented. Needs `appElement`. | One component with 4 dependencies (prop-types, …). 7.5 kB gzipped. | A codebase already on it, or the smallest single-component dependency with no compound API. Not a pick for new projects: `prop-types`, no stacking, and a single-element API. |
+| MUI Dialog | Emotion CSS-in-JS, the `sx` prop and the theme. | Controlled only: `open` + `onClose`. | You own the state. | Part of `@mui/material`, with `@emotion`. | The rest of the app is Material UI. Better there because it inherits the theme and transitions; do not install MUI for a modal. |
+| Chakra UI Dialog | Theme recipes and style props. `Provider` required. | `defaultOpen`, `open` + `onOpenChange`, or a `useDialog` store. | `Dialog.Trigger` inside `Root`, or the store through `RootProvider`. Built on Ark UI. | Part of `@chakra-ui/react`. | The rest of the app is Chakra. Its dialog has more built-in variants than this one — sizes, placement, motion presets — and shares the kit's z-index system. |
+| Mantine Modal | CSS modules, the Styles API and CSS variables. `MantineProvider` required. | Controlled only: `opened` + `onClose`. | `Modal.Stack` with `useModalsStack`: open and close by a registered id. | Part of `@mantine/core`. | The rest of the app is Mantine, or you want `keepMounted` and a modals manager. Its `useModalsStack` is the closest thing to this library's id model, with a full kit behind it. |
+
+The last column says when the other library is the better choice, and it is meant honestly: every one of these beats this library at something. shadcn/ui's dialog is Radix underneath, so the Radix row covers it. Sizes are minified and gzipped as reported by bundlephobia for each package's current release, and by `gzip -c dist/index.js` for this one, measured in September 2026. Kits are listed without a size because a modal is a small part of what you install.
+
 ## Documentation
 
 Everything is at **[modals.pearpages.com](https://modals.pearpages.com)**, where every example shows its source and the working modal it produces:
 
-- [Setup](https://modals.pearpages.com/setup) · [Your first modal](https://modals.pearpages.com/quick-start)
+- [Why this library](https://modals.pearpages.com/why) · [Setup](https://modals.pearpages.com/setup) · [Your first modal](https://modals.pearpages.com/quick-start)
 - [Components](https://modals.pearpages.com/components/modal) — every prop of every part
 - [useModalStack](https://modals.pearpages.com/hooks/use-modal-stack) — opening modals from code
 - Guides: [controlled](https://modals.pearpages.com/guides/controlled), [stacking](https://modals.pearpages.com/guides/stacking), [dismissal](https://modals.pearpages.com/guides/dismiss), [accessibility](https://modals.pearpages.com/guides/accessibility), [theming](https://modals.pearpages.com/guides/theming), [forms & async](https://modals.pearpages.com/guides/forms-and-async)

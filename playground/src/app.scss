@@ -547,6 +547,108 @@ a {
   }
 }
 
+// ---------------------------------------------------------- comparison table
+
+.compare-wrap {
+  // Wide tables scroll inside their box instead of widening the page.
+  overflow-x: auto;
+  margin: 0 0 16px;
+}
+
+.compare {
+  width: 100%;
+  // Six columns do not fit the 820px column; scroll inside .compare-wrap
+  // rather than squeeze every cell to a word per line.
+  min-width: 960px;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+
+  caption {
+    text-align: left;
+    color: var(--page-muted);
+    font-size: 0.8125rem;
+    margin-bottom: 8px;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--page-border);
+    vertical-align: top;
+  }
+
+  thead th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--page-muted);
+    font-weight: 600;
+  }
+
+  &__name {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  &__row--self th,
+  &__row--self td {
+    background: var(--page-surface);
+  }
+
+  code {
+    white-space: nowrap;
+  }
+
+  // Same phone fallback as .props: rows become stacked definitions.
+  @media (max-width: 640px) {
+    &,
+    & tbody,
+    & tr,
+    & th,
+    & td {
+      display: block;
+      width: 100%;
+      min-width: 0;
+    }
+
+    thead {
+      display: none;
+    }
+
+    tr {
+      border-bottom: 1px solid var(--page-border);
+      padding: 10px 0;
+    }
+
+    &__row--self {
+      background: var(--page-surface);
+    }
+
+    th,
+    td {
+      border: none;
+      padding: 2px 0;
+
+      &::before {
+        content: attr(data-label) ': ';
+        color: var(--page-muted);
+        font-size: 0.75rem;
+        font-weight: 400;
+      }
+    }
+
+    &__name {
+      white-space: normal;
+
+      &::before {
+        content: none !important;
+      }
+    }
+  }
+}
+
 // ------------------------------------------------------------------ callout
 
 .callout {
