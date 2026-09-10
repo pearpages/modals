@@ -39,7 +39,41 @@ React modal library with compound component pattern, accessibility features, and
 - Removed CSS namespace wrapper that prevented portal-rendered modal styles from applying
 - Session notes are the dated sections below (newest first)
 
-## Latest Session Progress (September 2026 - Session 5)
+## Latest Session Progress (September 2026 - Session 6): release 0.2.0
+
+### Why 0.1.1 never reached npm
+`v0.1.1` was tagged and its "Publish to npm" run reported success, but npm only had
+`0.1.0`. The run took 7 s: the tag was pushed six minutes *before* the commit landed on
+`main`, so the ancestor guard in `publish.yml` set `is_main_branch=false` and every
+step was skipped. The job is green either way. **Release order is therefore: push
+`main`, wait for the deploy run, then push the tag.** The README "Releasing" section
+now says so. 0.2.0 is the first release after 0.1.0.
+
+### npm trusted publishing
+`publish.yml` no longer uses `NODE_AUTH_TOKEN` (the `NPM_TOKEN` secret from October
+2025 was expired anyway). It runs Node 22 (matching `.nvmrc`), installs `npm@^11`
+(trusted publishing needs >= 11.5.1), and `npm publish --access public` authenticates
+through the Trusted Publisher registered on npmjs.com for `pearpages/modals` +
+`publish.yml`. `setup-node` deliberately has no `registry-url`: it would write an
+`_authToken=${NODE_AUTH_TOKEN}` line that shadows OIDC. `workflow_dispatch` was added
+so a failed publish is re-run with `gh workflow run publish.yml --ref vX.Y.Z`, no
+re-tag. `deploy.yml` still runs Node 20 and both lockfiles still coexist; that was
+left as commit `3b712ee` left it.
+
+### Release checklist that was followed
+1. All gates locally on the branch: lint, `test:run`, build, `check:package`,
+   playground build, `test:playground`, `e2e -w playground`, `npm pack --dry-run`.
+2. Fast-forward `main`, push, watch "Deploy to GitHub Pages".
+3. Tag `v0.2.0`, push, watch "Publish to npm" (must run all steps, not 7 s).
+4. `gh release create v0.2.0` with the README migration notes.
+
+### Pending
+- [ ] Delete the unused `NPM_TOKEN` repo secret once 0.2.0 is on npm:
+      `gh secret delete NPM_TOKEN`.
+- [ ] Decide whether `deploy.yml` moves to Node 22 and whether `pnpm-lock.yaml`
+      stays alongside `package-lock.json` (CI is npm-only).
+
+## Session 5 Progress (September 2026 - Session 5)
 
 ### API consistency audit
 Compared `specs.md`, `src/types.ts`, `src/index.ts` and the docs site against the
@@ -244,16 +278,14 @@ documents. Nine commits on `big-refactor`, each green.
 #### State: 211 library tests + 28 docs tests, lint clean, tsc clean, publint +
 attw green. Version 0.2.0, unreleased.
 
-### Pending
-- [ ] Merge `big-refactor` into `main` (deploy runs on `main`).
-- [ ] **Manual, yours:** configure npm trusted publishing (OIDC) on npmjs.com
-      for `pearpages/modals` + `publish.yml`, then drop `NODE_AUTH_TOKEN` from
-      the workflow — there is a TODO marking the spot. Cannot be dry-run.
-- [ ] After first deploy, confirm `curl -I https://modals.pearpages.com/guides/stacking`
-      returns 404 + `text/html` and the page renders. That status is expected:
-      GitHub Pages serves the SPA fallback with 404.
-- [ ] The docs site was verified by build, types, lint and a headless render of
-      every route — not visually in a browser.
+### Pending (closed in Session 6)
+- [x] Merge `big-refactor` into `main` — fast-forwarded in Session 6.
+- [x] npm trusted publishing (OIDC) — `publish.yml` switched in Session 6; the
+      Trusted Publisher is configured on npmjs.com.
+- [x] `curl -I https://modals.pearpages.com/guides/stacking` returns 404 +
+      `text/html` and the page renders (the SPA fallback; expected).
+- [ ] The docs site was verified by build, types, lint, a headless render of every
+      route and the Playwright suite — plus a browser spot-check in Session 6.
 
 ## Latest Session Progress (September 2025 - Session 2)
 

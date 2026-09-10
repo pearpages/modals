@@ -169,11 +169,18 @@ The playground is both the dev sandbox and the deployed site. `npm run playgroun
 The version lives in `package.json`; the tag does not set it.
 
 ```bash
-npm version <patch|minor|major>
-git push --follow-tags
+npm version <patch|minor|major>   # commits and creates the vX.Y.Z tag
+git push origin main               # 1. deploys the site; wait for the run to go green
+git push origin vX.Y.Z             # 2. only then: publishes to npm
 ```
 
-Pushing to `main` deploys the site and never touches npm. Pushing a `v*` tag publishes to npm, provided the tagged commit is an ancestor of `main` — if it is not, the workflow skips with a warning rather than failing, so check that it actually ran.
+Two pushes, in that order. The publish workflow only runs when the tagged commit is already an ancestor of `origin/main`; if the tag arrives first it skips every step with a warning and still reports success. That is how `v0.1.1` was tagged but never reached npm, so check that the run actually built something.
+
+Pushing to `main` deploys the site and never touches npm. Publishing authenticates through npm [trusted publishing](https://docs.npmjs.com/trusted-publishers): this repository and `publish.yml` are registered as a Trusted Publisher for the package on npmjs.com, so there is no token to rotate and provenance is attached automatically. A failed publish can be re-run for the same tag without re-tagging:
+
+```bash
+gh workflow run publish.yml --ref vX.Y.Z
+```
 
 ## License
 
