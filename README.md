@@ -56,14 +56,15 @@ function App() {
 
 The stylesheet is a separate entry point and is **not** pulled in by the JavaScript bundle — import it once, yourself.
 
-## What you get
+## What that means
 
-- **Accessible by construction** — `role="dialog"`, focus trapping and return, and ARIA wiring generated from `Modal.Title` and `Modal.Description`.
-- **Composable** — `Modal.Content`, `Modal.Header`, `Modal.Body`, `Modal.Footer` and the rest are pieces you arrange, not a fixed template. Every one takes `asChild`.
-- **Stackable** — modals nest, and only the topmost owns the backdrop and the Escape key.
+- **Composable** — a dialog is assembled from parts you arrange (`Modal.Content`, `Modal.Header`, `Modal.Title`, `Modal.Body`, `Modal.Footer`) rather than configured through props on one component. Every part takes [`asChild`](https://modals.pearpages.com/guides/as-child), so any of them can become an element of yours.
+- **Portal rendered** — in the DOM the dialog is moved to `document.body`, wherever you wrote it in your JSX. That is what stops it being clipped by an ancestor's `overflow: hidden`, or buried under other content by an ancestor's `transform` or `z-index`. It stays where you wrote it in the *React* tree, so context, state and event bubbling are unaffected. [More](https://modals.pearpages.com/guides/portal-container)
+- **Focus trapped** — while a modal is open the keyboard cannot leave it: focus moves in on open, Tab and Shift+Tab cycle within it instead of reaching the page behind, and focus returns to whatever had it when the modal closes. Together with `role="dialog"` and ARIA wiring generated from `Modal.Title` and `Modal.Description`, that is most of what makes it [accessible](https://modals.pearpages.com/guides/accessibility).
+- **Stackable** — several modals can be open at once, forming an ordered stack. Only the topmost has an interactive backdrop and answers Escape, and page scroll stays locked until the last one closes — so a confirmation on top of a form needs no `z-index` bookkeeping. [More](https://modals.pearpages.com/guides/stacking)
+- **Styled through CSS variables** — every visual choice is a custom property, 166 of them. Restyling means setting a variable, not writing more specific selectors or reaching for `!important`. No CSS-in-JS runtime, no theme provider. [More](https://modals.pearpages.com/guides/theming)
 - **Responsive** — fullscreen on phones, with safe-area handling in the footer.
-- **Yours to style** — CSS custom properties, no CSS-in-JS and no theme provider.
-- **Small** — one peer dependency: React 19.
+- **Small** — no runtime dependencies; `react` and `react-dom` are peers.
 
 ## Documentation
 

@@ -260,16 +260,23 @@ We plan to migrate the core library to BEM kebab-case naming in a future major v
   color: var(--modal-color);
   border-radius: var(--modal-radius);
   box-shadow: var(--modal-shadow);
-  width: var(--modal-width, auto);
   max-width: 100%;
   transition: opacity 0.2s ease;
 
+  // Each size reads its own token directly. There is deliberately no
+  // `--modal-width` indirection: a consumer overrides the token for the size
+  // they are using, on a class that lands on the same element.
+  &--auto {
+    width: auto;
+    min-width: var(--modal-min-width);
+  }
+
   &--md {
-    --modal-width: var(--modal-width-md);
+    width: var(--modal-width-md);
   }
 
   &--full {
-    --modal-width: var(--modal-width-full);
+    width: var(--modal-width-full);
     height: 100vh;
   }
 

@@ -45,15 +45,22 @@ export function SizesPage() {
 
       <h2>A width of your own</h2>
       <p>
-        The size prop sets a custom property, so overriding it is a one-liner and does
-        not need a more specific selector:
+        Each size reads its width from a custom property, so overriding one is a
+        one-liner that needs no extra specificity:
       </p>
       <CodeBlock
         language="css"
         code={`.wide-modal {
-  --modal-width: 720px;
+  --modal-width-md: 720px;
 }`}
       />
+      <p>
+        Override the property for the size you are using — <code>--modal-width-md</code>{' '}
+        here, since <code>md</code> is the default. Your class and{' '}
+        <code>.modal--md</code> end up on the same element, and{' '}
+        <code>.modal--md</code> is <code>width: var(--modal-width-md)</code>, so it
+        resolves against the value you set.
+      </p>
       <CodeBlock code={`<Modal.Content className="wide-modal">{/* ... */}</Modal.Content>`} />
       <p>
         More in <Link to="/guides/theming">Theming</Link>.

@@ -18,8 +18,38 @@ export function ThemingPage() {
           { name: '--modal-color', type: 'color', default: '#111', description: 'Dialog text.' },
           { name: '--modal-radius', type: 'length', default: '12px', description: 'Corner radius.' },
           { name: '--modal-shadow', type: 'shadow', default: 'soft drop shadow', description: 'Dialog shadow.' },
-          { name: '--modal-width-md', type: 'length', default: '480px', description: 'Width of size="md".' },
-          { name: '--modal-width', type: 'length', description: 'Overrides the width for one modal.' },
+          {
+            name: '--modal-width-md',
+            type: 'length',
+            default: '480px',
+            description: (
+              <>
+                Width of <code>size="md"</code>. Set it on a class of your own to give
+                one dialog its own width — your class and <code>.modal--md</code> land
+                on the same element, so the <code>width</code> declaration reads your
+                value.
+              </>
+            ),
+          },
+          {
+            name: '--modal-width-full',
+            type: 'length',
+            default: '100vw',
+            description: (
+              <>
+                Width of <code>size="full"</code>.
+              </>
+            ),
+          },
+          {
+            name: '--modal-min-width',
+            type: 'length',
+            description: (
+              <>
+                Floor for <code>size="auto"</code>, which otherwise fits its content.
+              </>
+            ),
+          },
           {
             name: '--modal-backdrop-bg',
             type: 'color',
