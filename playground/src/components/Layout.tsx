@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { ModalSystem } from '@pearpages/modals'
+import { Credit } from '@pearpages/credit/react'
 import { SECTIONS } from '../routes'
 import { Nav } from './Nav'
 import { AppearanceSwitcher } from './AppearanceSwitcher'
@@ -63,10 +64,9 @@ export function Layout() {
             <a href="https://github.com/pearpages/modals">GitHub</a>
             <a href="https://www.npmjs.com/package/@pearpages/modals">npm</a>
           </div>
-          <a className="sk-author" href="https://pearpages.com">
-            <img src="/pearpages-icon.png" alt="" />
-            built by pearpages
-          </a>
+          {/* as="div": we are already inside a <footer>; nesting another is
+              invalid HTML and adds a second contentinfo landmark. */}
+          <Credit as="div" />
         </footer>
       </div>
     </ModalSystem>

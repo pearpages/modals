@@ -591,6 +591,11 @@ a {
 // ------------------------------------------------------------------- footer
 
 .footer {
+  // The only two knobs @pearpages/credit exposes. Its #667 fallback fails AA on
+  // a dark ground, so map them to page tokens that already swap with the theme.
+  --sk-ink-soft: var(--page-muted);
+  --sk-accent: var(--page-accent);
+
   border-top: 1px solid var(--page-border);
   padding: 24px;
   text-align: center;
@@ -603,19 +608,11 @@ a {
     justify-content: center;
     margin-bottom: 8px;
   }
-}
 
-.sk-author {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--page-muted);
-  text-decoration: none;
-  font-size: 0.8125rem;
-
-  img {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
+  // The credit's own look comes from its package stylesheet and is not touched
+  // here — except its padding, which is meant for a standalone band and would
+  // double the 24px .footer already has.
+  .sk-author {
+    padding: 0;
   }
 }

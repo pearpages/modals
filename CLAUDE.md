@@ -38,7 +38,24 @@ React modal library with compound component pattern, accessibility features, and
 - Removed CSS namespace wrapper that prevented portal-rendered modal styles from applying
 - See `logs/` directory for detailed session notes
 
-## Latest Session Progress (September 2025 - Session 3)
+## Latest Session Progress (September 2026 - Session 4)
+
+### Docs footer uses `@pearpages/credit`
+- The hand-rolled "built by pearpages" link, its local `.sk-author` rule and
+  `playground/public/pearpages-icon.png` are gone. The footer renders
+  `<Credit as="div" />` from `@pearpages/credit/react` (a `playground`
+  dependency); `credit.css` is imported in `playground/src/main.tsx`. The pear
+  ships inside that CSS as a data URI, so there is no asset to serve.
+- **`as="div"` is required**: the credit sits inside our `<footer>`, and the
+  default `footer` would nest landmarks. `__smoke.test.tsx` asserts exactly one
+  `contentinfo` containing the `pearpages` link.
+- `.footer` maps the package's two tokens to page tokens (`--sk-ink-soft` →
+  `--page-muted`, `--sk-accent` → `--page-accent`) so dark mode passes AA; the
+  package's `#667` fallback does not on dark. The only style override is
+  `padding: 0` on `.footer .sk-author` (`.footer` already pads 24px). Do not
+  restyle the credit beyond that — its look is meant to match every pearpages site.
+
+## Session 3 Progress (September 2025)
 
 ### Session Complete: docs site + 0.2.0 API cleanup
 

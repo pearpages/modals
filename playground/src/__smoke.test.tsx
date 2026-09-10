@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { render, screen, fireEvent, act } from '@testing-library/react'
+import { render, screen, fireEvent, act, within } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { NotFound } from './pages/NotFound'
@@ -37,6 +37,15 @@ describe('docs site', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Open' }))
     })
     expect(await screen.findByRole('dialog')).toBeTruthy()
+  })
+
+  // Credit must render as="div": a nested <footer> would add a second landmark.
+  it('renders the pearpages credit inside the single footer landmark', () => {
+    renderAt('/')
+    const footers = screen.getAllByRole('contentinfo')
+    expect(footers).toHaveLength(1)
+    const credit = within(footers[0]).getByRole('link', { name: 'pearpages' })
+    expect(credit.getAttribute('href')).toBe('https://pearpages.com')
   })
 
   it('falls back to NotFound for unknown paths', () => {

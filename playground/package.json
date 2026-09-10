@@ -10,11 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@pearpages/credit": "^0.2.0",
+    "@pearpages/modals": "file:../",
+    "prism-react-renderer": "^2.4.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router-dom": "^7.8.2",
-    "prism-react-renderer": "^2.4.1",
-    "@pearpages/modals": "file:../"
+    "react-router-dom": "^7.8.2"
   },
   "devDependencies": {
     "@types/node": "^24.3.1",
