@@ -56,6 +56,15 @@ jobs:
       # broken exports map or a page that throws fails here, not after deploy.
       - name: Test the playground against the built package
         run: npm run test:playground
+
+      # Real browsers against the built site: focus trap, inert page, scroll
+      # lock, stacking, controlled dismissal, phone layout, and an axe scan of
+      # every route. See playground/e2e.
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium webkit
+
+      - name: Browser tests
+        run: npm run e2e -w playground
       
       - name: Setup Pages
         uses: actions/configure-pages@v5

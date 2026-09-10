@@ -23,3 +23,8 @@ playground/node_modules
 # Tests / coverage
 coverage
 .vitest
+
+# Playwright
+playground/e2e/shots
+playground/test-results
+playground/playwright-report

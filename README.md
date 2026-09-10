@@ -125,6 +125,11 @@ Everything is at **[modals.pearpages.com](https://modals.pearpages.com)**, where
 - **Controlled means `open` is present, and every path respects it.** Previously `useModalStack().open/close` and `Modal.Trigger` wrote to the provider even on a controlled modal, while a modal that passed `onOpenChange` without `open` was treated as controlled by Escape and could never close. Now a modal with an `open` prop is only ever asked through `onOpenChange` — by `Modal.Trigger`, `useModalStack`, `Modal.Close`, Escape and backdrop clicks alike — and a modal without one closes directly and is notified.
 - **`Modal.Trigger` composes `onClick` on its own button too.** Passing `onClick` to a plain `Modal.Trigger` used to replace the trigger's handler, so the modal never opened. Handlers now compose in both render paths, and `preventDefault()` cancels the open.
 - **`Modal.Content` merges `style`.** An inline `style` used to replace the dialog's own inline z-index.
+- **The focus trap moves focus itself on every Tab.** It used to intervene only at the ends of the list and let the browser handle the middle, which leaked in Safari: its default Tab order skips buttons and links, so focus left the dialog. `Modal.Trigger` also focuses itself before opening, because Safari does not focus a clicked button and focus could not return to it.
+- **The page outside an open modal is `inert` and `aria-hidden`.** See above.
+- **`Modal.Body` becomes a tab stop while it scrolls**, so keyboard users can scroll it. It carries no `tabindex` otherwise.
+- **`Modal.Close asChild` no longer adds the `modalClose` class to your element.** It carried the × icon button's fixed 32px size, so a `Modal.Button` wrapped in `Modal.Close asChild` — the pattern in the quick start above — had its label clipped. The child now keeps its own look and only gains the behaviour. A `Modal.Close` with a text label renders an ordinary quiet button; the square icon look is the `modalClose--icon` modifier, applied only when you render `<Modal.Close />` with no children.
+- **Button colours meet WCAG AA.** `primary` is now `#0066cc` (was `#007bff`, 3.97:1 with white text) and `success` is `#1e7e34` (was `#28a745`, 3.1:1); the dark-mode `primary`, `danger` and `success` values changed for the same reason. Override the `--modal-button-*` tokens if you want the old colours back.
 
 **Removed**
 
@@ -149,9 +154,13 @@ npm run playground        # docs site against src/, with HMR
 npm run playground:dist   # docs site against the built package
 npm run test:run          # library suite
 npm run test:playground   # renders every docs route against dist/ (build first)
+npm run e2e -w playground        # Playwright: real-browser behaviour + axe, against the built site
+npm run e2e:shots -w playground  # writes review screenshots to playground/e2e/shots (git-ignored)
 npm run lint
 npm run build
 ```
+
+The browser tests need the site built (`npm run build && npm run build -w playground`) and, once, `npx playwright install chromium webkit`.
 
 The playground is both the dev sandbox and the deployed site. `npm run playground` aliases `@pearpages/modals` to `../src`; any other mode resolves it through the package's own `exports` map into `../dist` — what an npm consumer gets. CI always builds the dist mode, so the deployed site doubles as proof that the published package resolves.
 

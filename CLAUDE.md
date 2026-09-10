@@ -12,6 +12,7 @@ React modal library with compound component pattern, accessibility features, and
 - `npm run lint` - eslint over src/ and playground/src/
 - `npm run playground` - Docs site against src/, with HMR
 - `npm run playground:dist` - Docs site against the built package
+- `npm run e2e -w playground` - Playwright against the built site (build both first); `npm run e2e:shots -w playground` writes review screenshots to `playground/e2e/shots/`
 
 ## Architecture Notes
 - **CSS**: Direct class targeting (`.modalBackdrop`, `.modal`, etc.) - no namespace wrapper due to portal rendering incompatibility
@@ -102,7 +103,59 @@ regression tests; the rest were documentation claims the code contradicted.
   (`PropsTable` has fixed columns). Styles are `.compare` / `.compare-wrap` in
   `app.scss`, copying `.props`'s ≤640px stacked fallback driven by `data-label`.
 
-#### State: 219 library tests, lint clean, tsc clean, docs smoke test green.
+### Real-browser tests (Playwright) and what they found
+- `playground/playwright.config.ts` + `playground/e2e/*.spec.ts`, run in CI after the
+  playground build on chromium, webkit and a Pixel 7 profile. `vite preview` serves
+  `playground/dist`, so build the library and the playground first. Specs: focus trap
+  against a real Tab key, inert page, scroll lock, stacking, controlled dismissal, phone
+  layout (fullscreen, stacked footer, scrolling body, the form-as-dialog case), and an
+  axe scan of every route closed and with a modal open (serious/critical fail; the rest
+  is printed). `e2e/shots.ts` (`npm run e2e:shots`) is not a test: it writes one PNG per
+  route × viewport × colour scheme for review and is git-ignored.
+- **Lessons baked into the helpers:** measure only after `document.getAnimations()` have
+  finished (`waitOpen`), otherwise the dialog is still scaled to 0.96 and blended into
+  the backdrop; Playwright scrolls a trigger into view before clicking, so take scroll
+  baselines after opening; use `offset*` boxes, not `getBoundingClientRect`, where a
+  hover transform can apply; after a modal opens the page is `aria-hidden`, so
+  testing-library / Playwright role queries need `{ hidden: true }` or a dialog scope.
+- **Defects the first run found and that are now fixed:** (1) the focus trap only
+  intervened at the ends of the list, so in WebKit — whose default Tab order skips
+  buttons — focus left the dialog; it now moves focus itself on every Tab. (2) Safari
+  does not focus a clicked button, so `previouslyFocusedElement` was `<body>` and focus
+  never returned; `Modal.Trigger` focuses itself before opening. (3) `primary` and
+  `success` buttons (light) and `primary`/`danger`/`success` (dark) failed AA contrast
+  with white text; tokens changed, see README migration notes. (4) a scrolling
+  `Modal.Body` was unreachable by keyboard; it now sets `tabindex=0` only while it
+  overflows (ResizeObserver + measure per render). (5) the controlled example on
+  `/guides/controlled` did not actually refuse to close — `onOpenChange={setOpen}` —
+  while the caption said it did; it now declines until the box is ticked. (6) docs:
+  code comments failed contrast, the comparison table wrapper and code `<pre>` were
+  scrollable but not focusable, and titled showcases used `h3` under an `h1`.
+- **Defects the screenshot review found (not caught by any assertion until the new
+  clipping test):** (7) `Modal.Close asChild` merged `modalClose` — the 32px icon
+  button's class — onto the child, so every footer built as `Modal.Close asChild` +
+  `Modal.Button` (the README quick start!) clipped its labels to "ance" / "ublis", and
+  `<Modal.Close>Not now</Modal.Close>` wrapped into a square. Now: asChild adds no
+  library class; the fixed square is `modalClose--icon`, applied only when there are no
+  children (the × glyph); a text label gets a quiet ordinary button. (8) On the
+  portal-container guide the modal renders inside `.page`, whose `h2` margin/size rule
+  beat `.modalTitle`; title and description are now `.modal .modalTitle` /
+  `.modal .modalDescription` so a host's descendant selectors do not win. The
+  comparison table `min-width` went 960 → 1100px because rows were mostly whitespace.
+- **Reviewing screenshots:** `npm run e2e:shots -w playground`, then Read the PNGs in
+  `playground/e2e/shots/` — the `--open` frames are the library's output, the rest is
+  the site. Two batches of ~10 frames were enough to find (7) and (8); the rest of the
+  192 were spot-checked. Re-run after any visual change and look at the open frames on
+  quick-start, modal-close, modal-body, modal-footer (phone), portal-container, theming
+  (dark) and why (desktop + phone).
+- **Known and accepted:** axe reports `aria-allowed-role` (minor) on the
+  form-as-dialog example, because ARIA-in-HTML does not list `dialog` among the roles
+  allowed on `<form>`. The pattern stays documented; wrap the form in `Modal.Body` if
+  you need a strictly conforming tree. The "forms overflow the modal body" item in
+  Current Issues is closed: `layout.spec.ts` proves the input stays inside the body on
+  desktop and phone.
+
+#### State: 222 library tests, 31 browser tests × 3 engines, lint clean, tsc clean.
 Version 0.2.0, still unreleased; the README migration notes cover all of the above.
 
 ## Session 4 Progress (September 2026)
@@ -426,10 +479,10 @@ Modal library now features advanced component architecture and enhanced develope
   "Component Import Patterns" section of specs.md.
 
 ### 🔧 Bug Fixes
-- [ ] **Fix forms inside modals overflow** - Forms overflow the modal body
-  instead of respecting the container. NOT verified either way in Session 3 —
-  `/guides/forms-and-async` and `/components/modal-content` now have live form
-  examples (`ContentAsForm`), so reproduce it there first before changing CSS.
+- [x] **Fix forms inside modals overflow** - Could not be reproduced: Session 5's
+  `playground/e2e/layout.spec.ts` measures the `ContentAsForm` example in real
+  browsers at desktop and phone width and the input stays inside `.modalBody`
+  with no horizontal overflow.
 
 ### 🎨 Enhancement Features
 - [x] **Create Modal.Button component** - ✅ COMPLETED: Full implementation with 5 variants (primary, secondary, danger, success, warning), 3 sizes, loading states, asChild pattern, and complete TypeScript definitions. Integrated into compound component pattern and hybrid export strategy.
