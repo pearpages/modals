@@ -58,7 +58,11 @@ through the Trusted Publisher registered on npmjs.com for `pearpages/modals` +
 `_authToken=${NODE_AUTH_TOKEN}` line that shadows OIDC. `workflow_dispatch` was added
 so a failed publish is re-run with `gh workflow run publish.yml --ref vX.Y.Z`, no
 re-tag. `deploy.yml` still runs Node 20 and both lockfiles still coexist; that was
-left as commit `3b712ee` left it.
+left as commit `3b712ee` left it — but the pnpm lockfile did bite once: publint
+auto-detects the package manager from the lockfile, picked `pnpm pack`, and the
+runner has no pnpm, so the first `v0.2.0` publish run failed at `check:package`
+(it passed locally only because pnpm is installed here). `check:package` now runs
+`publint --pack npm`. The tag was moved to the fix commit before anything used it.
 
 ### Release checklist that was followed
 1. All gates locally on the branch: lint, `test:run`, build, `check:package`,
