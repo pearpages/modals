@@ -76,4 +76,4 @@ jobs:
       # on npmjs.com. No token; provenance is attached automatically.
       - name: Publish
         if: steps.check_branch.outputs.is_main_branch == 'true'
-        run: npm publish --access public
+        run: npm publish --access public --loglevel verbose
