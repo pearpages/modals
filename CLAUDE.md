@@ -71,9 +71,19 @@ runner has no pnpm, so the first `v0.2.0` publish run failed at `check:package`
 3. Tag `v0.2.0`, push, watch "Publish to npm" (must run all steps, not 7 s).
 4. `gh release create v0.2.0` with the README migration notes.
 
+### How it went (2026-09-11)
+- Site deployed on the first run. `v0.2.0` needed three tries: the publint/pnpm
+  failure above, then two `ENEEDAUTH`s because the Trusted Publisher on npmjs.com did
+  not match (npm's message for that is "OIDC token exchange error - package not
+  found"; it is only visible with `--loglevel verbose`, which the publish step now
+  keeps). After the npmjs.com entry was corrected, `gh workflow run publish.yml
+  --ref v0.2.0` published without re-tagging. The tag was moved twice before that
+  while the fixes landed on `main` — fine only because nothing had consumed it.
+- `@pearpages/modals@0.2.0` is on npm with SLSA provenance; GitHub release
+  `v0.2.0` carries the migration notes.
+
 ### Pending
-- [ ] Delete the unused `NPM_TOKEN` repo secret once 0.2.0 is on npm:
-      `gh secret delete NPM_TOKEN`.
+- [ ] Delete the unused `NPM_TOKEN` repo secret: `gh secret delete NPM_TOKEN`.
 - [ ] Decide whether `deploy.yml` moves to Node 22 and whether `pnpm-lock.yaml`
       stays alongside `package-lock.json` (CI is npm-only).
 
@@ -288,8 +298,9 @@ attw green. Version 0.2.0, unreleased.
       Trusted Publisher is configured on npmjs.com.
 - [x] `curl -I https://modals.pearpages.com/guides/stacking` returns 404 +
       `text/html` and the page renders (the SPA fallback; expected).
-- [ ] The docs site was verified by build, types, lint, a headless render of every
-      route and the Playwright suite — plus a browser spot-check in Session 6.
+- [x] The docs site was verified by build, types, lint, a headless render of every
+      route, the Playwright suite, and a check that the deployed bundle carries the
+      Session 5 content (Session 6).
 
 ## Latest Session Progress (September 2025 - Session 2)
 
