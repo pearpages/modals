@@ -83,7 +83,7 @@ runner has no pnpm, so the first `v0.2.0` publish run failed at `check:package`
   `v0.2.0` carries the migration notes.
 
 ### Pending
-- [ ] Delete the unused `NPM_TOKEN` repo secret: `gh secret delete NPM_TOKEN`.
+- [x] `NPM_TOKEN` repo secret deleted and `big-refactor` branch removed (2026-09-12).
 - [ ] Decide whether `deploy.yml` moves to Node 22 and whether `pnpm-lock.yaml`
       stays alongside `package-lock.json` (CI is npm-only).
 
