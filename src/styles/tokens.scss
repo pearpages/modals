@@ -140,6 +140,9 @@ $modal-breakpoint-small: 480px;
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --modal-width-md: 520px;
   --modal-width-full: 100vw;
+  --modal-width-sheet: 24rem;                          /* Docked start/end placement */
+  --modal-height-sheet: 60vh;                          /* Docked top/bottom placement */
+  --modal-animation-translate-sheet: 24px;             /* How far a docked dialog slides in */
   --modal-padding: 1.5rem;
   --modal-transition-duration: 0.25s;
   --modal-transition-easing: cubic-bezier(0.4, 0, 0.2, 1);

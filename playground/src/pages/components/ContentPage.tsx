@@ -7,6 +7,8 @@ import ContentSizes from '../../examples/components/modal-content/ContentSizes'
 import contentSizesSource from '../../examples/components/modal-content/ContentSizes.tsx?raw'
 import ContentAsForm from '../../examples/components/modal-content/ContentAsForm'
 import contentAsFormSource from '../../examples/components/modal-content/ContentAsForm.tsx?raw'
+import ContentPlacement from '../../examples/components/modal-content/ContentPlacement'
+import contentPlacementSource from '../../examples/components/modal-content/ContentPlacement.tsx?raw'
 
 export function ContentPage() {
   return (
@@ -23,6 +25,18 @@ export function ContentPage() {
             description: (
               <>
                 Width behaviour. See <Link to="/guides/sizes">Sizes</Link>.
+              </>
+            ),
+          },
+          {
+            name: 'placement',
+            type: "'center' | 'start' | 'end' | 'top' | 'bottom'",
+            default: "'center'",
+            description: (
+              <>
+                Centred, or docked to an edge as a sheet. Docked dialogs fill that edge and
+                slide in from it; <code>start</code>/<code>end</code> follow the writing
+                direction.
               </>
             ),
           },
@@ -87,6 +101,15 @@ export function ContentPage() {
         description="Below 768px, auto and md both go fullscreen regardless."
       >
         <ContentSizes />
+      </Showcase>
+
+      <Showcase
+        title="Placement"
+        code={contentPlacementSource}
+        fileName="ContentPlacement.tsx"
+        description="Docked dialogs are sheets: they sit on an edge and slide in from it. Theme them through --modal-width-sheet and --modal-height-sheet."
+      >
+        <ContentPlacement />
       </Showcase>
 
       <Showcase

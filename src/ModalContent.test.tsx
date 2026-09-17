@@ -123,6 +123,35 @@ describe('Modal.Content - Layout and Sizes', () => {
     expect(modalElement?.className).toContain('modal--full');
   });
 
+  it('is centred by default: placement class and data attribute', async () => {
+    await renderModal(
+      <TestModalSystem open={true}>
+        <Modal.Content>
+          <div data-testid="content">Content</div>
+        </Modal.Content>
+      </TestModalSystem>
+    );
+
+    const modalElement = screen.getByTestId('content').closest('[role="dialog"]');
+    expect(modalElement?.className).toContain('modal--placement-center');
+    expect(modalElement).toHaveAttribute('data-placement', 'center');
+  });
+
+  it.each(['start', 'end', 'top', 'bottom'] as const)('docks to the %s edge', async (placement) => {
+    await renderModal(
+      <TestModalSystem open={true}>
+        <Modal.Content placement={placement}>
+          <div data-testid="content">Content</div>
+        </Modal.Content>
+      </TestModalSystem>
+    );
+
+    const modalElement = screen.getByTestId('content').closest('[role="dialog"]');
+    expect(modalElement?.className).toContain(`modal--placement-${placement}`);
+    expect(modalElement?.className).toContain('modal--md');
+    expect(modalElement).toHaveAttribute('data-placement', placement);
+  });
+
   it('should apply custom className', async () => {
     await renderModal(
       <TestModalSystem open={true}>

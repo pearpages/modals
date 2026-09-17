@@ -14,6 +14,7 @@ import { renderAsChild } from './asChild';
  * Features:
  * - Portal rendering via ModalRoot
  * - Size variants: 'auto', 'md', 'full'
+ * - Placement: centred or docked to an edge ('start' | 'end' | 'top' | 'bottom')
  * - Animation support with data-state attributes
  * - Backdrop and escape key handling
  * - Accessibility attributes (role, aria-modal, etc.)
@@ -22,6 +23,7 @@ import { renderAsChild } from './asChild';
 export const ModalContent: React.FC<ModalContentProps> = ({
   asChild = false,
   size = 'md',
+  placement = 'center',
   animated = true,
   className,
   closeOnBackdrop = true,
@@ -102,6 +104,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
   const contentClasses = [
     'modal',
     size && `modal--${size}`,
+    `modal--placement-${placement}`,
     animated && 'modal--animated',
     className
   ].filter(Boolean).join(' ');
@@ -115,6 +118,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
     'aria-labelledby': titleId,
     'aria-describedby': descriptionId,
     'data-state': dataState,
+    'data-placement': placement,
     // The consumer's style is merged, not substituted: a themed modal that sets
     // CSS variables inline must not lose its z-index.
     style: {

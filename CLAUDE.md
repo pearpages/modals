@@ -577,3 +577,18 @@ src/Example/AccessibilityDemo/
 - Reusable components with clear boundaries
 - Consistent styling patterns across components
 - Better developer experience with logical separation
+## Session (September 2026): `placement` on Modal.Content — 0.3.0
+
+- `placement?: 'center' | 'start' | 'end' | 'top' | 'bottom'` (default `center`) on
+  `ModalContentProps`. The dialog gets `modal--placement-<x>` and `data-placement`; the
+  backdrop lays docked dialogs out with `:has(.modal--placement-<x>)`, the same technique as
+  the existing `--full` rule, so `ModalRoot` did not need to learn about placement.
+- Docked rules live at the end of `.modal` in `components.scss`, after the size and responsive
+  blocks, so they win at equal specificity; the backdrop rules outrank the mobile rule by
+  specificity, which keeps a bottom sheet at the bottom on a phone.
+- Slide-in uses physical `translateX/Y` like the rest of the file; `start`/`end` *alignment* is
+  logical (flex-start/flex-end), the slide direction is not. Fine for LTR; note for RTL later.
+- New variables: `--modal-width-sheet`, `--modal-height-sheet`, `--modal-animation-translate-sheet`.
+- Asked for by pulp (`~/Projects/pulp`), which themes this library through its `--modal-*`
+  variables and needs a docked dialog for its `Sheet`. The feature is generic on purpose.
+- Release: `npm version minor` → 0.3.0, push main, wait, push the tag (README "Releasing").

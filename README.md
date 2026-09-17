@@ -113,6 +113,16 @@ Everything is at **[modals.pearpages.com](https://modals.pearpages.com)**, where
 - [useModalStack](https://modals.pearpages.com/hooks/use-modal-stack) — opening modals from code
 - Guides: [controlled](https://modals.pearpages.com/guides/controlled), [stacking](https://modals.pearpages.com/guides/stacking), [dismissal](https://modals.pearpages.com/guides/dismiss), [accessibility](https://modals.pearpages.com/guides/accessibility), [theming](https://modals.pearpages.com/guides/theming), [forms & async](https://modals.pearpages.com/guides/forms-and-async)
 
+## What's new in 0.3.0
+
+`Modal.Content` takes a `placement`: `'center'` (the default) or `'start' | 'end' | 'top' | 'bottom'` to dock the dialog to an edge as a sheet. A docked dialog fills its edge, slides in from it instead of scaling, and keeps every other behaviour — focus trap, stacking, dismissal, `size` on the free axis. Two new variables theme it: `--modal-width-sheet` (start/end, default `24rem`) and `--modal-height-sheet` (top/bottom, default `60vh`). The dialog element also carries `data-placement`, and the backdrop lays it out with `:has()`, so nothing changes for consumers who never pass the prop.
+
+```tsx
+<Modal.Content placement="end">…</Modal.Content>
+```
+
+Additive, no migration needed.
+
 ## Migrating to 0.2.0
 
 0.2.0 fixes two bugs that changed behaviour, and removes API that never worked.

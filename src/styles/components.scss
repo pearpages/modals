@@ -29,6 +29,37 @@
     justify-content: flex-start;
   }
 
+  /* Docked placements: the dialog sits on its edge and stretches along it.
+     These outrank the mobile rule above by specificity, so a bottom sheet
+     stays at the bottom on a phone. */
+  &:has(.modal--placement-start),
+  &:has(.modal--placement-end) {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  &:has(.modal--placement-start) {
+    justify-content: flex-start;
+  }
+
+  &:has(.modal--placement-end) {
+    justify-content: flex-end;
+  }
+
+  &:has(.modal--placement-top),
+  &:has(.modal--placement-bottom) {
+    padding: 0;
+    justify-content: stretch;
+  }
+
+  &:has(.modal--placement-top) {
+    align-items: flex-start;
+  }
+
+  &:has(.modal--placement-bottom) {
+    align-items: flex-end;
+  }
+
   /* Animation states */
   &[data-state="opening"] {
     opacity: 0;
@@ -184,6 +215,78 @@
         transform: none;
       }
     }
+  }
+}
+
+/* Docked placements ("sheets"). Declared after the size and responsive rules
+   so they win at equal specificity. The docked edge is square; the inner edge
+   keeps the radius. Docked dialogs slide in from their edge instead of scaling. */
+.modal {
+  &--placement-start,
+  &--placement-end {
+    width: var(--modal-width-sheet);
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: none;
+    border-radius: 0;
+  }
+
+  &--placement-start {
+    border-start-end-radius: var(--modal-radius);
+    border-end-end-radius: var(--modal-radius);
+  }
+
+  &--placement-end {
+    border-start-start-radius: var(--modal-radius);
+    border-end-start-radius: var(--modal-radius);
+  }
+
+  &--placement-top,
+  &--placement-bottom {
+    width: 100vw;
+    max-width: none;
+    height: var(--modal-height-sheet);
+    max-height: 100dvh;
+    border-radius: 0;
+  }
+
+  &--placement-top {
+    border-end-start-radius: var(--modal-radius);
+    border-end-end-radius: var(--modal-radius);
+  }
+
+  &--placement-bottom {
+    border-start-start-radius: var(--modal-radius);
+    border-start-end-radius: var(--modal-radius);
+  }
+
+  &--placement-start,
+  &--placement-end,
+  &--placement-top,
+  &--placement-bottom {
+    &[data-state="open"] {
+      transform: none;
+    }
+  }
+
+  &--placement-start[data-state="opening"],
+  &--placement-start[data-state="closing"] {
+    transform: translateX(calc(-1 * var(--modal-animation-translate-sheet)));
+  }
+
+  &--placement-end[data-state="opening"],
+  &--placement-end[data-state="closing"] {
+    transform: translateX(var(--modal-animation-translate-sheet));
+  }
+
+  &--placement-top[data-state="opening"],
+  &--placement-top[data-state="closing"] {
+    transform: translateY(calc(-1 * var(--modal-animation-translate-sheet)));
+  }
+
+  &--placement-bottom[data-state="opening"],
+  &--placement-bottom[data-state="closing"] {
+    transform: translateY(var(--modal-animation-translate-sheet));
   }
 }
 

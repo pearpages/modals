@@ -3,6 +3,13 @@ import { ReactNode, HTMLAttributes, ButtonHTMLAttributes } from 'react';
 // Core Modal Types
 export type ModalSize = 'auto' | 'md' | 'full';
 
+/**
+ * Where the dialog sits: centred (the default), or docked to an edge as a
+ * sheet. A docked dialog fills that edge; `start`/`end` follow the writing
+ * direction.
+ */
+export type ModalPlacement = 'center' | 'start' | 'end' | 'top' | 'bottom';
+
 // Core Modal Props
 // `id` is omitted from the base type: HTMLAttributes declares it optional, and
 // here it is required and addresses the modal in the stack rather than the DOM.
@@ -39,6 +46,13 @@ export interface ModalContentProps extends HTMLAttributes<HTMLDivElement> {
   asChild?: boolean;
   /** Size variant of the modal */
   size?: ModalSize;
+  /**
+   * Centred, or docked to an edge as a sheet (default: 'center'). Docked
+   * dialogs ignore `size` for the docked axis: `start`/`end` take
+   * `--modal-width-sheet` and the full height, `top`/`bottom` the full width
+   * and `--modal-height-sheet`.
+   */
+  placement?: ModalPlacement;
   /** Whether to enable fade animations */
   animated?: boolean;
   /** Whether clicking backdrop closes topmost modal (default: true) */
