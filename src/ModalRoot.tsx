@@ -4,6 +4,7 @@ import { ModalRootProps } from './types';
 import { useModalContext } from './ModalProvider';
 import { useBodyScrollLock } from './useBodyScrollLock';
 import { useInertOutside } from './useInertOutside';
+import { useVisualViewport } from './useVisualViewport';
 
 // SSR-safe check for client environment
 const useIsClient = (): boolean => {
@@ -31,6 +32,10 @@ export const ModalRoot: React.FC<ModalRootProps> = ({ container }) => {
   // non-empty, so the ref is populated by the time this effect runs.
   const rootRef = useRef<HTMLDivElement>(null);
   useInertOutside(rootRef, hasOpenModals);
+
+  // Follow the software keyboard on iOS: a fixed element is laid out against
+  // the layout viewport, which the keyboard covers rather than shrinks.
+  useVisualViewport(rootRef, hasOpenModals);
 
   // Handle escape key events
   useEffect(() => {

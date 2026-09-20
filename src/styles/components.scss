@@ -6,7 +6,16 @@
 /* Backdrop - Enhanced with better blur effect */
 .modalBackdrop {
   position: fixed;
-  inset: 0;
+  /*
+   * The visible viewport, not the layout one: on iOS the software keyboard
+   * covers the bottom of a fixed element rather than shrinking it, so a
+   * centred panel would centre itself in a box the user cannot see and a
+   * focused input would sit under the keyboard. useVisualViewport sets these
+   * two while a modal is open; the fallbacks are the old behaviour exactly.
+   */
+  inset-block-start: var(--modal-vv-offset-top, 0px);
+  inset-inline: 0;
+  block-size: var(--modal-vvh, 100dvh);
   background: var(--modal-backdrop-bg);
   backdrop-filter: blur(var(--modal-blur-amount));
   -webkit-backdrop-filter: blur(var(--modal-blur-amount)); /* Safari support */

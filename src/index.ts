@@ -25,3 +25,4 @@ export type { ModalAriaContextValue } from './ModalAriaContext';
 export { useFocusTrap } from './useFocusTrap';
 export { useBodyScrollLock } from './useBodyScrollLock';
 export { useInertOutside } from './useInertOutside';
+export { useVisualViewport } from './useVisualViewport';
