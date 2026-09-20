@@ -34,6 +34,13 @@ export function AccessibilityPage() {
           <code>aria-modal</code> is supposed to imply this; screen readers honour it
           unevenly.
         </li>
+        <li>
+          A region that must outlive the modal — a toast fired from inside it, with an
+          Undo — opts out with <code>data-modal-keep-active</code> on the element that is
+          a sibling of the portal. Without it the Undo is unreachable and unannounced for
+          as long as the modal is open. Keeping that region usable is then yours: it sits
+          outside the dialog, so nothing traps focus into it.
+        </li>
       </ul>
 
       <Showcase

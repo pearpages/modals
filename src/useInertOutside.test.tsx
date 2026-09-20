@@ -60,6 +60,44 @@ describe('the page outside an open modal', () => {
     bystander.remove();
   });
 
+  it('leaves a sibling carrying data-modal-keep-active alone, and still inerts the rest', () => {
+    // A toast region: a sibling of the portal that has to outlive the dialog
+    // which fired the toast, so its Undo stays pressable and announced.
+    const toasts = document.createElement('div');
+    toasts.setAttribute('data-modal-keep-active', '');
+    toasts.innerHTML = '<button>Undo</button>';
+    document.body.appendChild(toasts);
+
+    const bystander = document.createElement('div');
+    document.body.appendChild(bystander);
+
+    render(
+      <ModalProvider>
+        <ModalRoot />
+        <Controls id="m" />
+        <Modal id="m">
+          <div>content</div>
+        </Modal>
+      </ModalProvider>
+    );
+
+    fireEvent.click(screen.getByText('open'));
+
+    expect(inert(toasts)).toBe(false);
+    expect(toasts.hasAttribute('aria-hidden')).toBe(false);
+    // The opt-out is one element's, not everyone's.
+    expect(inert(bystander)).toBe(true);
+    expect(bystander.getAttribute('aria-hidden')).toBe('true');
+
+    fireEvent.click(screen.getByText('close'));
+
+    expect(inert(toasts)).toBe(false);
+    expect(inert(bystander)).toBe(false);
+
+    toasts.remove();
+    bystander.remove();
+  });
+
   it('with a custom container, only the container\'s ancestor chain stays live', () => {
     const Page = () => {
       const [host, setHost] = React.useState<HTMLElement | null>(null);
