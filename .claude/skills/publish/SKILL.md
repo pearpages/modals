@@ -53,13 +53,14 @@ apply them once approved, and commit as `docs: prepare X.Y.Z`.
   `## What's new in X.Y.Z`, in the style of the one it replaces: short prose per change, at
   most one code sample, then either `Additive, no migration needed.` or a migration list.
   This section is reused verbatim as the GitHub Release notes in step 8.
-- **specs.md** — diff `src/types.ts` and `src/index.ts` over the range; for every new or
-  changed public prop, export, data attribute or CSS variable that `specs.md` does not
-  mention, draft the line in the matching section.
+- **architecture.md** — diff `src/types.ts`, `src/index.ts` and `src/styles/` over the range;
+  for every new or changed public prop, export, data attribute or CSS variable that
+  `architecture.md` does not mention, draft the line in the matching section (principles.md
+  P16). A choice between alternatives made in the range needs an ADR in `docs/adr/` + a line
+  in `decisions.md`.
 - **Docs site** — for the same list, `grep` under `playground/src`. If something has no page
   or example, **stop and ask**; do not invent pages inside a release.
-- **CLAUDE.md** — a session note `## Session (<Month YYYY>): <topic> — X.Y.Z` with what
-  changed and any decision worth keeping.
+- **CLAUDE.md** — nothing; session notes do not go there (principles.md P21).
 - **tasks.md** — tick the Open items this release completes.
 
 ### 2. Local gates
@@ -150,8 +151,8 @@ gh release list --limit 3                             # vX.Y.Z marked Latest
 
 ### 9. Wrap-up
 
-- Add `- [x] YYYY-MM-DD — Released X.Y.Z (<short sha>)` to the top of **Done** in
-  `tasks.md`, and date the CLAUDE.md session note.
+- Add `- [x] YYYY-MM-DD: Released X.Y.Z (<short sha>)` to the top of **Done** in
+  `tasks.md`, and make sure architecture.md reflects the release.
 - Commit `docs: record the X.Y.Z release`, then ⚠ push main (a docs-only deploy re-runs;
   that is fine).
 - Final check: `git status --porcelain` empty, `HEAD == origin/main`.
@@ -170,7 +171,7 @@ that is not true:
 | 5    | `git ls-remote --tags origin vX.Y.Z` finds it and a publish run for it succeeded  |
 | 6    | `npm view @pearpages/modals@X.Y.Z version` prints it                               |
 | 8    | `gh release view vX.Y.Z` succeeds                                                  |
-| 9    | `tasks.md` Done has the exact line `— Released X.Y.Z (<sha>)`                      |
+| 9    | `tasks.md` Done has the exact line `: Released X.Y.Z (<sha>)`                      |
 
 Match the step-9 line exactly: a looser note such as "Released X.Y.Z to npm" written before
 the release was finished does not count. Skip step 2 on resume if the tag already exists (the release commit was gated then). If

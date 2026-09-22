@@ -139,7 +139,7 @@ export const ModalRoot: React.FC<ModalRootProps> = ({ container }) => {
         zIndex: baseZIndex
       }}
     >
-      {/* Render portal containers for each open modal with proper z-index per specs */}
+      {/* Render portal containers for each open modal with z-index = baseZIndex + stackIndex (architecture.md › Stacking) */}
       {stack.map((modalId) => {
         const entry = registry[modalId];
         if (!entry || !entry.open) return null;
@@ -151,7 +151,7 @@ export const ModalRoot: React.FC<ModalRootProps> = ({ container }) => {
             key={modalId}
             className="modalBackdrop"
             style={{
-              zIndex: baseZIndex + entry.stackIndex, // Specs: z-index = baseZIndex + stackIndex
+              zIndex: baseZIndex + entry.stackIndex, // architecture.md › Stacking
               pointerEvents: isTopmost ? 'auto' : 'none'
             }}
             onClick={isTopmost ? handleBackdropClick : undefined}

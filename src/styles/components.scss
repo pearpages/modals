@@ -196,7 +196,7 @@
     }
   }
 
-  /* Responsive behavior - Mobile fullscreen as per specs */
+  /* Responsive behavior - fullscreen on phones (architecture.md › Styling) */
   @media (max-width: #{tokens.$modal-breakpoint-mobile}) {
     &--auto,
     &--md {

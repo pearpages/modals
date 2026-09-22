@@ -55,7 +55,7 @@ describe('useModalStack', () => {
     const { result } = renderHook(() => useModalStack(), { wrapper });
     const modalStack = result.current;
 
-    // Test the expected API from specs
+    // Test the documented API (architecture.md › Public API)
     expect(modalStack.open).toBeDefined();
     expect(modalStack.close).toBeDefined();
     expect(modalStack.isOpen).toBeDefined();
