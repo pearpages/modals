@@ -114,19 +114,13 @@ Everything is at **[modals.pearpages.com](https://modals.pearpages.com)**, where
 - [useModalStack](https://modals.pearpages.com/hooks/use-modal-stack) — opening modals from code
 - Guides: [controlled](https://modals.pearpages.com/guides/controlled), [stacking](https://modals.pearpages.com/guides/stacking), [dismissal](https://modals.pearpages.com/guides/dismiss), [accessibility](https://modals.pearpages.com/guides/accessibility), [theming](https://modals.pearpages.com/guides/theming), [forms & async](https://modals.pearpages.com/guides/forms-and-async)
 
-## What's new in 0.4.0
+## What's new in 0.4.1
 
-**The overlay follows the visual viewport.** On iOS the software keyboard covers the bottom of the page without shrinking the layout viewport, so a centred dialog centred itself in a box the user could not fully see, and a focused input near the bottom sat under the keyboard. While a modal is open the portal root now carries `--modal-vvh` and `--modal-vv-offset-top`, taken from `window.visualViewport`, and the backdrop sizes itself from them. They fall back to `100dvh` and `0px`, so desktop browsers, browsers without `visualViewport` and server rendering lay out exactly as before. The hook is exported as `useVisualViewport` for custom roots.
+**`prefers-reduced-motion` is honoured.** Under `reduce`, dialogs, docked sheets and backdrops appear at once, with no fade, scale or slide, and the × button no longer scales on hover. It works by zeroing the motion tokens (`--modal-transition-duration`, `--modal-animation-scale`, `--modal-animation-translate-y`, `--modal-animation-translate-sheet`), so you can set them in your own `reduce` block for a gentler reduction. The `Modal.Button` loading spinner keeps turning.
 
-**`data-modal-keep-active` keeps a sibling of the portal usable.** Everything outside an open modal is made `inert` and `aria-hidden`. A notification region that has to outlive the dialog that fired it ("Removed · Undo") can opt out by carrying this attribute, so its Undo stays pressable and announced.
+**A text label names `Modal.Close`.** `aria-label="Close modal"` was set on every plain `Modal.Close`, so `<Modal.Close>Cancel</Modal.Close>` was announced as "Close modal". Only the bare × gets that label now; a text label is its own accessible name, and your own `aria-label` still wins.
 
-```html
-<div id="toasts" data-modal-keep-active></div>
-```
-
-**No `@charset` in `styles.css`.** Imported into a cascade layer, the at-rule was invalid and Next's CSS optimiser warned on every build.
-
-Additive, no migration needed.
+Additive, no migration needed. If a test looked up a text-labelled close button by the name "Close modal", query it by its text instead.
 
 ## Migrating to 0.2.0
 
