@@ -54,17 +54,25 @@ export function AnimationPage() {
 
       <h2>Reduced motion</h2>
       <p>
-        The built-in transitions do not yet respond to{' '}
-        <code>prefers-reduced-motion</code>. Until they do, add the guard yourself; the
-        same rule covers transitions you write:
+        Under <code>prefers-reduced-motion: reduce</code> the stylesheet zeroes its
+        motion tokens, so dialogs, sheets and backdrops appear at once with no fade,
+        scale or slide, and the × button no longer scales on hover. The{' '}
+        <code>Modal.Button</code> loading spinner keeps turning, because it is what tells
+        the user something is happening.
+      </p>
+      <p>
+        It is done with the same custom properties you theme with, so you can choose a
+        gentler reduction, such as a short fade with no movement, by setting them in your
+        own block. Guard transitions you write the same way:
       </p>
       <CodeBlock
         language="css"
         code={`@media (prefers-reduced-motion: reduce) {
-  .modal,
-  .modalBackdrop {
-    transition: none;
-    animation: none;
+  :root {
+    --modal-transition-duration: 120ms; /* keep a quick fade */
+  }
+  .slide-up {
+    transform: none;
   }
 }`}
       />

@@ -106,8 +106,11 @@ consumer `style` with its inline z-index. There is no z-index CSS variable.
   `window.visualViewport` on `resize` and `scroll`. The backdrop uses them with fallbacks
   `100dvh` / `0px`, so the layout is unchanged where the hook is inactive. Unit-tested only;
   it has not been checked on a real iPhone (tasks.md).
-- Reduced motion is **not** handled by the stylesheet yet (tasks.md); the Animation guide
-  shows the consumer rule.
+- **Reduced motion**: a `prefers-reduced-motion: reduce` block in `tokens.scss` sets
+  `--modal-transition-duration: 0s` and the scale/translate tokens to identity. Every dialog,
+  sheet and backdrop transition reads those tokens, so all motion stops without new
+  selectors. `.modalClose` drops its hover/press scale. The button spinner keeps turning
+  (it carries state). Proven by `playground/e2e/motion.spec.ts`.
 
 ## Parts and `asChild`
 
@@ -192,7 +195,7 @@ on every render (tasks.md). Portal elements carry `data-modal-portal`,
 |---|---|---|
 | Library unit/integration | `npm run test:run` (vitest + testing-library, jsdom; 231 tests) | Behaviour of every part and hook. `src/test-setup.ts` only loads jest-dom and clears `document.body` before each test. Fake timers are per-file. |
 | Docs smoke | `npm run test:playground` (after `build`) | Every route renders against the **built** package; `__stylesheet.test.ts` guards the published CSS (no `@charset`). |
-| Real browsers | `npm run e2e -w playground` (after both builds) | Playwright on chromium, webkit and a Pixel 7 profile, against `vite preview`: focus trap with a real Tab, inert page, scroll lock, stacking, controlled dismissal, phone layout, axe on every route closed and open (serious/critical fail). |
+| Real browsers | `npm run e2e -w playground` (after both builds) | Playwright on chromium, webkit and a Pixel 7 profile, against `vite preview`: focus trap with a real Tab, inert page, scroll lock, stacking, controlled dismissal, phone layout, reduced motion, axe on every route closed and open (serious/critical fail). |
 | Visual review | `npm run e2e:shots -w playground` | Not a test: one PNG per route × viewport × scheme in `playground/e2e/shots/` (git-ignored), to Read. |
 
 Helper lessons (`playground/e2e/helpers.ts`):

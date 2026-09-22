@@ -261,3 +261,15 @@ $modal-breakpoint-small: 480px;
     --modal-button-warning-active-border: #a16207;
   }
 }
+/* === REDUCED MOTION === */
+/* Every dialog and backdrop transition reads these tokens, so zeroing them stops
+   the fade, scale and slide everywhere at once. A consumer who sets them
+   themselves stays in control. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --modal-transition-duration: 0s;
+    --modal-animation-scale: 1;
+    --modal-animation-translate-y: 0px;
+    --modal-animation-translate-sheet: 0px;
+  }
+}

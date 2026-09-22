@@ -25,4 +25,8 @@ describe('the published stylesheet', () => {
     expect(css).toContain('--modal-bg:');
     expect(css).toContain('--modal-width-md:');
   });
+
+  it('keeps the reduced-motion block (proven in a browser by e2e/motion.spec.ts)', () => {
+    expect(css).toContain('prefers-reduced-motion');
+  });
 });
