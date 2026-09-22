@@ -16,6 +16,14 @@ React modal library with compound component pattern, accessibility features, and
 - `npm run playground:dist` - Docs site against the built package
 - `npm run e2e -w playground` - Playwright against the built site (build both first); `npm run e2e:shots -w playground` writes review screenshots to `playground/e2e/shots/`
 
+## Releasing — always use `/publish`
+
+Any request to release, publish, cut a version, bump or tag goes through the `publish`
+skill (`.claude/skills/publish/SKILL.md`): `/publish patch|minor|major`, or
+`/publish resume vX.Y.Z` to finish a half-done release. Do not run `npm version`,
+`npm publish`, push a `v*` tag or `gh release create` by hand; the skill orders the steps
+(main before tag), verifies each one, and records the release in `tasks.md`.
+
 ## Architecture Notes
 
 - **CSS**: Direct class targeting (`.modalBackdrop`, `.modal`, etc.) - no namespace wrapper due to portal rendering incompatibility
@@ -33,6 +41,8 @@ React modal library with compound component pattern, accessibility features, and
 - `playground/` - Dev sandbox AND the deployed docs site (npm workspace)
 - `playground/src/routes.tsx` - Source of truth for the sidebar and the router
 - `playground/src/examples/` - Self-contained example files, shown via ?raw and rendered live
+- `tasks.md` - The task tracker: open items and a dated log of what was done
+- `.claude/skills/publish/SKILL.md` - The release procedure (`/publish`)
 
 ## Common Issues
 
@@ -73,6 +83,9 @@ runner has no pnpm, so the first `v0.2.0` publish run failed at `check:package`
 `publint --pack npm`. The tag was moved to the fix commit before anything used it.
 
 ### Release checklist that was followed
+
+> Superseded by the `/publish` skill (see "Releasing" above), which runs these steps and
+> verifies each one.
 
 1. All gates locally on the branch: lint, `test:run`, build, `check:package`,
    playground build, `test:playground`, `e2e -w playground`, `npm pack --dry-run`.

@@ -192,6 +192,8 @@ Pushing to `main` deploys the site and never touches npm. Publishing authenticat
 gh workflow run publish.yml --ref vX.Y.Z
 ```
 
+With Claude Code, `/publish <patch|minor|major>` runs every step above, verifies each one (deploy green, publish not skipped, version on npm, site live) and creates the GitHub Release. `/publish resume vX.Y.Z` finishes a release that stopped part-way.
+
 ## License
 
 MIT
