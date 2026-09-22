@@ -1,7 +1,7 @@
 ---
 name: publish
 description: Release @pearpages/modals end to end and verify every step — docs, local gates, version bump, push main, wait for the Pages deploy, push the tag, wait for the npm publish, confirm npm and the live site, create the GitHub Release, record it in tasks.md. Use for any request to release, publish, cut/bump a version, tag, or ship to npm, or when the user invokes /publish. `/publish patch|minor|major` starts a release; `/publish resume vX.Y.Z` finishes a half-done one.
-allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git fetch:*), Bash(git describe:*), Bash(git rev-parse:*), Bash(git tag:*), Bash(git ls-remote:*), Bash(gh auth status:*), Bash(gh run list:*), Bash(gh run view:*), Bash(gh run watch:*), Bash(gh release view:*), Bash(gh release list:*), Bash(npm view:*), Bash(npm run:*), Bash(npm pack --dry-run:*), Bash(node -v), Bash(curl:*), Read, Grep, Glob
+allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git fetch:*), Bash(git describe:*), Bash(git rev-parse:*), Bash(git rev-list:*), Bash(git tag:*), Bash(git ls-remote:*), Bash(gh auth status:*), Bash(gh run list:*), Bash(gh run view:*), Bash(gh run watch:*), Bash(gh release view:*), Bash(gh release list:*), Bash(npm view:*), Bash(npm run:*), Bash(npm pack --dry-run:*), Bash(node -v), Bash(curl:*), Read, Grep, Glob
 ---
 
 # publish — release @pearpages/modals and prove each step happened
@@ -32,14 +32,17 @@ and `gh release create`. Everything else runs without asking.
 git rev-parse --abbrev-ref HEAD          # must be main
 git status --porcelain                   # must be empty
 git fetch origin --tags
-git rev-parse HEAD origin/main           # must be equal
+git rev-list --count HEAD..origin/main   # must be 0 (not behind origin)
+git rev-list --count origin/main..HEAD   # commits ahead; pushed in step 4
 gh auth status
 node -v; cat .nvmrc                      # must match
 git describe --tags --abbrev=0           # previous tag, vPREV
 git log vPREV..HEAD --oneline            # what is being released
 ```
 
-Stop if the range is empty (nothing to release) or any check fails.
+Stop if the range is empty (nothing to release) or any check fails. Being *ahead* of
+origin is fine (docs or tooling commits not pushed yet); step 4 pushes them. Being behind
+means someone else pushed: stop and let the user pull.
 
 ### 1. Docs — draft, the user approves, commit
 
@@ -135,10 +138,12 @@ changed nothing visible on the site, say so and accept the 200.
 ### 8. ⚠ GitHub Release
 
 Write the README `## What's new in X.Y.Z` section body to a file in the scratchpad
-directory, then:
+directory (BSD `sed` on macOS; this awk works everywhere), then:
 
 ```bash
-gh release create vX.Y.Z --title X.Y.Z --notes-file <file> --latest
+awk "/^## What's new in X.Y.Z/{f=1;next} /^## /{f=0} f" README.md \
+  | awk 'NR==1 && /^$/ {next} {print}' > <scratchpad>/notes-X.Y.Z.md
+gh release create vX.Y.Z --title X.Y.Z --notes-file <scratchpad>/notes-X.Y.Z.md --latest
 gh release view vX.Y.Z
 gh release list --limit 3                             # vX.Y.Z marked Latest
 ```
@@ -165,9 +170,10 @@ that is not true:
 | 5    | `git ls-remote --tags origin vX.Y.Z` finds it and a publish run for it succeeded  |
 | 6    | `npm view @pearpages/modals@X.Y.Z version` prints it                               |
 | 8    | `gh release view vX.Y.Z` succeeds                                                  |
-| 9    | `tasks.md` Done has the release                                                    |
+| 9    | `tasks.md` Done has the exact line `— Released X.Y.Z (<sha>)`                      |
 
-Skip step 2 on resume if the tag already exists (the release commit was gated then). If
+Match the step-9 line exactly: a looser note such as "Released X.Y.Z to npm" written before
+the release was finished does not count. Skip step 2 on resume if the tag already exists (the release commit was gated then). If
 step 1 is missing after the tag, write the docs on `main` as a normal `docs:` commit — the
 release notes do not need to be inside the tagged commit.
 
