@@ -651,7 +651,26 @@ src/Example/AccessibilityDemo/
 - Consistent styling patterns across components
 - Better developer experience with logical separation
 
+## Session (September 2026): keep-active, visual viewport — 0.4.0
+
+Released to npm 2026-09-21; README notes and GitHub Release added 2026-09-22 by the first
+`/publish resume` run. All three changes were asked for by pulp (`~/Projects/pulp`).
+
+- **`data-modal-keep-active`**: `useInertOutside` skips a portal sibling that carries it, for
+  a toast region whose Undo must stay usable while the dialog that fired it is open. The
+  attribute is read on the sibling itself; keeping that region reachable by keyboard stays
+  the consumer's job (it is outside the dialog, nothing traps focus into it).
+- **Visual viewport**: `useVisualViewport` (exported, called by `ModalRoot`) writes
+  `--modal-vvh` / `--modal-vv-offset-top` onto the portal root from `visualViewport` on
+  resize *and* scroll (Safari scrolls to reveal a focused field without resizing). The
+  backdrop falls back to `100dvh` / `0px`, so nothing moves where the hook is inactive.
+  Unit-tested against a faked viewport only — still wants a check on a real iPhone.
+- **No `@charset`**: `charset: false` on the sass plugin in `tsup.config.ts`; inside a
+  cascade layer the at-rule is invalid. Guarded by `playground/src/__stylesheet.test.ts`.
+
 ## Session (September 2026): `placement` on Modal.Content — 0.3.0
+
+Released 2026-09-17.
 
 - `placement?: 'center' | 'start' | 'end' | 'top' | 'bottom'` (default `center`) on
   `ModalContentProps`. The dialog gets `modal--placement-<x>` and `data-placement`; the

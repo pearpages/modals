@@ -36,12 +36,12 @@ outward-facing.
 
 Tag, npm 0.4.0 and both CI runs are done (2026-09-21). Missing:
 
-- [ ] README `## What's new in 0.4.0` (replaces the 0.3.0 section): `data-modal-keep-active`,
+- [x] README `## What's new in 0.4.0` (replaces the 0.3.0 section): `data-modal-keep-active`,
       visual-viewport following (`--modal-vvh`, `--modal-vv-offset-top`), no `@charset` in the
       stylesheet. Additive, no migration needed.
 - [ ] GitHub Release `v0.4.0` from that section; `gh release list` still shows 0.3.0 as Latest.
-- [ ] CLAUDE.md session note for 0.4.0; the 0.3.0 note is undated (released 2026-09-17).
-- [ ] Commit the uncommitted CLAUDE.md diff (prettier formatting only) along with the note.
+- [x] CLAUDE.md session note for 0.4.0; the 0.3.0 note is undated (released 2026-09-17).
+- [x] Commit the uncommitted CLAUDE.md diff (prettier formatting only) along with the note.
 
 ### 3. specs.md behind the API
 
