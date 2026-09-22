@@ -68,7 +68,13 @@ export function ContextHooksPage() {
             name: 'useInertOutside',
             type: '(ref, isActive) => void',
             description:
-              'Marks everything outside the referenced element inert and aria-hidden while active, restoring the attributes it touched. ModalRoot calls this for you.',
+              'Marks everything outside the referenced element inert and aria-hidden while active, restoring the attributes it touched. A sibling carrying data-modal-keep-active is left alone. ModalRoot calls this for you.',
+          },
+          {
+            name: 'useVisualViewport',
+            type: '(ref, isActive) => void',
+            description:
+              'While active, writes --modal-vvh and --modal-vv-offset-top onto the referenced element from window.visualViewport, so an overlay can follow the software keyboard. ModalRoot calls this for you.',
           },
         ]}
       />

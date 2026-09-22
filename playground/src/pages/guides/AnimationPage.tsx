@@ -9,24 +9,26 @@ export function AnimationPage() {
   return (
     <Page
       title="Animation"
-      lead="One fade, done in CSS, driven by a data attribute."
+      lead="One entrance, done in CSS, driven by a data attribute."
     >
       <p>
         There is no animation library and no JavaScript timing loop. The dialog carries
         a <code>data-state</code> that moves through <code>opening</code> →{' '}
         <code>open</code> → <code>closing</code>, and the stylesheet transitions
-        opacity and transform between them.
+        opacity and transform between them: a centred dialog fades and scales in, a docked
+        sheet slides in from its edge.
       </p>
 
       <Showcase code={animationToggleSource} fileName="AnimationToggle.tsx">
         <AnimationToggle />
       </Showcase>
 
-      <Callout variant="warning" title="Animated modals outlive their close by ~250ms">
+      <Callout variant="warning" title="Closing is not animated yet">
         <p>
-          With <code>animated</code> on, the dialog stays mounted while it fades out.
-          If a test asserts that closing removes the content immediately, or you need
-          teardown to be synchronous, use <code>animated={'{false}'}</code>.
+          Only the entrance animates. When a modal closes it is unmounted in the same
+          render, so the <code>closing</code> state and its styles never reach the
+          screen. An exit animation is planned; until then, do not rely on the dialog
+          still being in the DOM after it closes.
         </p>
       </Callout>
 
@@ -52,10 +54,20 @@ export function AnimationPage() {
 
       <h2>Reduced motion</h2>
       <p>
-        The built-in transitions are disabled under{' '}
-        <code>prefers-reduced-motion: reduce</code>. If you write your own, guard them
-        the same way.
+        The built-in transitions do not yet respond to{' '}
+        <code>prefers-reduced-motion</code>. Until they do, add the guard yourself; the
+        same rule covers transitions you write:
       </p>
+      <CodeBlock
+        language="css"
+        code={`@media (prefers-reduced-motion: reduce) {
+  .modal,
+  .modalBackdrop {
+    transition: none;
+    animation: none;
+  }
+}`}
+      />
     </Page>
   )
 }

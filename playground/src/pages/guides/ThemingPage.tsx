@@ -91,8 +91,9 @@ export function ThemingPage() {
 
       <h2>Dark mode</h2>
       <p>
-        The library does not decide what dark means for your app. Redefine the
-        variables under whichever signal you use:
+        The stylesheet ships a dark theme that follows{' '}
+        <code>prefers-color-scheme: dark</code>. If your app decides dark mode some other
+        way, a class or a data attribute, redefine the variables under that signal:
       </p>
       <CodeBlock
         language="css"

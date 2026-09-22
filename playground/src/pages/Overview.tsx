@@ -38,7 +38,8 @@ export function Overview() {
           </li>
           <li>
             You are on React 19, want a dependency-free package, and modal dialogs are all
-            you need — no popovers, drawers or non-modal dialogs.
+            you need — no popovers, non-modal dialogs or non-modal drawers (a modal sheet
+            docked to an edge is <code>placement</code>).
           </li>
         </ol>
         <p>
@@ -86,7 +87,7 @@ export function Overview() {
         </li>
         <li>
           <strong>Styled through CSS variables.</strong> Every visual choice is a custom
-          property — 166 of them. Restyling means setting a variable, at{' '}
+          property — 109 of them. Restyling means setting a variable, at{' '}
           <code>:root</code>, on a class, or inline; not writing more specific selectors
           or reaching for <code>!important</code>. There is no CSS-in-JS runtime and no
           theme provider. See <Link to="/guides/theming">Theming</Link>.

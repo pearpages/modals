@@ -55,10 +55,10 @@ export function StackingPage() {
       </p>
       <CodeBlock code={`<ModalSystem baseZIndex={5000}>{/* ... */}</ModalSystem>`} />
       <p>
-        Set it in one place. Both <code>ModalRoot</code> and{' '}
-        <code>Modal.Content</code> read it from context, and giving the root a
-        different value puts the backdrop in a different band from the dialog it is
-        meant to sit behind. Inspect what a modal actually got with{' '}
+        It is set in one place only. <code>ModalRoot</code> and{' '}
+        <code>Modal.Content</code> both read it from context and take no{' '}
+        <code>baseZIndex</code> of their own, which keeps every backdrop in the same band
+        as the dialog it sits behind. Inspect what a modal actually got with{' '}
         <Link to="/hooks/use-modal-stack">
           <code>getModal</code>
         </Link>

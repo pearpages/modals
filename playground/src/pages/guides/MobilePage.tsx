@@ -41,7 +41,7 @@ export function MobilePage() {
             name: '≤ 768px',
             type: 'stacked footer',
             description:
-              'Multiple actions stack, each at least 44px tall, with the primary one at the bottom nearest the thumb.',
+              'Multiple actions stack, each at least 44px tall, in reverse order: the first button in your markup ends up at the bottom, nearest the thumb. Put the primary action first if you want it there.',
           },
           {
             name: '≤ 768px',
@@ -56,17 +56,28 @@ export function MobilePage() {
           {
             name: '≤ 480px',
             type: 'tighter still',
-            description: 'A second step down in spacing and title size for small phones.',
+            description: 'The footer tightens its padding once more for small phones.',
           },
         ]}
       />
+
+      <h2>The software keyboard</h2>
+      <p>
+        On iOS the keyboard covers the bottom of the page without shrinking the layout
+        viewport, so a fixed overlay would centre its dialog in a box the user cannot fully
+        see. While a modal is open the portal root carries <code>--modal-vvh</code> and{' '}
+        <code>--modal-vv-offset-top</code>, read from <code>window.visualViewport</code>,
+        and the backdrop sizes itself from them. Without <code>visualViewport</code>, or
+        on the server, they fall back to <code>100dvh</code> and <code>0px</code>, the
+        same layout as before.
+      </p>
 
       <h2>Testing it</h2>
       <p>
         Resizing a desktop window covers the layout, but not{' '}
         <code>env(safe-area-inset-*)</code>, which only has a non-zero value on a
-        notched device. Use a real phone, or the iOS simulator, before trusting the
-        footer inset.
+        notched device, nor the software keyboard. Use a real phone, or the iOS
+        simulator, before trusting the footer inset or the keyboard layout.
       </p>
       <p>
         Note also that <Link to="/guides/sizes">size</Link> comparisons are meaningless

@@ -45,8 +45,11 @@ export function SizesPage() {
 
       <h2>A width of your own</h2>
       <p>
-        Each size reads its width from a custom property, so overriding one is a
-        one-liner that needs no extra specificity:
+        <code>md</code> and <code>full</code> read their width from a custom property
+        (<code>auto</code> simply fits its content, above <code>--modal-min-width</code>),
+        and docked sheets read <code>--modal-width-sheet</code> (24rem) or{' '}
+        <code>--modal-height-sheet</code> (60vh). Overriding one is a one-liner that needs
+        no extra specificity:
       </p>
       <CodeBlock
         language="css"

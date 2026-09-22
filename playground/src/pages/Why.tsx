@@ -43,7 +43,7 @@ const ROWS: ComparisonRow[] = [
           provider, by id. The provider owns the stack.
         </>
       ),
-      ships: 'Standalone. No runtime dependencies. 7.1 kB gzipped, plus 4 kB of CSS.',
+      ships: 'Standalone. No runtime dependencies. 7.7 kB gzipped, plus 4.4 kB of CSS.',
     },
   },
   {
@@ -337,7 +337,8 @@ export function Why() {
           </li>
           <li>
             You are on React 19, want a dependency-free package, and modal dialogs are all
-            you need — no popovers, drawers or non-modal dialogs.
+            you need — no popovers, non-modal dialogs or non-modal drawers (a modal sheet
+            docked to an edge is <code>placement</code>).
           </li>
         </ol>
         <p>
@@ -391,7 +392,7 @@ export function Why() {
       <p>
         The stylesheet is a real design, not a placeholder: spacing, typography, a dark mode
         that follows <code>prefers-color-scheme</code>, fullscreen on phones. Every visual
-        choice in it is a custom property, 166 of them, so restyling means setting a
+        choice in it is a custom property, 109 of them, so restyling means setting a
         variable, never out-specifying a selector. There is no theme provider and no
         CSS-in-JS runtime, because a stylesheet and custom properties already do that job.
         Class names are plain (<code>.modal</code>, <code>.modalHeader</code>) rather than
@@ -419,7 +420,7 @@ export function Why() {
         everything outside the modal is <code>inert</code> and <code>aria-hidden</code>{' '}
         until it closes, since <code>aria-modal</code> alone is honoured unevenly. None of
         it needs a prop. The library has no runtime dependencies — <code>react</code> and{' '}
-        <code>react-dom</code> are peers — and ships as 7.1 kB of gzipped JavaScript plus 4 kB
+        <code>react-dom</code> are peers — and ships as 7.7 kB of gzipped JavaScript plus 4.4 kB
         of CSS. See <Link to="/guides/accessibility">Accessibility</Link>.
       </p>
 
@@ -439,8 +440,9 @@ export function Why() {
           opened by id.
         </li>
         <li>
-          <strong>Modal only.</strong> No non-modal dialogs, popovers or drawers, and one fade
-          animation you can replace in CSS.
+          <strong>Modal only.</strong> No non-modal dialogs, popovers or non-modal drawers.
+          One built-in entrance per shape (centred dialogs fade and scale, docked sheets
+          slide in), which you can replace in CSS.
         </li>
         <li>
           <strong>Unmounts on close.</strong> There is no <code>keepMounted</code>; content is
