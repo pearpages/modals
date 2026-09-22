@@ -13,9 +13,6 @@ work is in [architecture.md](architecture.md), and why in [decisions.md](decisio
       the screen. The Animation guide says so; update it when this is fixed.
 - [ ] **`prefers-reduced-motion`.** The stylesheet ignores it; the Animation guide shows the
       consumer rule for now. Add a `reduce` block to `components.scss`, then update the guide.
-- [ ] **`Modal.Close` overrides a text label's accessible name.** It always sets
-      `aria-label="Close modal"`, so `<Modal.Close>Cancel</Modal.Close>` is announced as
-      "Close modal". Set it only for the bare ×, then update `ClosePage.tsx`.
 - [ ] **Duplicate ids share one entry.** The second registration is ignored with a warning,
       but unmounting either copy deletes the shared entry.
 - [ ] **`useModalStack` returns a new object every render** (`ModalProvider.tsx`). Memoise it,
@@ -52,6 +49,9 @@ still sounds like a lot for a modal.
 
 ## Done
 
+- [x] 2026-09-22: `Modal.Close` no longer overrides a text label's accessible name;
+      `aria-label="Close modal"` only on the bare ×. Three regression tests; Close page and
+      architecture.md updated. Unreleased (next patch).
 - [x] 2026-09-22: Project knowledge split into `architecture.md`, `principles.md`,
       `decisions.md` (+ 12 seed ADRs in `docs/adr/`) and this file. CLAUDE.md slimmed,
       `specs.md` retired ([ADR-0012](docs/adr/0012-project-knowledge-files.md)).

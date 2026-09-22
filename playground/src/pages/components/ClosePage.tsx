@@ -21,9 +21,9 @@ export function ClosePage() {
       />
       <p>
         Other button attributes are forwarded. With no children it renders a{' '}
-        <code>×</code> button. Its accessible name is currently always{' '}
-        <code>Close modal</code>, even when you pass a text label; pass your own{' '}
-        <code>aria-label</code> to override it.
+        <code>×</code> button named <code>Close modal</code> for assistive technology.
+        With a text label, the text is the accessible name. Your own{' '}
+        <code>aria-label</code> overrides either.
       </p>
 
       <Showcase

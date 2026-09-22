@@ -117,8 +117,8 @@ merges className child-first, composes `on*` handlers (consumer first; `preventD
 cancels the library's), and merges refs. Attributes are the consumer's
 ([ADR-0006](docs/adr/0006-consumer-attributes-win-handlers-compose.md)).
 `Modal.Close asChild` adds no library class; the fixed 32px square is `modalClose--icon`,
-applied only to the bare `<Modal.Close />` (×). `Modal.Close` currently always sets
-`aria-label="Close modal"` (tasks.md) ([ADR-0008](docs/adr/0008-modal-close-aschild-adds-no-class.md)).
+applied only to the bare `<Modal.Close />` (×), which is also the only form that gets
+`aria-label="Close modal"`. A text label is its own accessible name ([ADR-0008](docs/adr/0008-modal-close-aschild-adds-no-class.md)).
 `Modal.Button` has 5 variants, 3 sizes and `loading` (spinner, implies `disabled`), and
 forwards its ref.
 

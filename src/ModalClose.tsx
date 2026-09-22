@@ -56,7 +56,8 @@ export const ModalClose: React.FC<ModalCloseProps> = ({
       type="button"
       className={closeClasses}
       onClick={handleClick}
-      aria-label="Close modal"
+      // Only the bare × needs a name; a text label is its own accessible name.
+      aria-label={isIcon ? 'Close modal' : undefined}
       {...rest}
     >
       {isIcon ? '×' : children}

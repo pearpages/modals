@@ -33,8 +33,43 @@ describe('ModalClose', () => {
     expect(button).toBeInTheDocument();
     expect(button).toHaveClass('modalClose');
     expect(button).toHaveAttribute('type', 'button');
-    expect(button).toHaveAttribute('aria-label', 'Close modal');
+    expect(button).not.toHaveAttribute('aria-label');
     expect(button).toHaveTextContent('Close');
+  });
+
+  // Regression: aria-label="Close modal" was set on every plain Modal.Close,
+  // so a text label was announced as "Close modal" instead of what it says.
+  it('uses a text label as the accessible name', () => {
+    render(
+      <TestWrapper>
+        <ModalClose>Cancel</ModalClose>
+      </TestWrapper>
+    );
+
+    expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Close modal' })).not.toBeInTheDocument();
+  });
+
+  it('names the bare × button "Close modal"', () => {
+    render(
+      <TestWrapper>
+        <ModalClose />
+      </TestWrapper>
+    );
+
+    expect(screen.getByRole('button', { name: 'Close modal' })).toHaveTextContent('×');
+  });
+
+  it('lets a consumer aria-label win on both forms', () => {
+    render(
+      <TestWrapper>
+        <ModalClose aria-label="Dismiss dialog" />
+        <ModalClose aria-label="Discard draft">Cancel</ModalClose>
+      </TestWrapper>
+    );
+
+    expect(screen.getByRole('button', { name: 'Dismiss dialog' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Discard draft' })).toBeInTheDocument();
   });
 
   it('should render default close symbol when no children provided', () => {
