@@ -39,7 +39,7 @@ Tag, npm 0.4.0 and both CI runs are done (2026-09-21). Missing:
 - [x] README `## What's new in 0.4.0` (replaces the 0.3.0 section): `data-modal-keep-active`,
       visual-viewport following (`--modal-vvh`, `--modal-vv-offset-top`), no `@charset` in the
       stylesheet. Additive, no migration needed.
-- [ ] GitHub Release `v0.4.0` from that section; `gh release list` still shows 0.3.0 as Latest.
+- [x] GitHub Release `v0.4.0` from that section; `gh release list` still shows 0.3.0 as Latest.
 - [x] CLAUDE.md session note for 0.4.0; the 0.3.0 note is undated (released 2026-09-17).
 - [x] Commit the uncommitted CLAUDE.md diff (prettier formatting only) along with the note.
 
@@ -62,6 +62,7 @@ Tag, npm 0.4.0 and both CI runs are done (2026-09-21). Missing:
 
 ## Done
 
+- [x] 2026-09-22 — Released 0.4.0 (e0091ad): README notes, GitHub Release, first `/publish resume` run (task 2).
 - [x] 2026-09-22 — `/publish` skill written; CLAUDE.md "Releasing" rule and README point to it (task 1).
 - [x] 2026-09-22 — Audit of missing tasks; created this file.
 - [x] 2026-09-21 — Released 0.4.0 to npm (visual viewport, `data-modal-keep-active`, `@charset`
