@@ -47,12 +47,13 @@ still sounds like a lot for a modal.
 
 ## Done
 
+- [x] 2026-09-22: Released 0.4.1 (f516f02): `Modal.Close` accessible name, `prefers-reduced-motion`.
 - [x] 2026-09-22: `prefers-reduced-motion` honoured: motion tokens zeroed in `tokens.scss`, no
       hover scale on the ×; `e2e/motion.spec.ts` (failed first on all three engines) plus a
-      stylesheet guard; Animation page and architecture.md updated. Unreleased (0.4.1).
+      stylesheet guard; Animation page and architecture.md updated. Released in 0.4.1.
 - [x] 2026-09-22: `Modal.Close` no longer overrides a text label's accessible name;
       `aria-label="Close modal"` only on the bare ×. Three regression tests; Close page and
-      architecture.md updated. Unreleased (0.4.1).
+      architecture.md updated. Released in 0.4.1.
 - [x] 2026-09-22: Project knowledge split into `architecture.md`, `principles.md`,
       `decisions.md` (+ 12 seed ADRs in `docs/adr/`) and this file. CLAUDE.md slimmed,
       `specs.md` retired ([ADR-0012](docs/adr/0012-project-knowledge-files.md)).
