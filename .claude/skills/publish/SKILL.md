@@ -124,7 +124,12 @@ npm view @pearpages/modals@X.Y.Z version            # must print X.Y.Z
 npm view @pearpages/modals@X.Y.Z dist.attestations  # must be non-empty (provenance)
 ```
 
-The registry can lag; retry for up to ~2 minutes before failing.
+The registry can lag several minutes after a successful publish (0.4.1 took ~3). Retry for
+up to ~10 minutes with `--prefer-online` (or read `https://registry.npmjs.org/@pearpages%2fmodals`
+directly, which bypasses the local cache). While waiting, confirm the Publish step log ends
+with `+ @pearpages/modals@X.Y.Z` and a provenance line
+(`gh run view <id> --log | grep '+ @pearpages/modals@'`). If that line is there the publish
+happened and it is only lag; if it is missing, stop and see **Recovery**.
 
 ### 7. Verify the site
 
