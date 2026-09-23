@@ -47,6 +47,8 @@ still sounds like a lot for a modal.
 
 ## Done
 
+- [x] 2026-09-23: Released 0.4.2 (b0b063c): packaging and docs only — `LICENSE` now in the
+      tarball, README leads with the card, so npmjs.com shows both.
 - [x] 2026-09-23: Link previews: `e2e/og-card.html` (the library's own CSS, two stacked
       dialogs) is captured to `public/og.png` by `npm run og -w playground`; `index.html`
       gained the Open Graph and `summary_large_image` tags; the README leads with the image;
