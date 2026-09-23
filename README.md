@@ -195,4 +195,4 @@ With Claude Code, `/publish <patch|minor|major>` runs every step above, verifies
 
 ## License
 
-MIT
+[MIT](LICENSE)

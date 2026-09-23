@@ -47,6 +47,8 @@ still sounds like a lot for a modal.
 
 ## Done
 
+- [x] 2026-09-22: Added the MIT `LICENSE` file that `package.json` and the README already
+      declared; npm includes it in the tarball from the next release.
 - [x] 2026-09-22: Released 0.4.1 (f516f02): `Modal.Close` accessible name, `prefers-reduced-motion`.
 - [x] 2026-09-22: `prefers-reduced-motion` honoured: motion tokens zeroed in `tokens.scss`, no
       hover scale on the ×; `e2e/motion.spec.ts` (failed first on all three engines) plus a
