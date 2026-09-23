@@ -7,6 +7,8 @@
 
 Accessible, composable modals for React — portal rendered, focus trapped, stackable, and styled entirely through CSS variables.
 
+[![A confirmation dialog titled "Ship it?" stacked on a dimmed "Deploy to production" dialog, beside the name @pearpages/modals and its install command.](https://modals.pearpages.com/og.png)](https://modals.pearpages.com)
+
 **[Documentation and live examples →](https://modals.pearpages.com)**
 
 > **Should you use this?** For most React apps, no: reach for [Radix Dialog](https://www.radix-ui.com/primitives/docs/components/dialog) (or shadcn/ui, which is Radix underneath). It has the larger ecosystem, more years of edge-case fixes, full control of markup and CSS, and a non-modal mode. This library is worth it when several of these are true:

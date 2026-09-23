@@ -47,6 +47,10 @@ still sounds like a lot for a modal.
 
 ## Done
 
+- [x] 2026-09-23: Link previews: `e2e/og-card.html` (the library's own CSS, two stacked
+      dialogs) is captured to `public/og.png` by `npm run og -w playground`; `index.html`
+      gained the Open Graph and `summary_large_image` tags; the README leads with the image;
+      the repo got topics. `e2e/` also got a tsconfig, so the specs have types.
 - [x] 2026-09-22: Added the MIT `LICENSE` file that `package.json` and the README already
       declared; npm includes it in the tarball from the next release.
 - [x] 2026-09-22: Released 0.4.1 (f516f02): `Modal.Close` accessible name, `prefers-reduced-motion`.

@@ -25,18 +25,29 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      testIgnore: /shots\.ts/,
+      testIgnore: /(shots|og)\.ts/,
       use: { ...devices['Desktop Chrome'], viewport: { width: 1280, height: 800 } },
     },
     {
       name: 'webkit',
-      testIgnore: /shots\.ts/,
+      testIgnore: /(shots|og)\.ts/,
       use: { ...devices['Desktop Safari'], viewport: { width: 1280, height: 800 } },
     },
     {
       name: 'mobile',
-      testIgnore: /shots\.ts/,
+      testIgnore: /(shots|og)\.ts/,
       use: { ...devices['Pixel 7'] },
+    },
+    {
+      // Not a test: writes the Open Graph card to public/og.png. `npm run og`.
+      name: 'og',
+      testMatch: /og\.ts/,
+      retries: 0,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1200, height: 630 },
+        deviceScaleFactor: 2,
+      },
     },
     {
       // Not a test: writes review screenshots to e2e/shots. `npm run e2e:shots`.

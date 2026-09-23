@@ -186,7 +186,12 @@ on every render (tasks.md). Portal elements carry `data-modal-portal`,
   columns. Both fall back to stacked rows at ≤640px via `data-label`.
 - The footer renders `<Credit as="div" />` from `@pearpages/credit/react` (`as="div"` so
   landmarks do not nest). `.footer` maps its two tokens to page tokens for AA in dark mode.
-- Content that exists in more than one place: the comparison table (README + `Why.tsx`), and
+- The link-preview card is `playground/e2e/og-card.html`, captured to `playground/public/og.png`
+  by `npm run og -w playground` (Playwright project `og`, 1200×630 at 2× scale). Its dialogs
+  are drawn by the library's own `dist/index.css` with the real class names, so build the
+  library first. `playground/index.html` points `og:image` / `twitter:image` at `/og.png`,
+  and the README leads with the same URL.
+- Content that exists in more than one place: the comparison table (README + `Why.tsx`) and
   the "Should you use this?" disclaimer (README, Overview, Why).
 
 ## Testing layers

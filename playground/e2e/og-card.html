@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!--
+      The source for public/og.png, captured by e2e/og.ts at 1200x630.
+      The dialogs on the right are the library's own stylesheet (dist/index.css),
+      with the real class names, so the card cannot drift from how a modal
+      actually looks. Everything else is card furniture.
+
+      Deliberately no figures here (size, variable count): a number baked into a
+      PNG cannot be linted, and it would go stale silently. Claims on this card
+      stay qualitative.
+    -->
+    <link rel="stylesheet" href="../../dist/index.css" />
+    <style>
+      :root {
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        gap: 40px;
+        padding: 64px;
+        background:
+          radial-gradient(900px 500px at 8% -10%, rgba(0, 102, 204, 0.5), transparent 60%),
+          radial-gradient(700px 500px at 105% 115%, rgba(30, 126, 52, 0.35), transparent 55%),
+          #0b1020;
+        font-family:
+          ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
+          sans-serif;
+        color: #f5f7fb;
+      }
+
+      .card__name {
+        margin: 0;
+        font-size: 46px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .card__name span {
+        color: #8ab9ff;
+      }
+
+      .card__tagline {
+        margin: 18px 0 0;
+        font-size: 25px;
+        line-height: 1.35;
+        color: #c9d4e8;
+        max-width: 17em;
+      }
+
+      .card__install {
+        display: inline-block;
+        margin-top: 28px;
+        padding: 12px 18px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.07);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 20px;
+        color: #e8eefc;
+      }
+
+      .card__chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 28px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .card__chips li {
+        padding: 7px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        font-size: 16px;
+        color: #dbe5f7;
+      }
+
+      .card__url {
+        margin: 30px 0 0;
+        font-size: 18px;
+        color: #93a4c4;
+      }
+
+      /* The dialogs sit on the card, not in a backdrop: no page to dim here.
+         Two of them, offset, because stacking is the point. */
+      .card__stage {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+
+      .card__stage .modal {
+        width: 470px;
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.55);
+      }
+
+      .card__stage .modal--behind {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-64%, -78%) scale(0.92);
+        opacity: 0.5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card__text">
+      <h1 class="card__name">@pearpages<span>/modals</span></h1>
+      <p class="card__tagline">Modals for React that already look finished.</p>
+      <code class="card__install">npm i @pearpages/modals</code>
+      <ul class="card__chips">
+        <li>Accessible by default</li>
+        <li>Stackable</li>
+        <li>Styled with CSS variables</li>
+      </ul>
+      <p class="card__url">modals.pearpages.com</p>
+    </div>
+
+    <div class="card__stage">
+      <div class="modal modal--md modal--behind" aria-hidden="true">
+        <div class="modalHeader">
+          <div>
+            <h2 class="modalTitle">Deploy to production</h2>
+          </div>
+          <button type="button" class="modalClose modalClose--icon" aria-label="Close modal">
+            ×
+          </button>
+        </div>
+        <div class="modalBody">
+          <p>main → production. 14 commits, 3 contributors.</p>
+        </div>
+      </div>
+
+      <div class="modal modal--md" role="dialog" aria-modal="true" data-state="open">
+        <div class="modalHeader">
+          <div>
+            <h2 class="modalTitle">Ship it?</h2>
+          </div>
+          <button type="button" class="modalClose modalClose--icon" aria-label="Close modal">
+            ×
+          </button>
+        </div>
+        <div class="modalBody">
+          <p>
+            Stacked on the dialog behind it. Escape closes this one first, the backdrop
+            below stays put, and the page never scrolls.
+          </p>
+        </div>
+        <div class="modalFooter">
+          <button type="button" class="modalButton modalButton--secondary modalButton--medium">
+            Not yet
+          </button>
+          <button type="button" class="modalButton modalButton--primary modalButton--medium">
+            Ship it
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -98,7 +98,8 @@ the claim and open a task.
 - the comparison table (README + `Why.tsx`);
 - the "Should you use this?" disclaimer (README, Overview, Why);
 - dated numbers such as bundle size and variable count (README, Why, Overview,
-  architecture.md), together with their dating sentence.
+  architecture.md), together with their dating sentence. The OG card carries no figures
+  on purpose, since a number inside a PNG cannot be checked.
 
 The comparison's concessions, including the one in our own row, are deliberate and stay.
 

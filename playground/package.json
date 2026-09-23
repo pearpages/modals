@@ -9,7 +9,8 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "e2e": "playwright test",
-    "e2e:shots": "playwright test --project=shots"
+    "e2e:shots": "playwright test --project=shots",
+    "og": "playwright test --project=og"
   },
   "dependencies": {
     "@pearpages/credit": "^0.2.0",
