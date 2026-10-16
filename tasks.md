@@ -8,9 +8,9 @@ work is in [architecture.md](architecture.md), and why in [decisions.md](decisio
 
 ### Highest priority
 
-- [ ] **Release 0.5.0** (`/publish minor`): `Modal` renders no element of its own
-      ([ADR-0013](docs/adr/0013-modal-renders-no-element.md)). Then bump pulp
-      (`@pearpages/pulp-react`) and bitepals, whose feed grid this fixes.
+- [ ] **Bump `@pearpages/modals` to 0.5.0 in pulp, then bitepals** (in those repos). 0.5.0
+      fixes bitepals' feed grid; move any `className` or attributes on `Modal` to
+      `Modal.Content` ([ADR-0013](docs/adr/0013-modal-renders-no-element.md)).
 
 ### Advertising readiness
 
@@ -66,6 +66,7 @@ still sounds like a lot for a modal.
 
 ## Done
 
+- [x] 2026-10-16: Released 0.5.0 (d674ad8)
 - [x] 2026-10-16: An open `Modal` no longer leaves an empty `<div>` in the consumer's layout
       (it took a grid cell in bitepals). `Modal` renders no element; `ModalProps` drops its
       HTML attributes; `data-modal-id` moves to the dialog. ADR-0013, README migration
