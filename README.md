@@ -116,15 +116,16 @@ Everything is at **[modals.pearpages.com](https://modals.pearpages.com)**, where
 - [useModalStack](https://modals.pearpages.com/hooks/use-modal-stack) — opening modals from code
 - Guides: [controlled](https://modals.pearpages.com/guides/controlled), [stacking](https://modals.pearpages.com/guides/stacking), [dismissal](https://modals.pearpages.com/guides/dismiss), [accessibility](https://modals.pearpages.com/guides/accessibility), [theming](https://modals.pearpages.com/guides/theming), [forms & async](https://modals.pearpages.com/guides/forms-and-async)
 
-## What's new in 0.4.2
+## What's new in 0.5.0
 
-A packaging and documentation release: the library code is unchanged from 0.4.1.
+**An open `Modal` no longer moves your layout.** `Modal.Content` has always portalled the dialog to the body, but `Modal` itself left an empty `<div>` where you wrote it while open. Inside a grid, a flex row with a gap or a list, that div took a slot, and the page behind the dialog reflowed. `Modal` now renders no element of its own, so you can write it anywhere, including between grid items.
 
-**The package now contains its licence.** `package.json` has always declared MIT, but no `LICENSE` file was packed. It is now in the tarball.
+`data-modal-id` moves to the dialog, so `[data-modal-id="publish"]` now selects the element on screen.
 
-**The README leads with a picture,** and a link to the documentation site shows a proper card instead of a favicon.
+Migration (breaking, see [Migrating to 0.5.0](#migrating-to-050)):
 
-Nothing to migrate.
+- Remove `className`, `style`, `data-*`, `aria-*` and other HTML attributes from `Modal`: `ModalProps` no longer accepts them. Put them on `Modal.Content`.
+- Selectors or tests that found the old wrapper by `[data-modal-id]` now match the dialog.
 
 ## Migrating to 0.5.0
 
