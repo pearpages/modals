@@ -36,14 +36,15 @@ interface ModalComponent extends React.FC<ModalProps> {
  * - Automatically registers/unregisters with ModalProvider
  * - Unmounts children when closed (modal content is not rendered when closed)
  * - Integrates with modal stack for proper z-index and focus management
+ * - Renders no element of its own: Modal.Content portals the dialog, so
+ *   anything here would sit empty in the consumer's layout (a grid cell, a
+ *   flex item) and reflow the page behind the dialog
  */
 const Modal: ModalComponent = ({ 
   id, 
   open, 
   onOpenChange, 
-  children, 
-  className,
-  ...rest
+  children,
 }) => {
   const modalContext = useModalContext();
 
@@ -118,11 +119,7 @@ const Modal: ModalComponent = ({
   }
   return (
     <ModalIdProvider modalId={id}>
-      <ModalAriaProvider>
-        <div className={className} data-modal-id={id} {...rest}>
-          {children}
-        </div>
-      </ModalAriaProvider>
+      <ModalAriaProvider>{children}</ModalAriaProvider>
     </ModalIdProvider>
   );
 };

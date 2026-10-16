@@ -6,6 +6,25 @@ work is in [architecture.md](architecture.md), and why in [decisions.md](decisio
 
 ## Open
 
+### Highest priority
+
+- [ ] **Release 0.5.0** (`/publish minor`): `Modal` renders no element of its own
+      ([ADR-0013](docs/adr/0013-modal-renders-no-element.md)). Then bump pulp
+      (`@pearpages/pulp-react`) and bitepals, whose feed grid this fixes.
+
+### Advertising readiness
+
+- [ ] **B10 package.json metadata.** npm search shows no summary and no keywords — add
+      `description` (reuse the GitHub one), `keywords` (react, modal, dialog, a11y…) and
+      `author` to package.json.
+- [ ] **C14 CI on pull requests + lint.** `deploy.yml` runs tests but not lint, and no
+      workflow runs on `pull_request` — add a PR check that runs lint, tests and build.
+- [ ] **D22 Bundle size in README.** No size is stated anywhere a visitor reads first —
+      measure the gzipped JS + CSS and state it next to the install line.
+- [ ] **D21 `engines`.** Not set — add the Node range the build needs (`.nvmrc` is 22).
+- [ ] **E23 Contributor files.** No CONTRIBUTING, SECURITY, CODE_OF_CONDUCT or issue/PR
+      templates (nice-to-have; pulp has them to copy from).
+
 ### Library fixes (each with a failing-first test, P14)
 
 - [ ] **Exit animation never plays.** `Modal` returns `null` and the backdrop leaves with the
@@ -47,6 +66,11 @@ still sounds like a lot for a modal.
 
 ## Done
 
+- [x] 2026-10-16: An open `Modal` no longer leaves an empty `<div>` in the consumer's layout
+      (it took a grid cell in bitepals). `Modal` renders no element; `ModalProps` drops its
+      HTML attributes; `data-modal-id` moves to the dialog. ADR-0013, README migration
+      notes, a grid demo on the Modal page and an e2e spec. Breaking: ships as 0.5.0.
+- [x] 2026-09-24: Maturity assessment — verdict Ready to advertise, 5 gaps added to Open.
 - [x] 2026-09-23: Released 0.4.2 (b0b063c): packaging and docs only — `LICENSE` now in the
       tarball, README leads with the card, so npmjs.com shows both.
 - [x] 2026-09-23: Link previews: `e2e/og-card.html` (the library's own CSS, two stacked

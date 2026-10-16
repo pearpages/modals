@@ -11,9 +11,9 @@ export type ModalSize = 'auto' | 'md' | 'full';
 export type ModalPlacement = 'center' | 'start' | 'end' | 'top' | 'bottom';
 
 // Core Modal Props
-// `id` is omitted from the base type: HTMLAttributes declares it optional, and
-// here it is required and addresses the modal in the stack rather than the DOM.
-export interface ModalProps extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
+// No HTML attributes: Modal renders no element to put them on. Style and
+// select the dialog through Modal.Content, which carries data-modal-id.
+export interface ModalProps {
   /** Unique identifier for the modal within a ModalSystem instance */
   id: string;
   /** Controlled open state */

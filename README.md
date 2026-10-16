@@ -126,6 +126,13 @@ A packaging and documentation release: the library code is unchanged from 0.4.1.
 
 Nothing to migrate.
 
+## Migrating to 0.5.0
+
+**`Modal` renders no element of its own.** While open, it used to render an empty `<div data-modal-id>` where you wrote it; only `Modal.Content` was portalled. Inside a grid, a flex row with a gap or a list, that div took a slot, and the page behind the dialog reflowed. `Modal` now renders only its children, and the dialog is the one element that exists.
+
+- `className`, `style`, `data-*`, `aria-*` and other HTML attributes on `Modal` are gone from `ModalProps`. Put them on `Modal.Content`, which renders the dialog.
+- `data-modal-id` moves from that div to the dialog: `[data-modal-id="publish"]` now selects the `role="dialog"` element.
+
 ## Migrating to 0.2.0
 
 0.2.0 fixes two bugs that changed behaviour, and removes API that never worked.

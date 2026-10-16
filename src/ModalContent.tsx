@@ -119,6 +119,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
     'aria-describedby': descriptionId,
     'data-state': dataState,
     'data-placement': placement,
+    'data-modal-id': modalId,
     // The consumer's style is merged, not substituted: a themed modal that sets
     // CSS variables inline must not lose its z-index.
     style: {

@@ -37,6 +37,27 @@ test.describe('desktop layout', () => {
   })
 })
 
+// Every project: the reflow showed on a phone first (bitepals' feed grid).
+test.describe('in flow', () => {
+  // Relative to the grid, so scrolling to the trigger or the scroll lock
+  // cannot move the numbers; only a change in the grid itself can.
+  const cellTwo = (page: Page) =>
+    page.locator('.in-a-grid').evaluate((grid) => {
+      const g = grid.getBoundingClientRect()
+      const cell = Array.from(grid.children).find((el) => el.textContent === 'Cell two')!
+      const r = cell.getBoundingClientRect()
+      return { x: r.x - g.x, y: r.y - g.y, w: r.width, h: r.height }
+    })
+
+  test('an open Modal written between grid items takes no cell', async ({ page }) => {
+    await page.goto('/components/modal')
+    const before = await cellTwo(page)
+    await page.getByRole('button', { name: 'Open from the first cell' }).click()
+    await waitOpen(page)
+    expect(await cellTwo(page)).toEqual(before)
+  })
+})
+
 test.describe('phone layout', () => {
   test.skip(({ isMobile }) => !isMobile)
 

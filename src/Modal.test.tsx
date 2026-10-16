@@ -3,6 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import React from 'react';
 import { Modal } from './Modal';
 import { ModalProvider } from './ModalProvider';
+import { ModalRoot } from './ModalRoot';
 
 // Simple test wrapper for testing modal behavior
 const TestModalWrapper: React.FC<{
@@ -77,29 +78,38 @@ describe('Modal - Controlled Behavior', () => {
     expect(screen.getByTestId('modal-content')).toBeTruthy();
   });
 
-  it('should maintain className when provided', () => {
-    const { container } = render(
+  // Modal.Content portals away, so an open Modal must leave nothing where it
+  // was written: an element there becomes a grid cell or flex item and the
+  // page behind the dialog reflows.
+  it('renders no element of its own where it is written', () => {
+    render(
       <ModalProvider>
-        <Modal id="test-modal" open={true} className="custom-class">
-          <div data-testid="modal-content">Content</div>
-        </Modal>
+        <ModalRoot />
+        <ul data-testid="parent">
+          <li>first</li>
+          <Modal id="in-flow" open={true}>
+            <Modal.Content>Content</Modal.Content>
+          </Modal>
+          <li>second</li>
+        </ul>
       </ModalProvider>
     );
 
-    const modalElement = container.querySelector('[data-modal-id="test-modal"]');
-    expect(modalElement?.className).toContain('custom-class');
+    const parent = screen.getByTestId('parent');
+    expect(Array.from(parent.children).map((el) => el.tagName)).toEqual(['LI', 'LI']);
   });
 
-  it('should set correct data attribute', () => {
-    const { container } = render(
+  it('puts data-modal-id on the dialog', () => {
+    render(
       <ModalProvider>
+        <ModalRoot />
         <Modal id="unique-id" open={true}>
-          <div data-testid="modal-content">Content</div>
+          <Modal.Content>Content</Modal.Content>
         </Modal>
       </ModalProvider>
     );
 
-    expect(container.querySelector('[data-modal-id="unique-id"]')).toBeTruthy();
+    expect(screen.getByRole('dialog')).toHaveAttribute('data-modal-id', 'unique-id');
   });
 
   it('should handle undefined open prop', () => {

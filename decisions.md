@@ -23,6 +23,7 @@ accepted.
 | [0010](docs/adr/0010-trusted-publishing-main-before-tag.md) | npm trusted publishing; push `main` before the tag | Accepted | 2026-09-10 |
 | [0011](docs/adr/0011-releases-only-through-publish.md) | Releases go only through the `/publish` skill | Accepted | 2026-09-22 |
 | [0012](docs/adr/0012-project-knowledge-files.md) | Project knowledge lives in architecture, principles, decisions and tasks | Accepted | 2026-09-22 |
+| [0013](docs/adr/0013-modal-renders-no-element.md) | `Modal` renders no element of its own | Accepted | 2026-10-16 |
 
 ## Format
 

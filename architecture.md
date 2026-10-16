@@ -43,7 +43,11 @@ ModalSystem                     (ModalProvider + ModalRoot; baseZIndex, containe
   (`pointer-events`) and only the topmost modal answers Escape. The backdrop's `data-state`
   is always `open`.
 - **`Modal`** (`src/Modal.tsx`) registers its id, and marks the entry `controlled` exactly when
-  an `open` prop is present. It returns `null` while the provider says it is closed.
+  an `open` prop is present. It returns `null` while the provider says it is closed, and
+  only its context providers and children while open: no element of its own, because
+  `Modal.Content` portals away and anything left in place would take a slot in the
+  consumer's grid or flex layout ([ADR-0013](docs/adr/0013-modal-renders-no-element.md)).
+  `Modal.Content` puts `data-modal-id` on the dialog.
 - **`Modal.Content`** (`src/ModalContent.tsx`) finds its slot with `useModalPortal`, portals the
   `role="dialog"` element into it, and registers its dismiss config (`closeOnBackdrop`,
   `closeOnEscape`, `onInteractOutside`) through `useModalDismissConfig`.
@@ -165,8 +169,9 @@ Everything `src/index.ts` exports: `ModalSystem`, `ModalProvider`, `ModalRoot`, 
 `useFocusTrap`, `useBodyScrollLock`, `useInertOutside`, `useVisualViewport`; and all types
 from `src/types.ts`. `useModalStack` keeps the flat `open(id)` form
 ([ADR-0003](docs/adr/0003-usemodalstack-flat-open-id.md)). It currently returns a new object
-on every render (tasks.md). Portal elements carry `data-modal-portal`,
-`data-modal-backdrop`, `data-modal-trigger` and `data-modal-id`.
+on every render (tasks.md). Portal elements carry `data-modal-portal` and
+`data-modal-backdrop`; the trigger carries `data-modal-trigger` and the dialog
+`data-modal-id`.
 
 ## Docs site and workspace
 

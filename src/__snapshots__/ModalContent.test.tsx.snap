@@ -4,31 +4,19 @@ exports[`Modal.Content - Multiple Sizes Snapshot > should match snapshot for aut
 <div
   aria-hidden="true"
   inert=""
->
-  <div
-    data-modal-id="test-modal"
-  />
-</div>
+/>
 `;
 
 exports[`Modal.Content - Multiple Sizes Snapshot > should match snapshot for full size 1`] = `
 <div
   aria-hidden="true"
   inert=""
->
-  <div
-    data-modal-id="test-modal"
-  />
-</div>
+/>
 `;
 
 exports[`Modal.Content - Multiple Sizes Snapshot > should match snapshot for md size 1`] = `
 <div
   aria-hidden="true"
   inert=""
->
-  <div
-    data-modal-id="test-modal"
-  />
-</div>
+/>
 `;

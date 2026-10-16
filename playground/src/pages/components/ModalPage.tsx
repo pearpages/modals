@@ -3,6 +3,9 @@ import { Page } from '../../components/Page'
 import { CodeBlock } from '../../components/CodeBlock'
 import { PropsTable } from '../../components/PropsTable'
 import { Callout } from '../../components/Callout'
+import { Showcase } from '../../components/Showcase'
+import InAGrid from '../../examples/components/modal/InAGrid'
+import inAGridSource from '../../examples/components/modal/InAGrid.tsx?raw'
 
 export function ModalPage() {
   return (
@@ -44,7 +47,6 @@ export function ModalPage() {
             type: '(open: boolean) => void',
             description: 'Called when the modal asks to open or close.',
           },
-          { name: 'className', type: 'string', description: 'Applied to the wrapper element.' },
           {
             name: 'children',
             type: 'ReactNode',
@@ -53,10 +55,19 @@ export function ModalPage() {
           },
         ]}
       />
+      <h2>It renders no element of its own</h2>
       <p>
-        Any other prop is spread onto the wrapper <code>&lt;div&gt;</code>, which also
-        carries <code>data-modal-id</code>.
+        <code>Modal</code> adds nothing to your markup where you write it, open or
+        closed: <code>Modal.Content</code> portals the dialog to the body. Mount it next
+        to a grid item, inside a <code>&lt;ul&gt;</code> or in a flex row with a gap,
+        and the layout behind the dialog stays where it was. To style or select a
+        modal, use <code>Modal.Content</code>: the dialog carries{' '}
+        <code>data-modal-id</code>.
       </p>
+
+      <Showcase title="Written inside a grid" code={inAGridSource} fileName="InAGrid.tsx">
+        <InAGrid />
+      </Showcase>
 
       <h2>Closed modals do not exist</h2>
       <p>

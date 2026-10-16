@@ -465,6 +465,27 @@ a {
   }
 }
 
+// ---------------------------------------------------------------- demo grid
+
+// A fixed two-column grid for the Modal page's "written inside a grid" demo
+// (examples import nothing but react and the library). e2e/layout.spec.ts
+// measures its cells.
+.in-a-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  inline-size: 100%;
+
+  &__cell {
+    display: flex;
+    align-items: center;
+    min-block-size: 56px;
+    padding: 0 14px;
+    border: 1px solid var(--page-border);
+    border-radius: 8px;
+  }
+}
+
 // --------------------------------------------------------------- props table
 
 .props {
