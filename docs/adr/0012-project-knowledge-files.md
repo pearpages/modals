@@ -1,7 +1,7 @@
 # 0012. Project knowledge lives in architecture, principles, decisions and tasks
 
 - **Date:** 2026-09-22
-- **Status:** Accepted
+- **Status:** Accepted; its `tasks.md` part superseded by 0014
 - **Note:** Recorded 2026-09-22 from project history (CLAUDE.md session notes and commits).
 
 ## Context

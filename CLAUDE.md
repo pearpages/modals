@@ -11,7 +11,7 @@ provider and stack, portal rendering, accessible by default, styled through CSS 
 | [principles.md](principles.md) | The rules every change must follow (P1–P22) |
 | [architecture.md](architecture.md) | How the library, docs site, tests and CI are built |
 | [decisions.md](decisions.md) | Index of ADRs in `docs/adr/`: why each choice was made |
-| [tasks.md](tasks.md) | Open work and the dated log of what was done |
+| [Issues](https://github.com/pearpages/modals/issues) | Open work, also on the [Backlog](https://github.com/users/pearpages/projects/3) board. Closed issues, releases and git are the record |
 
 The README and the docs site are the user-facing API reference. There is no separate spec.
 
@@ -19,14 +19,15 @@ The README and the docs site are the user-facing API reference. There is no sepa
 
 1. **Read `principles.md` before changing code or docs.** If a change would break a
    principle, stop and ask; don't work around it.
-2. **Every change updates `tasks.md`**: tick or add Open items, and add a dated line at the
-   top of Done.
+2. **Work is tracked in GitHub Issues**, not in a file. New work → `gh issue create` with
+   `type:*`, `priority:*` and `area:*` labels. Finished work → close the issue from the commit
+   or PR (`Fixes #N`).
 3. **A structural or behavioural change updates `architecture.md` in the same commit**, and
    the README and docs site too when users can see it (P16).
 4. **A choice between real alternatives** (API shape, dependency, convention, process) gets
    a new ADR in `docs/adr/` plus a line in `decisions.md`. Propose it to the user before
    marking it Accepted. Never edit an accepted ADR; supersede it with a new one.
-5. **At the end of a session, outcomes go to those four files, not here.** This file keeps
+5. **At the end of a session, outcomes go to those files and the issues, not here.** This file keeps
    only how to work and pointers. This overrides the global "session summary in CLAUDE.md"
    habit for this repository.
 6. Confirm before anything outward-facing: pushes, releases, publishing.
@@ -37,7 +38,7 @@ Any request to release, publish, cut a version, bump or tag goes through the `pu
 skill (`.claude/skills/publish/SKILL.md`): `/publish patch|minor|major`, or
 `/publish resume vX.Y.Z` to finish a half-done release. Don't run `npm version`,
 `npm publish`, push a `v*` tag or `gh release create` by hand; the skill orders the steps
-(main before tag), verifies each one, and records the release in `tasks.md`.
+(main before tag), verifies each one, and closes the issues the release completes.
 
 ## Development commands
 

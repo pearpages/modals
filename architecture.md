@@ -2,7 +2,7 @@
 
 How `@pearpages/modals` is built. It explains *how* things work. The rules that follow from
 it are in [principles.md](principles.md), the reasons for each choice in
-[decisions.md](decisions.md), and open work in [tasks.md](tasks.md). When code and this file
+[decisions.md](decisions.md), and open work in [GitHub Issues](https://github.com/pearpages/modals/issues). When code and this file
 disagree, the code is right and this file is a bug.
 
 ## Package shape
@@ -66,11 +66,11 @@ ModalSystem                     (ModalProvider + ModalRoot; baseZIndex, containe
 - **Animation lifecycle**: `Modal.Content` moves `data-state` `opening` → `open` (after ~10ms)
   and the CSS transitions opacity/transform. **Known limit:** on close, `Modal` returns
   `null` and the backdrop leaves with the stack entry in the same render, so `closing` never
-  reaches the screen. Exits are instant (see tasks.md).
+  reaches the screen. Exits are instant ([#7](https://github.com/pearpages/modals/issues/7)).
 - Unregistered ids warn and do nothing. Warnings are unconditional (no `NODE_ENV` gate):
   `Modal with id "abc" is already registered`, `Cannot open modal "xyz" - not registered`,
   `Modal.Trigger: target modal "xyz" is not registered. …`. A duplicate id is ignored on
-  registration, but unmounting either copy removes the shared entry (see tasks.md).
+  registration, but unmounting either copy removes the shared entry ([#8](https://github.com/pearpages/modals/issues/8)).
 - Hooks used outside their provider throw (`useModalContext must be used within a
   ModalProvider`, and likewise for the aria/id contexts). The messages name the internal
   providers, not `ModalSystem`.
@@ -109,7 +109,7 @@ consumer `style` with its inline z-index. There is no z-index CSS variable.
   writes `--modal-vvh` and `--modal-vv-offset-top` onto `#modal-root` from
   `window.visualViewport` on `resize` and `scroll`. The backdrop uses them with fallbacks
   `100dvh` / `0px`, so the layout is unchanged where the hook is inactive. Unit-tested only;
-  it has not been checked on a real iPhone (tasks.md).
+  it has not been checked on a real iPhone ([#14](https://github.com/pearpages/modals/issues/14)).
 - **Reduced motion**: a `prefers-reduced-motion: reduce` block in `tokens.scss` sets
   `--modal-transition-duration: 0s` and the scale/translate tokens to identity. Every dialog,
   sheet and backdrop transition reads those tokens, so all motion stops without new
@@ -169,7 +169,7 @@ Everything `src/index.ts` exports: `ModalSystem`, `ModalProvider`, `ModalRoot`, 
 `useFocusTrap`, `useBodyScrollLock`, `useInertOutside`, `useVisualViewport`; and all types
 from `src/types.ts`. `useModalStack` keeps the flat `open(id)` form
 ([ADR-0003](docs/adr/0003-usemodalstack-flat-open-id.md)). It currently returns a new object
-on every render (tasks.md). Portal elements carry `data-modal-portal` and
+on every render ([#9](https://github.com/pearpages/modals/issues/9)). Portal elements carry `data-modal-portal` and
 `data-modal-backdrop`; the trigger carries `data-modal-trigger` and the dialog
 `data-modal-id`.
 
@@ -222,7 +222,7 @@ Accepted: axe's minor `aria-allowed-role` on the form-as-dialog example (`dialog
 
 - `deploy.yml`: on push to `main` (and `workflow_dispatch`): `npm ci`, `test:run`, library
   build, site build, `test:playground`, Playwright (chromium + webkit), then deploys GitHub
-  Pages. It runs on Node 20 (tasks.md). It is the only CI run that executes e2e.
+  Pages. It runs on Node 20 ([#15](https://github.com/pearpages/modals/issues/15)). It is the only CI run that executes e2e.
 - `publish.yml`: on a `v*` tag (and `workflow_dispatch` to re-run a tag). It checks that the
   tagged commit is an ancestor of `origin/main` and **skips every step, still green, if not**.
   Then Node 22, `npm@^11`, `npm ci`, lint, test, build, `check:package`

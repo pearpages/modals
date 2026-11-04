@@ -1,7 +1,7 @@
 ---
 name: publish
-description: Release @pearpages/modals end to end and verify every step — docs, local gates, version bump, push main, wait for the Pages deploy, push the tag, wait for the npm publish, confirm npm and the live site, create the GitHub Release, record it in tasks.md. Use for any request to release, publish, cut/bump a version, tag, or ship to npm, or when the user invokes /publish. `/publish patch|minor|major` starts a release; `/publish resume vX.Y.Z` finishes a half-done one.
-allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git fetch:*), Bash(git describe:*), Bash(git rev-parse:*), Bash(git rev-list:*), Bash(git tag:*), Bash(git ls-remote:*), Bash(gh auth status:*), Bash(gh run list:*), Bash(gh run view:*), Bash(gh run watch:*), Bash(gh release view:*), Bash(gh release list:*), Bash(npm view:*), Bash(npm run:*), Bash(npm pack --dry-run:*), Bash(node -v), Bash(curl:*), Read, Grep, Glob
+description: Release @pearpages/modals end to end and verify every step — docs, local gates, version bump, push main, wait for the Pages deploy, push the tag, wait for the npm publish, confirm npm and the live site, create the GitHub Release, close the issues it completes. Use for any request to release, publish, cut/bump a version, tag, or ship to npm, or when the user invokes /publish. `/publish patch|minor|major` starts a release; `/publish resume vX.Y.Z` finishes a half-done one.
+allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git fetch:*), Bash(git describe:*), Bash(git rev-parse:*), Bash(git rev-list:*), Bash(git tag:*), Bash(git ls-remote:*), Bash(gh auth status:*), Bash(gh run list:*), Bash(gh run view:*), Bash(gh run watch:*), Bash(gh release view:*), Bash(gh issue list:*), Bash(gh release list:*), Bash(npm view:*), Bash(npm run:*), Bash(npm pack --dry-run:*), Bash(node -v), Bash(curl:*), Read, Grep, Glob
 ---
 
 # publish — release @pearpages/modals and prove each step happened
@@ -61,7 +61,7 @@ apply them once approved, and commit as `docs: prepare X.Y.Z`.
 - **Docs site** — for the same list, `grep` under `playground/src`. If something has no page
   or example, **stop and ask**; do not invent pages inside a release.
 - **CLAUDE.md** — nothing; session notes do not go there (principles.md P21).
-- **tasks.md** — tick the Open items this release completes.
+- **Issues** — list the open issues this release completes (`gh issue list`). Step 9 closes them.
 
 ### 2. Local gates
 
@@ -156,10 +156,9 @@ gh release list --limit 3                             # vX.Y.Z marked Latest
 
 ### 9. Wrap-up
 
-- Add `- [x] YYYY-MM-DD: Released X.Y.Z (<short sha>)` to the top of **Done** in
-  `tasks.md`, and make sure architecture.md reflects the release.
-- Commit `docs: record the X.Y.Z release`, then ⚠ push main (a docs-only deploy re-runs;
-  that is fine).
+- Close each issue listed in step 1: `gh issue close N --comment "Released in X.Y.Z"`.
+- Make sure architecture.md reflects the release. If it needed a change, commit
+  `docs: architecture after X.Y.Z`, then ⚠ push main (a docs-only deploy re-runs; that is fine).
 - Final check: `git status --porcelain` empty, `HEAD == origin/main`.
 - Print a summary table: step · result · link (deploy run, publish run, npm page, release).
 
@@ -176,10 +175,9 @@ that is not true:
 | 5    | `git ls-remote --tags origin vX.Y.Z` finds it and a publish run for it succeeded  |
 | 6    | `npm view @pearpages/modals@X.Y.Z version` prints it                               |
 | 8    | `gh release view vX.Y.Z` succeeds                                                  |
-| 9    | `tasks.md` Done has the exact line `: Released X.Y.Z (<sha>)`                      |
+| 9    | no open issue still lists X.Y.Z work, `git status --porcelain` is empty, `HEAD == origin/main` |
 
-Match the step-9 line exactly: a looser note such as "Released X.Y.Z to npm" written before
-the release was finished does not count. Skip step 2 on resume if the tag already exists (the release commit was gated then). If
+Skip step 2 on resume if the tag already exists (the release commit was gated then). If
 step 1 is missing after the tag, write the docs on `main` as a normal `docs:` commit — the
 release notes do not need to be inside the tagged commit.
 

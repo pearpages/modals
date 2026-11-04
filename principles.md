@@ -116,9 +116,9 @@ is the better choice. Do not remove or soften that.
 - how it's built → `architecture.md`
 - rules → `principles.md`
 - why → `docs/adr/` + `decisions.md`
-- what's open and done → `tasks.md`
+- what's open → GitHub Issues; what's done → closed issues, releases and git
 
-Every change updates `tasks.md`: tick or add Open items, and add a dated Done line. A
+New work is an issue; finished work closes it (`Fixes #N`). A
 structural change updates `architecture.md`. A choice between real alternatives gets an ADR,
 proposed to the user; reversing an ADR means a new ADR that supersedes it. CLAUDE.md holds
 only how to work here and pointers.
